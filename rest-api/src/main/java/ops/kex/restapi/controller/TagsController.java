@@ -2,9 +2,9 @@ package ops.kex.restapi.controller;
 
 import ops.kex.restapi.model.Tags;
 import ops.kex.restapi.repository.TagsRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import ops.kex.restapi.service.TagsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,15 +12,21 @@ import java.util.List;
 @RequestMapping("api/tags")
 public class TagsController {
 
-    private final TagsRepository repository;
+private final TagsService tagsService;
 
-    public TagsController(TagsRepository repository) {
-        this.repository = repository;
+    public TagsController(TagsService tagsService) {
+        this.tagsService = tagsService;
     }
 
+
     @GetMapping
-    public List<Tags> findAll() {
-        return this.repository.findAll();
+    public List<Tags> getTags() {
+        return tagsService.getTags();
+    }
+
+    @PostMapping
+    public void registerNewTag(@RequestBody Tags tags){
+        tagsService.addNewTag(tags);
     }
 
 }
