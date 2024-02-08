@@ -6,3 +6,10 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+# Angular
+/dist
+/node_modules
+
+# Compiled output
+/src/**/*.js
+/src/**/*.js.map

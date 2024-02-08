@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/tags")
+@RequestMapping("api")
 public class TagsController {
 
-private final TagsService tagsService;
+    private final TagsService tagsService;
 
     public TagsController(TagsService tagsService) {
         this.tagsService = tagsService;
     }
 
-
-    @GetMapping
+    @GetMapping("/skills")
     public List<Tags> getTags() {
         return tagsService.getTags();
     }
 
-    @PostMapping
-    public void registerNewTag(@RequestBody Tags tags){
+    @PostMapping("/newskills")
+    public void registerNewTag(@RequestBody Tags tags) {
         tagsService.addNewTag(tags);
     }
 
 }
+
 
