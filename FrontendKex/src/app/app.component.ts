@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 interface Skill {
   id: number;
-  tag: string;
+  skill: string;
 }
 @Component({
   selector: 'app-root',
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ tag: newSkill })
+      body: JSON.stringify({ skill: newSkill })
     })
         .then(response => {
           if (response.ok) {

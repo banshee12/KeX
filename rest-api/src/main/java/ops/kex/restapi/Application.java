@@ -1,7 +1,7 @@
 package ops.kex.restapi;
 
-import ops.kex.restapi.model.Tags;
-import ops.kex.restapi.repository.TagsRepository;
+import ops.kex.restapi.model.Skills;
+import ops.kex.restapi.repository.SkillsRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +14,7 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 	@Bean
-	CommandLineRunner commandLineRunner(TagsRepository repository) {
-		return args -> repository.save(new Tags("Java"));
+	CommandLineRunner commandLineRunner(SkillsRepository repository) {
+		return args -> repository.save(new Skills("Java"));
 	}
 }
