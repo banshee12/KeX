@@ -1,0 +1,19 @@
+<div *ngIf="skill" class="kex-skill-container py-4">
+  <div class="kex-skill-visible">
+    <mat-icon>visibility</mat-icon>
+  </div>
+  <div class="kex-skill-content">
+    <div>
+      <kex-star-rating [rating]="skill.level"></kex-star-rating>
+      <h3>{{ skill.title }}</h3>
+    </div>
+    <div class="kex-skill-button-container">
+      <button mat-mini-fab matTooltip="Löschen" color="accent" (click)="test()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-mini-fab matTooltip="Bearbeiten" color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
