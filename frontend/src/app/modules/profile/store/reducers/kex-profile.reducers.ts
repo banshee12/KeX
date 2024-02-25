@@ -1,0 +1,126 @@
+import {KexProfileState} from "../kex-profile.state";
+import {KexLoadState} from "../../../../core/models/kex-core.models";
+import {Action, createReducer, on} from "@ngrx/store";
+import * as KexProfileActions from '../actions/kex-profile.actions';
+
+const initialState : KexProfileState = {
+  skills : [],
+  skillsLoadState : KexLoadState.NONE,
+  experience : [],
+  experienceLoadState : KexLoadState.NONE,
+  contactData : undefined,
+  contactDataLoadState : KexLoadState.NONE,
+  deleteSkillLoadState : KexLoadState.NONE,
+  editSkillLoadState : KexLoadState.NONE,
+  addSkillLoadState : KexLoadState.NONE,
+}
+
+const _kexProfileReducer = createReducer(
+  initialState,
+
+  //get skills
+  on(
+    KexProfileActions.GetSkillsActions.do,
+    (state, action) => ({
+      ...state,
+      skills : [],
+      skillsLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.GetSkillsActions.success,
+    (state, action) => ({
+      ...state,
+      skills : action.skills,
+      skillsLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.GetSkillsActions.fail,
+    (state, action) => ({
+      ...state,
+      skills : [],
+      skillsLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+  // delete skills
+  on(
+    KexProfileActions.DeleteSkillActions.do,
+    (state, action) => ({
+      ...state,
+      deleteSkillLoadState: KexLoadState.LOADING,
+    })
+  ),
+  on(
+    KexProfileActions.DeleteSkillActions.success,
+    (state, action) => ({
+      ...state,
+      deleteSkillLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.DeleteSkillActions.fail,
+    (state, action) => ({
+      ...state,
+      deleteSkillLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+  // edit skills
+  on(
+    KexProfileActions.EditSkillActions.do,
+    (state, action) => ({
+      ...state,
+      editSkillLoadState: KexLoadState.LOADING,
+    })
+  ),
+  on(
+    KexProfileActions.EditSkillActions.success,
+    (state, action) => ({
+      ...state,
+      editSkillLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.EditSkillActions.fail,
+    (state, action) => ({
+      ...state,
+      addSkillLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+  // add skills
+  on(
+    KexProfileActions.AddSkillActions.do,
+    (state, action) => ({
+      ...state,
+      addSkillLoadState: KexLoadState.LOADING,
+    })
+  ),
+  on(
+    KexProfileActions.AddSkillActions.success,
+    (state, action) => ({
+      ...state,
+      addSkillLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.AddSkillActions.fail,
+    (state, action) => ({
+      ...state,
+      addSkillLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+);
+
+export function kexProfileReducer(state: KexProfileState, action: Action) {
+  return _kexProfileReducer(state, action);
+}
+
+export const KEX_PROFILE_STORE_FEATURE_KEY = 'kex-profile-store';
+
+
+
+
