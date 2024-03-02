@@ -10,8 +10,11 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 import {CoreModule} from "../../core/core.module";
 import {SharedModule} from "../../shared/shared.module";
-import {MatMiniFabButton} from "@angular/material/button";
+import {MatButton, MatMiniFabButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
+import {MatFormField} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -32,6 +35,10 @@ import {MatTooltip} from "@angular/material/tooltip";
     SharedModule,
     MatMiniFabButton,
     MatTooltip,
+    MatButton,
+    MatFormField,
+    MatInput,
+    FormsModule,
   ]
 })
 export class ProfileModule { }
