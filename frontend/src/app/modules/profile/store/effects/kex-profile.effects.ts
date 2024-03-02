@@ -12,7 +12,7 @@ export class KexProfileEffects {
     switchMap(action =>
       this.connector.getSkillsFromCurrentUser().pipe(
         map((data) => KexProfileActions.GetSkillsActions.success({skills: data})),
-        catchError(() => of(KexProfileActions.GetSkillsActions.fail).pipe(tap(error => console.log(error))))
+        catchError(() => of(KexProfileActions.GetSkillsActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
 
@@ -21,7 +21,7 @@ export class KexProfileEffects {
     switchMap(action =>
       this.connector.addSkill(action).pipe(
         map((data) => KexProfileActions.AddSkillActions.success()),
-        catchError(() => of(KexProfileActions.AddSkillActions.fail).pipe(tap(error => console.log(error))))
+        catchError(() => of(KexProfileActions.AddSkillActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
 
@@ -30,16 +30,16 @@ export class KexProfileEffects {
     switchMap(action =>
       this.connector.deleteSkill(action).pipe(
         map((data) => KexProfileActions.DeleteSkillActions.success()),
-        catchError(() => of(KexProfileActions.DeleteSkillActions.fail).pipe(tap(error => console.log(error))))
+        catchError(() => of(KexProfileActions.DeleteSkillActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
 
   editSkill = createEffect(() => this.actions$.pipe(
     ofType(KexProfileActions.EditSkillActions.do),
     switchMap(action =>
-      this.connector.deleteSkill(action).pipe(
+      this.connector.editSkill(action).pipe(
         map((data) => KexProfileActions.EditSkillActions.success()),
-        catchError(() => of(KexProfileActions.EditSkillActions.fail).pipe(tap(error => console.log(error))))
+        catchError(() => of(KexProfileActions.EditSkillActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
 

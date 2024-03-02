@@ -6,9 +6,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrl: './kex-star-rating.component.scss'
 })
 export class KexStarRatingComponent {
-  @Input('rating') rating: number = 1;
-  @Input('starCount') starCount: number = 5;
-  @Input('color') color: string = 'primary';
+  @Input() rating: number = 1;
+  @Input() starCount: number = 5;
+  @Input() color: string = 'primary';
+  @Input() edit = false;
   @Output() ratingUpdated = new EventEmitter();
 
   public ratingArr : number[] = [];
@@ -18,8 +19,10 @@ export class KexStarRatingComponent {
     }
   }
   onClick(rating:number) {
-    this.rating = rating;
-    this.ratingUpdated.emit(rating);
+    if(this.edit){
+      this.rating = rating;
+      this.ratingUpdated.emit(rating);
+    }
   }
 
   showIcon(index:number) {

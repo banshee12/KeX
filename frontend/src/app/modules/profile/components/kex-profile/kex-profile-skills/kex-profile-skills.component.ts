@@ -12,10 +12,19 @@ import {KexProfileService} from "../../../services/kex-profile.service";
 export class KexProfileSkillsComponent {
 
   public KexLoadState = KexLoadState;
+  public newSkill = false;
   constructor(private profileService : KexProfileService) {
   }
   ngOnInit(): void {
     this.profileService.loadSkills();
+  }
+
+  onAddSkill() {
+    this.newSkill = true;
+  }
+
+  leaveAddSkillMode() {
+    this.newSkill = false;
   }
 
   get $skills() : Observable<Skill[]>{

@@ -1,19 +1,35 @@
-<div *ngIf="skill" class="kex-skill-container py-4">
-  <div class="kex-skill-visible">
+<div class="kex-skill-container my-4">
+  <div class="kex-skill-visible p-1" (click)="setVisibility()" *ngIf="visible">
     <mat-icon>visibility</mat-icon>
   </div>
-  <div class="kex-skill-content">
-    <div>
-      <kex-star-rating [rating]="skill.level"></kex-star-rating>
-      <h3>{{ skill.title }}</h3>
+  <div class="kex-skill-visible-off p-1" (click)="setVisibility()" *ngIf="!visible">
+    <mat-icon>visibility_off</mat-icon>
+  </div>
+  <div class="kex-skill-content p-2">
+    <div class="kex-skill-content-left">
+      <kex-star-rating [rating]="level" [edit]="editMode" [color]="color" (ratingUpdated)="ratingUpdated($event)"></kex-star-rating>
+      <h3 *ngIf="!editMode">{{ skill?.title }}</h3>
+      <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
+        <input matInput [(ngModel)]="title">
+      </mat-form-field>
     </div>
     <div class="kex-skill-button-container">
-      <button mat-mini-fab matTooltip="Löschen" color="accent" (click)="test()">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button mat-mini-fab matTooltip="Bearbeiten" color="primary">
-        <mat-icon>edit</mat-icon>
-      </button>
+      <ng-container *ngIf="!editMode">
+        <button class="mx-2" mat-mini-fab matTooltip="Löschen" [color]="color" (click)="deleteSkill()">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-mini-fab matTooltip="Bearbeiten" [color]="color" (click)="goToEditMode()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="editMode">
+        <button class="mx-2" mat-mini-fab matTooltip="Abbrechen"  (click)="leaveEditMode()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-mini-fab matTooltip="Speichern" color="primary" (click)="saveSkill()">
+          <mat-icon>check</mat-icon>
+        </button>
+      </ng-container>
     </div>
   </div>
 </div>
