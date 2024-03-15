@@ -21,22 +21,25 @@ public class SkillsController {
         return skillsService.getSkills();
     }
 
+    @GetMapping("user/skill/suggestion")
+    public List<Skills> getSuggestedSkills(
+            @RequestParam String skillToFind){
+        return skillsService.getSuggestedSkills(skillToFind);
+    }
+
     @PostMapping("/newskills")
     public void registerNewSkill(@RequestBody Skills skills) {
         skillsService.addNewSkill(skills);
     }
 
-    @DeleteMapping("/deleteskill/{skillId}")
-    public void deleteSkill(
-            @PathVariable("skillId") Integer skillId){
-        skillsService.deleteSkill(skillId);
+    @DeleteMapping("/skill")
+    public void deleteSkill(@RequestBody Skills skill){
+        skillsService.deleteSkill(skill);
     }
 
-    @PutMapping("/updateskill/{skillId}")
-    public void updateSkill(
-            @PathVariable("skillId") Integer skillId,
-            @RequestParam(required = false) String skill){
-        skillsService.updateSkill(skillId, skill);
+    @PutMapping("/skill")
+    public void updateSkill(@RequestBody Skills skill){
+        skillsService.updateSkill(skill);
     }
 
 }

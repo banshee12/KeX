@@ -1,61 +1,57 @@
 package ops.kex.restapi.service;
 
+import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.repository.SkillsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class SkillsService {
     private final SkillsRepository skillsRepository;
-
-    @Autowired
-    public SkillsService(SkillsRepository skillsRepository) {
-        this.skillsRepository = skillsRepository;
-    }
 
     public List<Skills> getSkills(){
         return skillsRepository.findAll();
     }
 
+
     public void addNewSkill(Skills skills){
         Optional<Skills> skillsOptional = skillsRepository
-                .findSkillsBySkill(skills.getSkill());
+                .findSkillsByTitleIgnoreCase(skills.getTitle());
         if (skillsOptional.isPresent()){
             throw new IllegalStateException("Skill already exists");
         }
         skillsRepository.save(skills);
     }
 
-    public void deleteSkill(Integer skillId) {
-        boolean exists = skillsRepository.existsById(skillId);
+    public void deleteSkill(Skills skill) {
+        boolean exists = skillsRepository.existsById(skill.getId());
         if (!exists){
-            throw new IllegalStateException("skill with id "+ skillId + " does not exists");
+            throw new IllegalStateException("skill "+ skill.getTitle() + " does not exists");
         }
-        skillsRepository.deleteById(skillId);
+        skillsRepository.deleteById(skill.getId());
     }
 
     @Transactional
-    public void updateSkill(Integer skillId,
-                            String skill) {
-        Skills skills = skillsRepository.findById(skillId)
+    public void updateSkill(Skills skill) {
+        Skills skills = skillsRepository.findById(skill.getId())
                 .orElseThrow(() -> new IllegalStateException(
-                        "skill with id " + skillId + " does not exists"));
+                        "skill " + skill.getTitle() + " does not exists"));
 
-        if (skill != null &&
-                !skill.isEmpty() &&
-                !Objects.equals(skills.getSkill(), skill)){
             Optional<Skills> skillsOptional = skillsRepository
-                    .findSkillsBySkill(skill);
+                    .findSkillsByTitleIgnoreCase(skill.getTitle());
             if (skillsOptional.isPresent()) {
                 throw new IllegalStateException("Skill already exists");
             }
-            skills.setSkill(skill);
-        }
+            skills.setTitle(skill.getTitle());
+    }
+
+    public List<Skills> getSuggestedSkills(String skillToFind) {
+        return skillsRepository
+                .findSkillsByTitleContainingIgnoreCase(skillToFind);
     }
 }
