@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { KexProfileComponent } from './components/kex-profile/kex-profile.component';
 import { KexProfileContactDataComponent } from './components/kex-profile/kex-profile-contact-data/kex-profile-contact-data.component';
-import { KexProfileExperienceComponent } from './components/kex-profile/kex-profile-experience/kex-profile-experience.component';
+import { KexProfileExperienceComponent } from './components/kex-profile/kex-profile-experiences/kex-profile-experience/kex-profile-experience.component';
+import { KexProfileExperiencesComponent } from './components/kex-profile/kex-profile-experiences/kex-profile-experiences.component';
 import { KexProfileSkillsComponent } from './components/kex-profile/kex-profile-skills/kex-profile-skills.component';
 import { KexProfileSkillComponent } from './components/kex-profile/kex-profile-skills/kex-profile-skill/kex-profile-skill.component';
 import {MatTab, MatTabGroup} from "@angular/material/tabs";
@@ -23,6 +24,7 @@ import {FormsModule} from "@angular/forms";
     KexProfileComponent,
     KexProfileContactDataComponent,
     KexProfileExperienceComponent,
+    KexProfileExperiencesComponent,
     KexProfileSkillsComponent,
     KexProfileSkillComponent
   ],

@@ -3,6 +3,7 @@ import {ContactData, ContactOption, ContactTime, Experience, Skill} from "../mod
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {skill1, skill2} from "../dummy-data";
+import {proj1} from "../dummy-data";
 import {environment} from "../../../../environments/environment";
 
 @Injectable({
@@ -16,8 +17,9 @@ export class KexProfileConnectorService {
     //return this.http.get<Skill[]>(this.API_URL + '/user/skill');
     return of([skill1, skill2]); //testing
   }
-  getExperienceFromCurrentUser() : Observable<Experience[]> {
-    return this.http.get<Experience[]>(this.API_URL + '/user/experience');
+  getExperiencesFromCurrentUser() : Observable<Experience[]> {
+    //return this.http.get<Experience[]>(this.API_URL + '/user/experience');
+    return of([proj1]);//testing
   }
 
   getContactDataFromCurrentUser() : Observable<ContactData> {

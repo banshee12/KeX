@@ -3,13 +3,18 @@ import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../store/kex-profile.state";
 import {Skill} from "../models/kex-profile.model";
+import {Experience} from "../models/kex-profile.model";
 import {KexProfileSelector} from "../store/selectors/kex-profile.selectors";
 import {KexLoadState} from "../../../core/models/kex-core.models";
 import {
   AddSkillActions,
   DeleteSkillActions,
   EditSkillActions,
-  GetSkillsActions
+  GetSkillsActions,
+  GetExperiencesActions,
+  EditExperienceActions,
+  DeleteExperienceActions,
+  AddExperienceActions,
 } from "../store/actions/kex-profile.actions";
 
 @Injectable({
@@ -23,6 +28,32 @@ export class KexProfileService {
   {
     return this.store.select(KexProfileSelector.getSkills)
   }
+
+  get $experiences(): Observable<Experience[]>
+  {
+    return this.store.select(KexProfileSelector.getExperiences)
+  }
+
+  get $experiencesLoadState() : Observable<KexLoadState>
+  {
+    return this.store.select(KexProfileSelector.getExperiencesLoadState)
+  }
+
+  get $editExperienceLoadState(): Observable<KexLoadState>
+  {
+    return this.store.select(KexProfileSelector.editExperienceLoadState)
+  }
+
+  get $deleteExperienceLoadState() : Observable<KexLoadState>
+  {
+    return this.store.select(KexProfileSelector.deleteExperienceLoadState)
+  }
+
+  get $addExperienceLoadState():Observable<KexLoadState>
+  {
+    return this.store.select(KexProfileSelector.addExperienceLoadState);
+  }
+
 
   get $skillsLoadState() : Observable<KexLoadState>
   {
@@ -59,4 +90,21 @@ export class KexProfileService {
   addSkill(skill : Skill) {
     this.store.dispatch(AddSkillActions.do(skill));
   }
+
+
+  loadExperiences() {
+      this.store.dispatch(GetExperiencesActions.do());
+    }
+
+    saveExperience(experience : Experience) {
+      this.store.dispatch(EditExperienceActions.do(experience));
+    }
+
+    deleteExperience(experience : Experience) {
+      this.store.dispatch(DeleteExperienceActions.do(experience));
+    }
+
+    addExperience(experience : Experience) {
+      this.store.dispatch(AddExperienceActions.do(experience));
+    }
 }

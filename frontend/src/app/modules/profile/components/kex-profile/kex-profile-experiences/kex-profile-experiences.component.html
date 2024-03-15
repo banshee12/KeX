@@ -1,0 +1,20 @@
+<ng-container *ngIf="$experiencesLoadState| async as loadState">
+  <ng-container [ngSwitch]="loadState">
+    <ng-container *ngSwitchCase="KexLoadState.FAILURE">ERROR</ng-container>
+    <ng-container *ngSwitchCase="KexLoadState.SUCCESS">
+      <ng-container *ngIf="$experiences | async as experiences">
+        <div *ngIf="experiences.length < 1">
+          <p>Füge deinem Profil jetzt die erste Erfahrungen hinzu</p>
+          <kex-profile-experience/>
+        </div>
+        <div *ngIf="experiences.length > 0">
+          <kex-profile-experience *ngFor="let experience of experiences" [experience]="experience"/>
+          <kex-profile-experience *ngIf="newExperience" (leaveNewExperienceMode)="leaveAddExperienceMode()"/>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" (click)="onAddExperience()" [disabled]="newExperience">Erfahrung hinzufügen</button>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>

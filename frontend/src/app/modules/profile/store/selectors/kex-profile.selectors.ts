@@ -9,11 +9,21 @@ const skillsLoadState = createSelector(getKexProfileState, (state: KexProfileSta
 const deleteSkillLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.deleteSkillLoadState);
 const editSkillLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.editSkillLoadState);
 const addSkillLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.addSkillLoadState);
+const experiencesLoadState  = createSelector(getKexProfileState,(state: KexProfileState)=>state.experiencesLoadState);
+const experiences = createSelector(getKexProfileState, (state: KexProfileState) => state.experiences);
+const deleteExperienceLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.deleteExperienceLoadState);
+const editExperienceLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.editExperienceLoadState);
+const addExperienceLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.addExperienceLoadState);
 
 export const KexProfileSelector = {
   getSkills : skills,
   getSkillsLoadState : skillsLoadState,
   deleteSkillLoadState : deleteSkillLoadState,
   editSkillLoadState : editSkillLoadState,
-  addSkillLoadState : addSkillLoadState
+  addSkillLoadState : addSkillLoadState,
+  getExperiencesLoadState : experiencesLoadState,
+  getExperiences : experiences,
+  deleteExperienceLoadState :deleteExperienceLoadState,
+  editExperienceLoadState : editExperienceLoadState,
+  addExperienceLoadState : addExperienceLoadState
 };

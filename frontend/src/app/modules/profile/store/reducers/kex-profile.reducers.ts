@@ -6,8 +6,12 @@ import * as KexProfileActions from '../actions/kex-profile.actions';
 const initialState : KexProfileState = {
   skills : [],
   skillsLoadState : KexLoadState.NONE,
-  experience : [],
+  experiences : [],
   experienceLoadState : KexLoadState.NONE,
+  experiencesLoadState : KexLoadState.NONE,
+  editExperienceLoadState : KexLoadState.NONE,
+  deleteExperienceLoadState : KexLoadState.NONE,
+  addExperienceLoadState : KexLoadState.NONE,
   contactData : undefined,
   contactDataLoadState : KexLoadState.NONE,
   deleteSkillLoadState : KexLoadState.NONE,
@@ -112,6 +116,32 @@ const _kexProfileReducer = createReducer(
       addSkillLoadState: KexLoadState.FAILURE
     })
   ),
+  // get experiences
+  on(
+      KexProfileActions.GetExperiencesActions.do,
+      (state, action) => ({
+        ...state,
+        experiences : [],
+        experiencesLoadState: KexLoadState.LOADING
+      })
+    ),
+    on(
+      KexProfileActions.GetExperiencesActions.success,
+      (state, action) => ({
+        ...state,
+        experiences : action.experiences,
+        experiencesLoadState: KexLoadState.SUCCESS
+      })
+    ),
+    on(
+      KexProfileActions.GetExperiencesActions.fail,
+      (state, action) => ({
+        ...state,
+        experiences : [],
+        experiencesLoadState: KexLoadState.FAILURE
+      })
+    )
+
 
 );
 
