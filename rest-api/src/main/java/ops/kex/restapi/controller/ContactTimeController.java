@@ -19,6 +19,7 @@ public class ContactTimeController {
     public List<ContactTime> getContactTime() {
         return contactTimeService.getContactTime();
     }
+
     @GetMapping("/user/contactTime")
     public List<ContactTime> getUserContactTime(){
         return contactTimeService.getUserContactTimes();

@@ -14,7 +14,7 @@ public class UserSkillsController {
 
     private final UserSkillsService userSkillsService;
 
-    @GetMapping("user/skills")
+    @GetMapping("user/userSkill")
     public List<UserSkills> getUserSkill(){
         return userSkillsService.getUserSkills();
     }

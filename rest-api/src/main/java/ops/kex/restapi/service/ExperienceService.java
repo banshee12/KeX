@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,15 +36,6 @@ public class ExperienceService {
             }
             throw new IllegalStateException("User  " + authentication.getName() + " does not exist");
         }
-    }
-
-    public void addNewExperience(Experience experience) {
-        Optional<Experience> experienceOptional = experienceRepository
-                .findById(experience.getId());
-        if (experienceOptional.isPresent()) {
-            throw new IllegalStateException("Experience with id " + experience.getId() + " already exists");
-        }
-        experienceRepository.save(experience);
     }
 
     public void addExperienceToUser(Experience experience) {

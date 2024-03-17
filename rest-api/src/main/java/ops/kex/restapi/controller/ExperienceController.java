@@ -24,10 +24,6 @@ public class ExperienceController {
          return experienceService.getUserExperience();
     }
 
-    @PostMapping("/newexperience")
-    public void registerNewExperience(@RequestBody Experience experience) {
-        experienceService.addNewExperience(experience);
-    }
 
     @PostMapping("/user/experience")
     public void addExperienceToUser(@RequestBody Experience experience){

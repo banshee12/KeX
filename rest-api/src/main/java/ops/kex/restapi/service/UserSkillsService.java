@@ -67,24 +67,26 @@ public class UserSkillsService {
         if (authentication instanceof AnonymousAuthenticationToken) {
             throw new IllegalStateException("no user logged in");
         } else {
-            User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
-            if (user != null) {
-                List<UserSkills> allUserSkills = user.getUserSkills();
-                user.removeUserSkill(userSkill.getId());
-                Skills newSkill = skillsRepository.findSkillByTitleIgnoreCase(userSkill.getSkill().getTitle());
-                if (newSkill == null) {
-                    throw new IllegalStateException("skill " + userSkill.getSkill().getTitle() + " does not exist in Database");
-                } else {
-                    UserSkills checkUserSkill = userSkillsRepository.findUserSkillsBySkill_Title(userSkill.getSkill().getTitle());
-                    if (!allUserSkills.contains(checkUserSkill)) {
-                        user.setUserSkills(allUserSkills);
-                        userSkill.setSkill(newSkill);
-                        user.addUserSkill(userSkill);
-                        userRepository.save(user);
-                    } else
-                        throw new IllegalStateException(("user " + user.getFirstname() + " " + user.getLastname() + " already has skill " + userSkill.getSkill().getId()));
-                }
-            } else throw new IllegalStateException("User " + authentication.getName() + " does not exist");
+            if (userSkillsRepository.findUserSkillsById(userSkill.getId()).isPresent()){
+                User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+                if (user != null) {
+                    List<UserSkills> allUserSkills = user.getUserSkills();
+                    user.removeUserSkill(userSkill.getId());
+                    Skills newSkill = skillsRepository.findSkillByTitleIgnoreCase(userSkill.getSkill().getTitle());
+                    if (newSkill == null) {
+                        throw new IllegalStateException("skill " + userSkill.getSkill().getTitle() + " does not exist in Database");
+                    } else {
+                        UserSkills checkUserSkill = userSkillsRepository.findUserSkillsBySkill_Title(userSkill.getSkill().getTitle());
+                        if (!allUserSkills.contains(checkUserSkill) || (userSkill.getSkill().getTitle().equals(checkUserSkill.getSkill().getTitle()))) {
+                            user.setUserSkills(allUserSkills);
+                            userSkill.setSkill(newSkill);
+                            user.addUserSkill(userSkill);
+                            userRepository.save(user);
+                        } else
+                            throw new IllegalStateException(("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getId()));
+                    }
+                } else throw new IllegalStateException("User " + authentication.getName() + " does not exist");
+            } else throw new IllegalStateException("User Skill with ID " + userSkill.getId() + " does not exist");
         }
     }
 

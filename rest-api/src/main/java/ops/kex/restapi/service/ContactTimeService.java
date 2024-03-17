@@ -50,7 +50,7 @@ public class ContactTimeService {
                 user.setUserContactTimes(userContactTime);
                 userRepository.save(user);
             }
-        }throw new IllegalStateException ("no user logged in");
+        }else throw new IllegalStateException ("no user logged in");
     }
 
     public void deleteContactTime(ContactTime contactTime) {
