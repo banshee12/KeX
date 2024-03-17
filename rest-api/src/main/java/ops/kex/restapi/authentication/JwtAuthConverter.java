@@ -26,6 +26,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
             new JwtGrantedAuthoritiesConverter();
 
 
+    //todo: add "jwt.auth.converter.resource-id=kex-client-alpha;jwt.auth.converter.principle-attribute=preferred_username" as environment variables
     @Value("${jwt.auth.converter.principle-attribute}")
     private String principleAttribute;
     @Value("${jwt.auth.converter.resource-id}")
