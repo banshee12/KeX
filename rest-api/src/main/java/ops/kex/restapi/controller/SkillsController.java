@@ -16,7 +16,7 @@ public class SkillsController {
         this.skillsService = skillsService;
     }
 
-    @GetMapping("/skills")
+    @GetMapping("/skill")
     public List<Skills> getSkills() {
         return skillsService.getSkills();
     }
@@ -27,7 +27,7 @@ public class SkillsController {
         return skillsService.getSuggestedSkills(skillToFind);
     }
 
-    @PostMapping("/newskills")
+    @PostMapping("/skill")
     public void registerNewSkill(@RequestBody Skills skills) {
         skillsService.addNewSkill(skills);
     }
