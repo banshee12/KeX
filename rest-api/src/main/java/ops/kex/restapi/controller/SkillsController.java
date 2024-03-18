@@ -2,6 +2,7 @@ package ops.kex.restapi.controller;
 
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.service.SkillsService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class SkillsController {
     public SkillsController(SkillsService skillsService) {
         this.skillsService = skillsService;
     }
+
 
     @GetMapping("/skill")
     public List<Skills> getSkills() {
@@ -32,11 +34,13 @@ public class SkillsController {
         skillsService.addNewSkill(skills);
     }
 
+    @PreAuthorize("hasRole('client_admin')")
     @DeleteMapping("/skill")
     public void deleteSkill(@RequestBody Skills skill){
         skillsService.deleteSkill(skill);
     }
 
+    @PreAuthorize("hasRole('client_admin')")
     @PutMapping("/skill")
     public void updateSkill(@RequestBody Skills skill){
         skillsService.updateSkill(skill);
