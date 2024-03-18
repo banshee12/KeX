@@ -31,7 +31,7 @@ public class JwtUserSyncFilter
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken)) {
             JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-            String sid = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("sid"));
+            String sub = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("sub"));
             String username = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("preferred_username"));
             String firstname = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("given_name"));
             String lastname = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("family_name"));
@@ -39,7 +39,7 @@ public class JwtUserSyncFilter
 
 
             User user = User.builder()
-                    .userSid(sid)
+                    .userSub(sub)
                     .username(username)
                     .firstname(firstname)
                     .lastname(lastname)

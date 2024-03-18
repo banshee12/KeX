@@ -25,7 +25,7 @@ public class UserService {
             throw new EntityNotFoundException("Error while user sync");
         } else {
             User saveUser = user;
-            Optional<User> optionalUser = userRepository.findUserByUserSid(user.getUserSid());
+            Optional<User> optionalUser = userRepository.findUserByUserSub(user.getUserSub());
 
             if (optionalUser.isPresent()) {
                 saveUser = optionalUser.get();
