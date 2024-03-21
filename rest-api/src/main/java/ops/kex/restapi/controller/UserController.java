@@ -24,6 +24,11 @@ public class UserController {
         return userService.getUser();
     }
 
+//    @GetMapping("/user/search")
+//    public List<UserSkills> findUser(@RequestParam String userToFind){
+//        return userService.getSuggestedUser(userToFind);
+//    }
+
     @PutMapping("/user/contactOption")
     public void updateUserContactOptions(
             @RequestBody User user) {
