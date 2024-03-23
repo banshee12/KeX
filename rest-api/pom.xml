@@ -77,13 +77,6 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>6.4.4.Final</version>
-			<scope>provided</scope>
-		</dependency>
-
 	</dependencies>
 	
 	<build>
