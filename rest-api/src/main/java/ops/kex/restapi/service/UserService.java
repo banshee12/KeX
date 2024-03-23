@@ -2,7 +2,9 @@ package ops.kex.restapi.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import ops.kex.restapi.model.*;
+import ops.kex.restapi.model.Skills;
+import ops.kex.restapi.model.User;
+import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ public class UserService {
 
 
     private final UserRepository userRepository;
+    private final SkillsRepository skillsRepository;
 
     public void SyncUser(User user) {
         if (user == null) {
@@ -77,5 +80,10 @@ public class UserService {
                 }
             }
         }
+    }
+
+    public List<User> findUser(String searchStr) {
+        Skills searchSkill = skillsRepository.findSkillByTitleIgnoreCase(searchStr);
+        return userRepository.findUsersByUserSkillsSkill(searchSkill);
     }
 }

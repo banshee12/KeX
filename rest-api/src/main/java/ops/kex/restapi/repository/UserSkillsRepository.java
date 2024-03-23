@@ -10,7 +10,8 @@ import java.util.Optional;
 @Repository
 public interface UserSkillsRepository
         extends JpaRepository<UserSkills, Integer> {
-    UserSkills findUserSkillsBySkillId(Integer SkillId);
+
+    UserSkills getUserSkillsById(Integer SkillId);
     Optional<UserSkills> findUserSkillsById(Integer SkillId);
-    UserSkills findUserSkillsBySkill_Title(String SkillTitle);
+    List<UserSkills> findAllUserSkillsBySkill_Title(String SkillTitle);
 }

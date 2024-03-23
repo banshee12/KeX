@@ -1,6 +1,7 @@
 package ops.kex.restapi.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.metamodel.StaticMetamodel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@StaticMetamodel(User.class)
 public class User {
 
     @Id
