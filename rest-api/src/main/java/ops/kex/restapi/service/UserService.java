@@ -1,6 +1,7 @@
 package ops.kex.restapi.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,8 +84,19 @@ public class UserService {
         }
     }
 
+
+    //Todo improve search (add possibility to search for experience title)
     public List<User> findUser(String searchStr) {
-        Skills searchSkill = skillsRepository.findSkillByTitleIgnoreCase(searchStr);
-        return userRepository.findUsersByUserSkillsSkill(searchSkill);
+        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(searchStr);
+        List<User> users = new ArrayList<>();
+        for (Skills skill : skills ){
+            List<User> usersTemp = userRepository.findUsersByUserSkillsSkill(skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()));
+            for(User user : usersTemp){
+                if (!users.contains(user)) {
+                    users.add(user);
+                }
+            }
+        }
+        return users;
     }
 }
