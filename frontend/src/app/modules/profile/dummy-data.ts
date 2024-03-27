@@ -22,3 +22,11 @@ export const proj1 : Experience={
   description : 'Totally Integrated Automation providing engineering system for SIMATIC Failsafe Hardware',
   linkedSkills : [skill1]
 }
+
+export const proj2 : Experience={
+  id :2,
+  title:'OHM Kex',
+  visible:false,
+  description : 'Projekt zum Master SWE',
+  linkedSkills: [skill1,skill2]
+}

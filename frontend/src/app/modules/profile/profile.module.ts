@@ -15,7 +15,17 @@ import {MatButton, MatMiniFabButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {FormsModule} from "@angular/forms";
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Component, ElementRef, ViewChild, inject} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {MatIconModule} from '@angular/material/icon';
+import {AsyncPipe} from '@angular/common';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
 
 
 
@@ -41,6 +51,12 @@ import {FormsModule} from "@angular/forms";
     MatFormField,
     MatInput,
     FormsModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
   ]
 })
 export class ProfileModule { }

@@ -16,6 +16,31 @@
         <textarea matInput [(ngModel)]="description"></textarea>
       </mat-form-field>
       <p style="font-weight:bold">Fähigkeiten</p>
+      <!-- Integration des Fähigkeiten Auto Complete Chip Lets -->
+      <form>
+        <mat-form-field class="example-chip-list">
+          <mat-chip-grid #chipGrid aria-label="Skill selection">
+            @for (skill of linkedSkills; track skill) {
+            <mat-chip-row (removed)="removeSkill(skill)">
+              {{skill}}
+              <button matChipRemove [attr.aria-label]="'remove ' + skill">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input #skillInput matInput placeholder="New Skill..." [formControl]="skillCtrl"
+                 [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 (matChipInputTokenEnd)="addSkill($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedSkill($event)">
+            @for (skill of filteredSkills | async; track skill) {
+            <mat-option [value]="skill">{{skill}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <!-- Ende der Integration des Fähigkeiten Auto Complete Chip Lets -->
     </div>
     <div class="kex-experience-button-container">
       <ng-container *ngIf="!editMode">
