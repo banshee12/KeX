@@ -20,7 +20,7 @@ export const proj1 : Experience={
   title : 'TIA Safety',
   visible : true,
   description : 'Totally Integrated Automation providing engineering system for SIMATIC Failsafe Hardware',
-  linkedSkills : [skill1]
+  linkedSkills : [skill1, skill2]
 }
 
 export const proj2 : Experience={
@@ -28,5 +28,5 @@ export const proj2 : Experience={
   title:'OHM Kex',
   visible:false,
   description : 'Projekt zum Master SWE',
-  linkedSkills: [skill1,skill2]
+  linkedSkills: [skill1]
 }

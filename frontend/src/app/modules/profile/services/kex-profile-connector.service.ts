@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {skill1, skill2} from "../dummy-data";
 import {proj1} from "../dummy-data";
+import {proj2} from "../dummy-data";
 import {environment} from "../../../../environments/environment";
 
 @Injectable({
@@ -19,7 +20,7 @@ export class KexProfileConnectorService {
   }
   getExperiencesFromCurrentUser() : Observable<Experience[]> {
     //return this.http.get<Experience[]>(this.API_URL + '/user/experience');
-    return of([proj1]);//testing
+    return of([proj1, proj2]);//testing
   }
 
   getContactDataFromCurrentUser() : Observable<ContactData> {

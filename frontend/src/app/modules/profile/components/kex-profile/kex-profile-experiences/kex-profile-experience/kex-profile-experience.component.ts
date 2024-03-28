@@ -21,15 +21,20 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   @Input() experience: Experience | undefined;
   @Output() leaveNewExperienceMode = new EventEmitter<boolean>();
   @ViewChild('skillInput') skillInput!: ElementRef<HTMLInputElement>;
+
+    // Variablen für das Auto-Complete Chip Set
+    separatorKeysCodes: number[] = [ENTER, COMMA];
+    skillCtrl = new FormControl();
+    filteredSkills: Observable<Skill[]> = new Observable<Skill[]>();
+
+
+
   constructor(private coreService: KexCoreService,
                             private profileService: KexProfileService) {
-  }
 
-  // Variablen für das Auto-Complete Chip Set
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  skillCtrl = new FormControl();
-  filteredSkills: Observable<Skill[]> = new Observable<Skill[]>();
-  //allSkills: string[] = ['Skill1', 'Skill2', 'Skill3']; // Annahme der verfügbaren Fähigkeiten
+  var temp = this.profileService.$skills
+  this.filteredSkills = temp;
+  }
 
   get color() {
         return this.visible ? 'primary' : 'accent';
@@ -57,6 +62,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         this.title = this.experience.title;
         this.visible = this.experience.visible;
         this.description = this.experience.description;
+        this.linkedSkills= this.experience.linkedSkills;
       } else {
         this.editMode = true;
       }
