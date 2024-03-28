@@ -24,7 +24,14 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request
-                        -> request.anyRequest().authenticated());
+                        -> request
+                        .requestMatchers("/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/swagger-resources",
+                                "/v3/api-docs/**",
+                                "/proxy/**").permitAll()
+                        .anyRequest().authenticated());
         http
                 .oauth2ResourceServer(configurer
                         -> configurer.jwt(jwtConfigurer
