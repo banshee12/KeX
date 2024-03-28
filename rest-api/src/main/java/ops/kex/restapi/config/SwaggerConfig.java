@@ -9,9 +9,9 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "ProMa Service",
+                title = "KeX Service",
                 version = "1.0",
-                description = "ProMa Information"
+                description = "KeX Information"
         ),
         security = {
                 @SecurityRequirement(name = "bearerAuth")
