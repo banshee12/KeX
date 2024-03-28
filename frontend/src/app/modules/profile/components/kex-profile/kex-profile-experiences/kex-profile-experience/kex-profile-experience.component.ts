@@ -25,7 +25,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     // Variablen für das Auto-Complete Chip Set
     separatorKeysCodes: number[] = [ENTER, COMMA];
     skillCtrl = new FormControl();
-    filteredSkills: Observable<Skill[]> = new Observable<Skill[]>();
+    allProfileSkills: Observable<Skill[]> = new Observable<Skill[]>();
 
 
 
@@ -33,7 +33,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
                             private profileService: KexProfileService) {
 
   var temp = this.profileService.$skills
-  this.filteredSkills = temp;
+  this.allProfileSkills = temp;
   }
 
   get color() {
@@ -54,10 +54,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
     ngOnInit(): void {
-      this.filteredSkills = this.skillCtrl.valueChanges.pipe(
-            startWith(''),
-            map((value: string) => this._filterSkills(value))
-      );
       if (this.experience) {
         this.title = this.experience.title;
         this.visible = this.experience.visible;

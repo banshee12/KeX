@@ -18,7 +18,7 @@
       <p style="font-weight:bold">Fähigkeiten</p>
       <!-- Integration des Fähigkeiten Auto Complete Chip Lets -->
       <form>
-        <mat-form-field class="example-chip-list">
+        <mat-form-field  class="kex-chip-list">
           <mat-chip-grid #chipGrid aria-label="Skill selection">
             @for (skill of linkedSkills; track skill) {
             <mat-chip-row (removed)="removeSkill(skill)">
@@ -34,7 +34,7 @@
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  (matChipInputTokenEnd)="addSkill($event)">
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedSkill($event)">
-            @for (skill of filteredSkills | async; track skill) {
+            @for (skill of allProfileSkills | async; track skill) {
             <mat-option [value]="skill">{{skill.title}}</mat-option>
             }
           </mat-autocomplete>

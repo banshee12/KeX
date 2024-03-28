@@ -15,6 +15,13 @@ export const skill2 : Skill = {
   level : 2
 }
 
+export const skill3 : Skill = {
+  id : 3,
+  visible : true,
+  title : 'C#',
+  level : 4
+}
+
 export const proj1 : Experience={
   id : 1,
   title : 'TIA Safety',
