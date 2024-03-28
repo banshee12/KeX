@@ -32,8 +32,8 @@
           <input #skillInput matInput placeholder="New Skill..." [formControl]="skillCtrl"
                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 (matChipInputTokenEnd)="addSkill($event)">
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedSkill($event)">
+                 (matChipInputTokenEnd)="addNewSkill($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectExistingSkill($event)">
             @for (skill of allProfileSkills | async; track skill) {
             <mat-option [value]="skill">{{skill.title}}</mat-option>
             }

@@ -123,7 +123,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       }
 
       // Methode zum Hinzufügen einer Fähigkeit
-        addSkill(event: MatChipInputEvent): void {
+        addNewSkill(event: MatChipInputEvent): void {
           const input = event.input;
           const value = event.value;
 
@@ -148,7 +148,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
        }
 
        // Methode zur Auswahl einer Fähigkeit aus der Autovervollständigungsliste
-       selectedSkill(event: MatAutocompleteSelectedEvent): void {
+       selectExistingSkill(event: MatAutocompleteSelectedEvent): void {
           //TODO
           //this.linkedSkills.push({ title: event.option.viewValue });
           this.skillInput.nativeElement.value = '';
