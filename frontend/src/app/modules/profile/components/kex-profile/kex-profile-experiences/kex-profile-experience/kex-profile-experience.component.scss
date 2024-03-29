@@ -1,0 +1,41 @@
+.kex-experience-container {
+  display: flex;
+  background-color: #EEEEEE;
+}
+
+.kex-experience-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.kex-experience-visible, .kex-experience-visible-off {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  mat-icon {
+    color : white;
+  }
+}
+
+.kex-experience-visible {
+  background: #3F51B5;
+}
+
+.kex-experience-visible-off {
+  background : #9e9e9e;
+}
+
+.kex-experience-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.kex-experience-content-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.kex-chip-list {
+  width: 100%;
+}

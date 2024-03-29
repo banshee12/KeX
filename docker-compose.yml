@@ -12,7 +12,7 @@ services:
         POSTGRES_PASSWORD: password
         POSTGRES_DB: kex
   frontend:
-    build: ./FrontendKex
+    build: ./frontend
     container_name: kex-ui
     ports:
       - 4200:4200

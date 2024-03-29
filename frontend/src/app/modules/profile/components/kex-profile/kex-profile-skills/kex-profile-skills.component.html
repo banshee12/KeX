@@ -1,0 +1,26 @@
+<ng-container *ngIf="$skillsLoadState | async as loadState">
+  <ng-container [ngSwitch]="loadState">
+    <ng-container *ngSwitchCase="KexLoadState.FAILURE">ERROR</ng-container>
+    <ng-container *ngSwitchCase="KexLoadState.SUCCESS">
+      <ng-container *ngIf="$skills | async as skills">
+        <div *ngIf="skills.length < 1">
+          <p>Füge deinem Profil jetzt die erste Fähigkeit hinzu</p>
+          <kex-profile-skill />
+        </div>
+        <div *ngIf="skills.length > 0">
+          <kex-profile-skill *ngFor="let skill of skills" [skill]="skill"/>
+          <kex-profile-skill *ngIf="newSkill" (leaveNewSkillMode)="leaveAddSkillMode()"/>
+          <div class="kex-skills-button-container">
+            <button mat-raised-button>Erklärung Level-System</button>
+            <button id="kex-skills-button-add" mat-raised-button color="primary" (click)="onAddSkill()" [disabled]="newSkill">Fähigkeit hinzufügen</button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <mat-spinner></mat-spinner>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+

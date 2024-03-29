@@ -1,0 +1,8 @@
+:host {
+
+  &:disabled {
+    background-color: #9e9e9e !important;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

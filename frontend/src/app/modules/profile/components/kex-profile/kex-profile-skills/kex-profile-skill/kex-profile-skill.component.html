@@ -1,0 +1,27 @@
+<div class="kex-skill-container my-4">
+  <div class="kex-skill-visible p-1" (click)="setVisibility()" *ngIf="visible">
+    <mat-icon>visibility</mat-icon>
+  </div>
+  <div class="kex-skill-visible-off p-1" (click)="setVisibility()" *ngIf="!visible">
+    <mat-icon>visibility_off</mat-icon>
+  </div>
+  <div class="kex-skill-content p-2">
+    <div class="kex-skill-content-left">
+      <kex-star-rating [rating]="level" [edit]="editMode" [color]="color" (ratingUpdated)="ratingUpdated($event)"></kex-star-rating>
+      <h3 *ngIf="!editMode">{{ skill?.title }}</h3>
+      <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
+        <input matInput [(ngModel)]="title">
+      </mat-form-field>
+    </div>
+    <div class="kex-skill-button-container">
+      <ng-container *ngIf="!editMode">
+        <kex-button class="mx-2" tooltip="Löschen" icon="delete" [loadingState]="$deleteSkillLoadState | async" color=primary (click)="deleteSkill()"></kex-button>
+        <kex-button tooltip="Bearbeiten" color="primary" icon="edit" (click)="goToEditMode()"></kex-button>
+      </ng-container>
+      <ng-container *ngIf="editMode">
+        <kex-button class="mx-2" icon="close" tooltip="Abbrechen" color="accent" (click)="leaveEditMode()"></kex-button>
+        <kex-button tooltip="Speichern" color="primary" icon="check" (click)="saveSkill()"></kex-button>
+      </ng-container>
+    </div>
+  </div>
+</div>
