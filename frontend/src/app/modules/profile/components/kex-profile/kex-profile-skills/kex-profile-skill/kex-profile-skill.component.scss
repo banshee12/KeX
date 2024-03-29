@@ -1,6 +1,7 @@
 .kex-skill-container {
   display: flex;
   background-color: #EEEEEE;
+  border-radius: 4px;
 }
 
 .kex-skill-content {
@@ -10,6 +11,7 @@
 }
 
 .kex-skill-visible, .kex-skill-visible-off {
+  border-radius: 4px 0 0 4px;
   display: flex;
   align-items: center;
   cursor: pointer;

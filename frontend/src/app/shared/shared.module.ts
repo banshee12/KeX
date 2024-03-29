@@ -4,22 +4,33 @@ import { KexNotificationComponent } from './components/kex-notification/kex-noti
 import { KexStarRatingComponent } from './components/kex-star-rating/kex-star-rating.component';
 import {MatIcon} from "@angular/material/icon";
 import {MatTooltip} from "@angular/material/tooltip";
+import { KexButtonComponent } from './components/kex-button/kex-button.component';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatMiniFabButton} from "@angular/material/button";
+import { KexModalComponent } from './components/kex-modal/kex-modal.component';
+import { KexModalConfirmationComponent } from './components/kex-modal/kex-modal-confirmation/kex-modal-confirmation.component';
 
 
 
 @NgModule({
   declarations: [
     KexNotificationComponent,
-    KexStarRatingComponent
+    KexStarRatingComponent,
+    KexButtonComponent,
+    KexModalComponent,
+    KexModalConfirmationComponent
   ],
   exports: [
     KexStarRatingComponent,
     KexNotificationComponent,
+    KexButtonComponent,
   ],
   imports: [
     CommonModule,
     MatIcon,
-    MatTooltip
+    MatTooltip,
+    MatProgressSpinner,
+    MatMiniFabButton
   ]
 })
 export class SharedModule { }

@@ -1,1 +1,7 @@
-<p>kex-home works!</p>
+
+<input matInput type="text" [(ngModel)]="searchValue">
+
+  <button matSuffix mat-icon-button aria-label="Clear" (click)="onSearch()">
+    <mat-icon>search</mat-icon>
+  </button>
+

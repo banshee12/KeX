@@ -15,6 +15,7 @@ import {MatTooltip} from "@angular/material/tooltip";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 
@@ -38,7 +39,7 @@ import {FormsModule} from "@angular/forms";
     MatButton,
     MatFormField,
     MatInput,
-    FormsModule,
+    FormsModule
   ]
 })
 export class ProfileModule { }

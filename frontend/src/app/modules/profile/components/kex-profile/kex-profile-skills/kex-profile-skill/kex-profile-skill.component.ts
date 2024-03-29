@@ -2,8 +2,9 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {Skill} from "../../../../models/kex-profile.model";
 import {KexCoreService} from "../../../../../../core/services/kex-core.service";
 import {KexProfileService} from "../../../../services/kex-profile.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {state} from "@angular/animations";
+import {KexLoadState} from "../../../../../../core/models/kex-core.models";
 
 @Component({
   selector: 'kex-profile-skill',
@@ -52,6 +53,7 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
   }
 
   setVisibility(): void {
+    this.visible = !this.visible;
     if (this.skill && !this.editMode) {
       const skill: Skill = {...this.skill, visible: this.visible};
       this.profileService.saveSkill(skill);
@@ -81,6 +83,10 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
     this.observeAddSkill();
   }
 
+  get $deleteSkillLoadState() : Observable<KexLoadState>{
+    return this.profileService.$deleteSkillLoadState;
+  }
+
   observeEditSkill() {
     this.subscriptions.push(
       this.profileService.$editSkillLoadState.pipe(
@@ -89,7 +95,7 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
 
   observeDeleteSkill() {
     this.subscriptions.push(
-      this.profileService.$deleteSkillLoadState.pipe(
+      this.$deleteSkillLoadState.pipe(
       ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit wurde gelöscht', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.')));
   }
 
