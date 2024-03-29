@@ -37,8 +37,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     keycloak.init({
       config: {
         url: 'https://keycloak.kexserver.de:8443',
-        realm: 'master',
-        clientId: 'kex-client'
+        realm: 'kex-application',
+        clientId: 'kex-client-alpha'
       },
       initOptions: {
         onLoad: 'check-sso',
