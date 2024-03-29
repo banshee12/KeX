@@ -3,6 +3,7 @@ package ops.kex.restapi.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.repository.SkillsRepository;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
 
@@ -68,13 +70,13 @@ public class UserService {
     @Transactional
     public void updateUserContactOptions(User user) {
         if (user == null) {
-            throw new EntityNotFoundException("Error while user sync");
+            log.error("User does not exist");
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 User savedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
                 if (savedUser == null) {
-                    throw new EntityNotFoundException("User " +authentication.getName() + " not found");
+                    log.error("User " +authentication.getName() + " not found");
                     } else {
                     savedUser.setContactOptionAppointment(user.getContactOptionAppointment());
                     savedUser.setContactOptionMail(user.getContactOptionMail());
@@ -86,6 +88,8 @@ public class UserService {
 
 
     //Todo improve search (add possibility to search for experience title)
+    //Todo change return type to UserView
+    //Todo only return user when searched skill/experience is visible
     public List<User> findUser(String searchStr) {
         List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(searchStr);
         List<User> users = new ArrayList<>();
