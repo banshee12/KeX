@@ -7,7 +7,7 @@ import {KexAuthGuard} from "./kex-auth-guard.guard";
 import {KexSearchComponent} from "./modules/search/components/kex-search/kex-search.component";
 
 const routes: Routes = [
-  {path: 'profile', component: KexProfileComponent},
+  {path: 'profile', component: KexProfileComponent, canActivate: [KexAuthGuard]},
   {path: 'home', component: KexHomeComponent},
   {path : 'search', component: KexSearchComponent},
   {path: 'login', component: KexPublicComponent},

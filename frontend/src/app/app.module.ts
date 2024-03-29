@@ -32,11 +32,11 @@ const effects = [
   KexProfileEffects
 ];
 
-/*function initializeKeycloak(keycloak: KeycloakService) {
+function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'https://keycloak.kexserver.de:8443/auth',
+        url: 'https://keycloak.kexserver.de:8443',
         realm: 'kex-application',
         clientId: 'kex-client-alpha'
       },
@@ -47,7 +47,7 @@ const effects = [
       }
 
     });
-}*/
+}
 
 @NgModule({
   declarations: [
@@ -75,12 +75,12 @@ const effects = [
     SearchModule
   ],
   providers: [
-    /*{
+    {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
-    }*/
+    }
   ],
   bootstrap: [AppComponent]
 })
