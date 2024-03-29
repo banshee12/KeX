@@ -1,4 +1,5 @@
 import {Skill} from "./models/kex-profile.model";
+import {Experience} from "./models/kex-profile.model";
 
 export const skill1 : Skill = {
   id : 1,
@@ -12,4 +13,27 @@ export const skill2 : Skill = {
   visible : false,
   title : 'Angular',
   level : 2
+}
+
+export const skill3 : Skill = {
+  id : 3,
+  visible : true,
+  title : 'C#',
+  level : 4
+}
+
+export const proj1 : Experience={
+  id : 1,
+  title : 'TIA Safety',
+  visible : true,
+  description : 'Totally Integrated Automation providing engineering system for SIMATIC Failsafe Hardware',
+  linkedSkills : [skill1, skill2]
+}
+
+export const proj2 : Experience={
+  id :2,
+  title:'OHM Kex',
+  visible:false,
+  description : 'Projekt zum Master SWE',
+  linkedSkills: [skill1]
 }

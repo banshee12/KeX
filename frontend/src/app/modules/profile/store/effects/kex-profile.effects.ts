@@ -16,6 +16,15 @@ export class KexProfileEffects {
       ))
   ));
 
+  getExperiences = createEffect(() => this.actions$.pipe(
+      ofType(KexProfileActions.GetExperiencesActions.do),
+      switchMap(action =>
+        this.connector.getExperiencesFromCurrentUser().pipe(
+          map((data) => KexProfileActions.GetExperiencesActions.success({experiences: data})),
+          catchError(() => of(KexProfileActions.GetExperiencesActions.fail()).pipe(tap(error => console.log(error))))
+        ))
+    ));
+
   addSkill = createEffect(() => this.actions$.pipe(
     ofType(KexProfileActions.AddSkillActions.do),
     switchMap(action =>

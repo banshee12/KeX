@@ -1,0 +1,64 @@
+<div class="kex-experience-container my-4">
+  <div class="kex-experience-visible p-1" (click)="setVisibility()" *ngIf="visible">
+    <mat-icon>visibility</mat-icon>
+  </div>
+  <div class="kex-experience-visible-off p-1" (click)="setVisibility()" *ngIf="!visible">
+    <mat-icon>visibility_off</mat-icon>
+  </div>
+  <div class="kex-experience-content p-2">
+    <div class="kex-experience-content-left">
+      <h3 *ngIf="!editMode">{{ experience?.title }}</h3>
+      <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
+        <input matInput [(ngModel)]="title">
+      </mat-form-field>
+      <p *ngIf="!editMode">{{ experience?.description }}</p>
+      <mat-form-field appearance="outline" *ngIf="editMode" class="p-1">
+        <textarea matInput [(ngModel)]="description"></textarea>
+      </mat-form-field>
+      <p style="font-weight:bold">Fähigkeiten</p>
+      <!-- Integration des Fähigkeiten Auto Complete Chip Lets -->
+      <form>
+        <mat-form-field  class="kex-chip-list">
+          <mat-chip-grid #chipGrid aria-label="Skill selection">
+            @for (skill of linkedSkills; track skill) {
+            <mat-chip-row (removed)="removeSkill(skill)">
+              {{skill.title}}
+              <button matChipRemove [attr.aria-label]="'remove ' + skill">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input #skillInput matInput placeholder="New Skill..." [formControl]="skillCtrl"
+                 [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 (matChipInputTokenEnd)="addNewSkill($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectExistingSkill($event)">
+            @for (skill of allProfileSkills | async; track skill) {
+            <mat-option [value]="skill">{{skill.title}}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+      <!-- Ende der Integration des Fähigkeiten Auto Complete Chip Lets -->
+    </div>
+    <div class="kex-experience-button-container">
+      <ng-container *ngIf="!editMode">
+        <button class="mx-2" mat-mini-fab matTooltip="Löschen" [color]="color" (click)="deleteExperience()">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-mini-fab matTooltip="Bearbeiten" [color]="color" (click)="goToEditMode()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </ng-container>
+      <ng-container *ngIf="editMode">
+        <button class="mx-2" mat-mini-fab matTooltip="Abbrechen"  (click)="leaveEditMode()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-mini-fab matTooltip="Speichern" color="primary" (click)="saveExperience()">
+          <mat-icon>check</mat-icon>
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>
