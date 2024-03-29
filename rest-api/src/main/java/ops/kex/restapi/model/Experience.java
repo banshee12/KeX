@@ -21,7 +21,5 @@ public class Experience {
     private Boolean visible;
     private String description;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
-//    @JoinColumn(name = "experience_skill_id")
-//    @JoinTable(name = "experience_skill")
     private List<Skills> skill;
 }

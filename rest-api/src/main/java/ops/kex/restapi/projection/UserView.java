@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UserView {
 //    Integer getUserId();
-//    String getUserSub();
+    String getUserSub();
 //    String getUsername();
 //    String getEmail();
     String getFirstname();
