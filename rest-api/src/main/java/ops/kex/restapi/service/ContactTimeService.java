@@ -2,6 +2,7 @@ package ops.kex.restapi.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.ContactTime;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.repository.ContactTimeRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ContactTimeService {
 
     private final ContactTimeRepository contactTimeRepository;
@@ -26,20 +28,23 @@ public class ContactTimeService {
 
     public List<ContactTime> getUserContactTimes() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if ((authentication instanceof AnonymousAuthenticationToken)) {
+                log.error("no user logged in");
+            }
+            else {
                 User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
                 if (user == null) {
-                    throw new EntityNotFoundException("Error while user sync");
-                } else {
-                    return user.getUserContactTimes();
-                }
+                    log.error("user " + authentication.getName() + " does not exist");
+                } else return user.getUserContactTimes();
             }
-            else throw new IllegalStateException ("no user logged in");
-        }
+        return null;
+    }
 
     public void addContactTimeToUser(ContactTime contactTime) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+        if ((authentication instanceof AnonymousAuthenticationToken)) {
+            log.error("no user logged in");
+        }else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user == null) {
                 throw new EntityNotFoundException("Error while user sync");
@@ -50,25 +55,24 @@ public class ContactTimeService {
                 user.setUserContactTimes(userContactTime);
                 userRepository.save(user);
             }
-        }else throw new IllegalStateException ("no user logged in");
+        }
     }
 
     public void deleteContactTime(ContactTime contactTime) {
         boolean exists = contactTimeRepository.existsById(contactTime.getId());
         if (!exists){
-            throw new IllegalStateException("Contact Time with id "+ contactTime.getId() + " does not exists");
+            log.error("Contact Time with id "+ contactTime.getId() + " does not exists");
         }
         contactTimeRepository.deleteById(contactTime.getId());
     }
 
     public void updateContactTime(ContactTime contactTime) {
-        ContactTime oldContactTime = contactTimeRepository.findById(contactTime.getId())
-                .orElseThrow(() -> new IllegalStateException(
-                        "Contact Time with id " + contactTime.getId() + " does not exists"));
-
-        oldContactTime.setDay(contactTime.getDay()); //day
-        oldContactTime.setFromTime(contactTime.getFromTime()); //from time
-        oldContactTime.setToTime(contactTime.getToTime()); //to Time
-        contactTimeRepository.save(oldContactTime);
+        if (contactTimeRepository.findById(contactTime.getId()).isPresent()){
+            ContactTime userContactTime = contactTimeRepository.findById(contactTime.getId()).get();
+            userContactTime.setDay(contactTime.getDay());
+            userContactTime.setFromTime(contactTime.getFromTime());
+            userContactTime.setToTime(contactTime.getToTime());
+            contactTimeRepository.save(userContactTime);
+        } else log.error("Contact Time with id " + contactTime.getId() + " does not exists");
     }
 }

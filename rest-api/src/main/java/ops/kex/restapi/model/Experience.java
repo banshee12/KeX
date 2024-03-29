@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
 @Builder
@@ -13,17 +15,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Experience {
     @Id
-    @SequenceGenerator(
-            name = "experience_sequence",
-            sequenceName = "experience_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "experience_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private Boolean visible;
     private String description;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    private List<Skills> skill;
 }
