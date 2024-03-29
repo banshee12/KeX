@@ -1,6 +1,7 @@
 package ops.kex.restapi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.model.UserSkills;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserSkillsService {
 
     private final UserSkillsRepository userSkillsRepository;
@@ -27,37 +29,41 @@ public class UserSkillsService {
     public List<UserSkills> getUserSkills() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new IllegalStateException("no user logged in");
+            log.error("no user logged in");
         } else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
                 return user.getUserSkills();
-            }
-            throw new IllegalStateException("User " + authentication.getName() + " does not exist");
+            } else log.error("user " + authentication.getName() + " does not exist");
         }
+        return null;
     }
 
     public void addUserSkillToUser(UserSkills userSkill) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new IllegalStateException("no user logged in");
+            log.error("no user logged in");
         }
         else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
+                //does skill exist? if not add to database
                 Skills newSkill = skillsRepository.findSkillByTitleIgnoreCase(userSkill.getSkill().getTitle());
                 if (newSkill == null) {
-                    throw new IllegalStateException("skill " + userSkill.getSkill().getTitle() + " does not exist in Database");
-                } else {
-                    List<User> usersThatHaveToBeAddedSkill = userRepository.findUsersByUserSkillsSkill(newSkill);
-                    if (!usersThatHaveToBeAddedSkill.contains(user)) {
-                        userSkill.setSkill(newSkill);
-                        user.addUserSkill(userSkill);
-                        userRepository.save(user);
-                    } else
-                        throw new IllegalStateException(("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle()));
+                    log.info("Skill " + userSkill.getSkill().getTitle() + " does not exist in database");
+                    newSkill = Skills.builder()
+                            .title(userSkill.getSkill().getTitle())
+                            .build();
+                    skillsRepository.save(newSkill);
+                    log.info("Skill " + userSkill.getSkill().getTitle() + " has been added to database");
                 }
-            } else throw new IllegalStateException("user " + authentication.getName() + " does not exist");
+                List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(newSkill);
+                if (!userSkillCheck.contains(user)) {
+                    userSkill.setSkill(newSkill);
+                    user.addUserSkill(userSkill);
+                    userRepository.save(user);
+                } else log.warn("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle());
+            } else log.error("user " + authentication.getName() + " does not exist");
         }
     }
 
@@ -66,7 +72,7 @@ public class UserSkillsService {
     public void updateUserSkill(UserSkills userSkill) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new IllegalStateException("no user logged in");
+            log.error("no user logged in");
         } else {
             if (userSkillsRepository.findUserSkillsById(userSkill.getId()).isPresent()){
                 User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
@@ -75,7 +81,12 @@ public class UserSkillsService {
                     user.removeUserSkill(userSkill.getId());
                     Skills newSkill = skillsRepository.findSkillByTitleIgnoreCase(userSkill.getSkill().getTitle());
                     if (newSkill == null) {
-                        throw new IllegalStateException("skill " + userSkill.getSkill().getTitle() + " does not exist in Database");
+                        log.info("Skill " + userSkill.getSkill().getTitle() + " does not exist in database");
+                        newSkill = Skills.builder()
+                                .title(userSkill.getSkill().getTitle())
+                                .build();
+                        skillsRepository.save(newSkill);
+                        log.info("Skill " + userSkill.getSkill().getTitle() + " has been added to database");
                     } else {
                         List<User> usersThatHaveToBeAddedSkill = userRepository.findUsersByUserSkillsSkill(userSkill.getSkill());
                         UserSkills checkUserSkill = userSkillsRepository.getUserSkillsById(userSkill.getId());
@@ -84,21 +95,21 @@ public class UserSkillsService {
                             userSkill.setSkill(newSkill);
                             user.addUserSkill(userSkill);
                             userRepository.save(user);
-                        } else throw new IllegalStateException(("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle()));
+                        } else log.error("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle());
                     }
-                } else throw new IllegalStateException("User " + authentication.getName() + " does not exist");
-            } else throw new IllegalStateException("User Skill with ID " + userSkill.getId() + " does not exist");
+                } else log.error("User " + authentication.getName() + " does not exist");
+            } else log.error("User Skill with ID " + userSkill.getId() + " does not exist");
         }
     }
 
     public void deleteUserSkill(UserSkills userSkills) {
         boolean exist = userSkillsRepository.existsById(userSkills.getId());
         if (!exist) {
-            throw new IllegalStateException("UserSkill with id " + userSkills.getId() + " does not exists");
+            log.error("UserSkill with id " + userSkills.getId() + "can not be updated cause it does not exists");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new IllegalStateException("no user logged in");
+            log.error("no user logged in");
         } else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             user.removeUserSkill(userSkills.getId());
