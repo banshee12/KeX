@@ -12,12 +12,4 @@ import {SearchUserActions} from "../../../search/store/actions/kex-search.action
 })
 export class KexHomeComponent {
 
-  public searchValue = '';
-
-  constructor(private store: Store<KexSearchState>) {
-  }
-
-  onSearch() {
-    this.store.dispatch(SearchUserActions.do({value: this.searchValue}));
-  }
 }

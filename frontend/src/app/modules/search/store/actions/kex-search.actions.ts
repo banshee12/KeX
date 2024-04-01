@@ -1,5 +1,5 @@
 import {createActionGroup, emptyProps, props} from "@ngrx/store";
-import {Skill} from "../../../profile/models/kex-profile.model";
+import {KexUserSkill} from "../../../profile/models/kex-profile.model";
 import {KexSearchResult} from "../../models/kex-search.model";
 import {User} from "../../../../core/models/kex-core.models";
 

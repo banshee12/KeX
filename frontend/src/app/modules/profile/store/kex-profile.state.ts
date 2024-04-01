@@ -1,8 +1,8 @@
-import {ContactData, Experience, Skill} from "../models/kex-profile.model";
+import {ContactData, Experience, KexUserSkill} from "../models/kex-profile.model";
 import {KexLoadState} from "../../../core/models/kex-core.models";
 
 export interface KexProfileState {
-  skills : Skill[],
+  skills : KexUserSkill[],
   skillsLoadState : KexLoadState,
   experiences : Experience[],
   experienceLoadState : KexLoadState,
@@ -10,6 +10,7 @@ export interface KexProfileState {
   contactDataLoadState : KexLoadState,
   deleteSkillLoadState : KexLoadState,
   editSkillLoadState : KexLoadState,
+  updateVisibilitySkillLoadState: KexLoadState,
   addSkillLoadState : KexLoadState,
   experiencesLoadState: KexLoadState,
   editExperienceLoadState: KexLoadState,

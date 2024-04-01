@@ -8,7 +8,7 @@
   <div class="kex-skill-content p-2">
     <div class="kex-skill-content-left">
       <kex-star-rating [rating]="level" [edit]="editMode" [color]="color" (ratingUpdated)="ratingUpdated($event)"></kex-star-rating>
-      <h3 *ngIf="!editMode">{{ skill?.title }}</h3>
+      <h3 *ngIf="!editMode">{{ this.title }}</h3>
       <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
         <input matInput [(ngModel)]="title">
       </mat-form-field>

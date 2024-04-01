@@ -6,20 +6,18 @@ import {MatSuffix} from "@angular/material/form-field";
 import {MatIconButton} from "@angular/material/button";
 import {MatInput} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {KexSearchFieldComponent} from "../../shared/components/kex-search-field/kex-search-field.component";
+import {SharedModule} from "../../shared/shared.module";
 
 
 
 @NgModule({
-  declarations: [
-    KexHomeComponent
-  ],
+    declarations: [
+        KexHomeComponent
+    ],
   imports: [
     CommonModule,
-    MatIcon,
-    MatSuffix,
-    MatIconButton,
-    MatInput,
-    FormsModule
+    SharedModule
   ]
 })
 export class HomeModule { }

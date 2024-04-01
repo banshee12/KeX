@@ -17,6 +17,7 @@ const initialState : KexProfileState = {
   deleteSkillLoadState : KexLoadState.NONE,
   editSkillLoadState : KexLoadState.NONE,
   addSkillLoadState : KexLoadState.NONE,
+  updateVisibilitySkillLoadState : KexLoadState.NONE
 }
 
 const _kexProfileReducer = createReducer(
@@ -28,7 +29,10 @@ const _kexProfileReducer = createReducer(
     (state, action) => ({
       ...state,
       skills : [],
-      skillsLoadState: KexLoadState.LOADING
+      skillsLoadState: KexLoadState.LOADING,
+      deleteSkillLoadState : KexLoadState.NONE,
+      editSkillLoadState : KexLoadState.NONE,
+      addSkillLoadState : KexLoadState.NONE,
     })
   ),
   on(
@@ -91,6 +95,29 @@ const _kexProfileReducer = createReducer(
     (state, action) => ({
       ...state,
       addSkillLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+  // update visibility skills
+  on(
+    KexProfileActions.UpdateVisibilitySkillActions.do,
+    (state, action) => ({
+      ...state,
+      updateVisibilitySkillLoadState: KexLoadState.LOADING,
+    })
+  ),
+  on(
+    KexProfileActions.UpdateVisibilitySkillActions.success,
+    (state, action) => ({
+      ...state,
+      updateVisibilitySkillLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.UpdateVisibilitySkillActions.fail,
+    (state, action) => ({
+      ...state,
+      updateVisibilitySkillLoadState: KexLoadState.FAILURE
     })
   ),
 

@@ -1,4 +1,4 @@
-import {ContactTime, Experience, Skill} from "../../modules/profile/models/kex-profile.model";
+import {ContactTime, Experience, KexUserSkill} from "../../modules/profile/models/kex-profile.model";
 
 export enum KexLoadState {
   NONE = 'NONE',
@@ -29,7 +29,7 @@ export type User = {
   contactOptionPhone : boolean,
   contactOptionMail : boolean,
   contactOptionAppointment : boolean,
-  userSkills : Skill[],
+  userSkills : KexUserSkill[],
   userExperience : Experience[],
   userContactTimes : ContactTime[]
 }

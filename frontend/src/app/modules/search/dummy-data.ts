@@ -1,7 +1,7 @@
 import {User} from "../../core/models/kex-core.models";
 import {KexSearchResult} from "./models/kex-search.model";
-import {ContactTime, Experience, Skill} from "../profile/models/kex-profile.model";
-import {skill1, skill2} from "../profile/dummy-data";
+import {ContactTime, Experience, KexUserSkill} from "../profile/models/kex-profile.model";
+import {kexUserSkill1, kexUserSkill2} from "../profile/dummy-data";
 
 export const user1 : User = {
   userId : 123,
@@ -12,7 +12,7 @@ export const user1 : User = {
   contactOptionPhone : true,
   contactOptionMail : true,
   contactOptionAppointment : false,
-  userSkills : [skill1, skill2],
+  userSkills : [kexUserSkill1, kexUserSkill2],
   userExperience : [],
   userContactTimes : []
 }

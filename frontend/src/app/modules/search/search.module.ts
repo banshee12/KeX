@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { KexSearchComponent } from './components/kex-search/kex-search.component';
 import { KexSearchUserListComponent } from './components/kex-search-user-list/kex-search-user-list.component';
 import { KexSearchUserProfileComponent } from './components/kex-search-user-profile/kex-search-user-profile.component';
+import {SharedModule} from "../../shared/shared.module";
 
 
 
@@ -12,8 +13,9 @@ import { KexSearchUserProfileComponent } from './components/kex-search-user-prof
     KexSearchUserListComponent,
     KexSearchUserProfileComponent
   ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        SharedModule
+    ]
 })
 export class SearchModule { }

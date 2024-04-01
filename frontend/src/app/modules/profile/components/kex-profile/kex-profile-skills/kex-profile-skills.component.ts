@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Observable} from "rxjs";
-import {Skill} from "../../../models/kex-profile.model";
+import {KexUserSkill} from "../../../models/kex-profile.model";
 import { KexLoadState } from '../../../../../core/models/kex-core.models';
 import {KexProfileService} from "../../../services/kex-profile.service";
 
@@ -27,7 +27,7 @@ export class KexProfileSkillsComponent {
     this.newSkill = false;
   }
 
-  get $skills() : Observable<Skill[]>{
+  get $skills() : Observable<KexUserSkill[]>{
     return this.profileService.$skills;
   }
 
