@@ -8,27 +8,19 @@
   <div class="kex-skill-content p-2">
     <div class="kex-skill-content-left">
       <kex-star-rating [rating]="level" [edit]="editMode" [color]="color" (ratingUpdated)="ratingUpdated($event)"></kex-star-rating>
-      <h3 *ngIf="!editMode">{{ skill?.title }}</h3>
+      <h3 *ngIf="!editMode">{{ this.title }}</h3>
       <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
         <input matInput [(ngModel)]="title">
       </mat-form-field>
     </div>
     <div class="kex-skill-button-container">
       <ng-container *ngIf="!editMode">
-        <button class="mx-2" mat-mini-fab matTooltip="Löschen" [color]="color" (click)="deleteSkill()">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <button mat-mini-fab matTooltip="Bearbeiten" [color]="color" (click)="goToEditMode()">
-          <mat-icon>edit</mat-icon>
-        </button>
+        <kex-button class="mx-2" tooltip="Löschen" icon="delete" [loadingState]="$deleteSkillLoadState | async" color=primary (click)="deleteSkill()"></kex-button>
+        <kex-button tooltip="Bearbeiten" color="primary" icon="edit" (click)="goToEditMode()"></kex-button>
       </ng-container>
       <ng-container *ngIf="editMode">
-        <button class="mx-2" mat-mini-fab matTooltip="Abbrechen"  (click)="leaveEditMode()">
-          <mat-icon>close</mat-icon>
-        </button>
-        <button mat-mini-fab matTooltip="Speichern" color="primary" (click)="saveSkill()">
-          <mat-icon>check</mat-icon>
-        </button>
+        <kex-button class="mx-2" icon="close" tooltip="Abbrechen" color="accent" (click)="leaveEditMode()"></kex-button>
+        <kex-button tooltip="Speichern" color="primary" icon="check" (click)="saveSkill()"></kex-button>
       </ng-container>
     </div>
   </div>

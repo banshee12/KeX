@@ -14,6 +14,7 @@ const experiences = createSelector(getKexProfileState, (state: KexProfileState) 
 const deleteExperienceLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.deleteExperienceLoadState);
 const editExperienceLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.editExperienceLoadState);
 const addExperienceLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.addExperienceLoadState);
+const updateVisibilitySkillLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.updateVisibilitySkillLoadState);
 
 export const KexProfileSelector = {
   getSkills : skills,
@@ -25,5 +26,6 @@ export const KexProfileSelector = {
   getExperiences : experiences,
   deleteExperienceLoadState :deleteExperienceLoadState,
   editExperienceLoadState : editExperienceLoadState,
-  addExperienceLoadState : addExperienceLoadState
+  addExperienceLoadState : addExperienceLoadState,
+  getUpdateVisibilitySkillLoadState : updateVisibilitySkillLoadState
 };

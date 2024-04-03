@@ -22,7 +22,7 @@
           <mat-chip-grid #chipGrid aria-label="Skill selection">
             @for (skill of linkedSkills; track skill) {
             <mat-chip-row (removed)="removeSkill(skill)">
-              {{skill.title}}
+              {{skill.skill.title}}
               <button matChipRemove [attr.aria-label]="'remove ' + skill">
                 <mat-icon>cancel</mat-icon>
               </button>
@@ -35,7 +35,7 @@
                  (matChipInputTokenEnd)="addNewSkill($event)">
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectExistingSkill($event)">
             @for (skill of allProfileSkills | async; track skill) {
-            <mat-option [value]="skill">{{skill.title}}</mat-option>
+            <mat-option [value]="skill">{{skill.skill.title}}</mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>

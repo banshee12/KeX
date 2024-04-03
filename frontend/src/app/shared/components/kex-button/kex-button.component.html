@@ -1,0 +1,4 @@
+<button mat-mini-fab [matTooltip]="tooltip" [color]="color">
+  <mat-icon *ngIf="loadingState !== KexLoadState.LOADING && icon">{{icon}}</mat-icon>
+  <mat-spinner *ngIf="loadingState === KexLoadState.LOADING" diameter="20" color="accent"></mat-spinner>
+</button>

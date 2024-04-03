@@ -1,10 +1,15 @@
 import {Time} from "@angular/common";
 
-export type Skill = {
+export type KexUserSkill = {
   id : number,
-  title : string,
+  skill : KexSkill,
   visible : boolean,
   level : number,
+}
+
+export type KexSkill = {
+  id: number,
+  title : string,
 }
 
 export type Experience = {
@@ -12,7 +17,7 @@ export type Experience = {
   title : string,
   visible : boolean,
   description : string,
-  linkedSkills : Skill[] //noch nicht relevant
+  skill : KexUserSkill[] //noch nicht relevant
 }
 
 export type ContactData = {

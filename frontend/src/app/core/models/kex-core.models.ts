@@ -1,3 +1,5 @@
+import {ContactTime, Experience, KexUserSkill} from "../../modules/profile/models/kex-profile.model";
+
 export enum KexLoadState {
   NONE = 'NONE',
   LOADING= 'LOADING',
@@ -15,4 +17,19 @@ export enum KexNotificationType {
 export interface KexNotificationData {
   message : string,
   type : KexNotificationType
+}
+
+export type User = {
+  userId : number,
+  userSub? : string,
+  username : string,
+  email : string,
+  firstname? : string,
+  lastname? : string,
+  contactOptionPhone : boolean,
+  contactOptionMail : boolean,
+  contactOptionAppointment : boolean,
+  userSkills : KexUserSkill[],
+  userExperience : Experience[],
+  userContactTimes : ContactTime[]
 }

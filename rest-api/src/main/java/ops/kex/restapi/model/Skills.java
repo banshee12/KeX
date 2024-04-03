@@ -1,50 +1,23 @@
 package ops.kex.restapi.model;
 
-import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Skills {
     @Id
-    @SequenceGenerator(
-            name = "skills_sequence",
-            sequenceName = "skills_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "skills_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String skill;
-
-    public Skills() {
-    }
-
-    public Skills(String skill) {
-        this.skill = skill;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getSkill() {
-        return skill;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setSkill(String skill) {
-        this.skill = skill;
-    }
-
-    @Override
-    public String toString() {
-        return "Skills{" +
-                "id=" + id +
-                ", skill='" + skill + '\'' +
-                '}';
-    }
+    private String title;
 }

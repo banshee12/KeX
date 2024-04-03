@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Skill} from "../../../../models/kex-profile.model";
+import {KexUserSkill} from "../../../../models/kex-profile.model";
 import {KexCoreService} from "../../../../../../core/services/kex-core.service";
 import {KexProfileService} from "../../../../services/kex-profile.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {state} from "@angular/animations";
+import {KexLoadState} from "../../../../../../core/models/kex-core.models";
 
 @Component({
   selector: 'kex-profile-skill',
@@ -11,7 +12,7 @@ import {state} from "@angular/animations";
   styleUrl: './kex-profile-skill.component.scss'
 })
 export class KexProfileSkillComponent implements OnInit, OnDestroy {
-  @Input() skill: Skill | undefined;
+  @Input() userSkill: KexUserSkill | undefined;
   @Output() leaveNewSkillMode = new EventEmitter<boolean>();
 
   title = '';
@@ -38,13 +39,13 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
   }
 
   deleteSkill() {
-    if (this.skill) {
-      this.profileService.deleteSkill(this.skill);
+    if (this.userSkill) {
+      this.profileService.deleteSkill(this.userSkill);
     }
   }
 
   leaveEditMode() {
-    if (this.skill) {
+    if (this.userSkill) {
       this.editMode = false;
     } else {
       this.leaveNewSkillMode.emit(true);
@@ -52,53 +53,87 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
   }
 
   setVisibility(): void {
-    if (this.skill && !this.editMode) {
-      const skill: Skill = {...this.skill, visible: this.visible};
-      this.profileService.saveSkill(skill);
+    this.visible = !this.visible;
+    if (this.userSkill && !this.editMode) {
+      const skill: KexUserSkill = {...this.userSkill, visible: this.visible};
+      this.profileService.updateVisibilitySkill(skill);
     }
   }
 
   saveSkill(): void {
-    if (this.skill) {
-      const skill: Skill = {...this.skill, title: this.title, level: this.level, visible: this.visible};
+    if (this.userSkill) {
+      const skill: KexUserSkill = {
+        ...this.userSkill,
+        skill: {id: 1, title: this.title},
+        level: this.level,
+        visible: this.visible
+      };
       this.profileService.saveSkill(skill);
     } else {
-      const skill: Skill = {id: 0, title: this.title, level: this.level, visible: this.visible};
+      const skill: KexUserSkill = {id: 0, skill: {id: 1, title: this.title}, level: this.level, visible: this.visible};
       this.profileService.addSkill(skill);
     }
   }
 
   ngOnInit(): void {
-    if (this.skill) {
-      this.title = this.skill.title;
-      this.level = this.skill.level;
-      this.visible = this.skill.visible;
+    if (this.userSkill) {
+      this.title = this.userSkill.skill.title;
+      this.level = this.userSkill.level;
+      this.visible = this.userSkill.visible;
     } else {
       this.editMode = true;
     }
     this.observeEditSkill();
     this.observeDeleteSkill();
     this.observeAddSkill();
+    this.observeUpdateVisibilitySkill();
+  }
+
+  get $deleteSkillLoadState(): Observable<KexLoadState> {
+    return this.profileService.$deleteSkillLoadState;
   }
 
   observeEditSkill() {
     this.subscriptions.push(
       this.profileService.$editSkillLoadState.pipe(
-      ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit erfolgreich gespeichert', 'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert')));
+      ).subscribe(state => this.coreService.handleRequestState(state,
+          'Fähigkeit erfolgreich gespeichert',
+          'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert',
+          () => this.leaveEditMode()
+        )
+      ));
   }
 
   observeDeleteSkill() {
     this.subscriptions.push(
-      this.profileService.$deleteSkillLoadState.pipe(
-      ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit wurde gelöscht', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.')));
+      this.$deleteSkillLoadState.pipe(
+      ).subscribe(state => this.coreService.handleRequestState(state,
+        'Fähigkeit wurde gelöscht',
+        'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.')
+      ));
   }
 
   observeAddSkill() {
     this.subscriptions.push(
       this.profileService.$addSkillLoadState.pipe(
-      ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit wurde erfolgreich hinzugefügt', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht hinzugefügt.',
-        () => {this.leaveNewSkillMode.emit(true); this.profileService.loadSkills();}
-      )));
+      ).subscribe(state => this.coreService.handleRequestState(state,
+          'Fähigkeit wurde erfolgreich hinzugefügt',
+          'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht hinzugefügt.',
+          () => {
+            this.leaveEditMode();
+            this.profileService.loadSkills();
+          }
+        )
+      ));
+  }
+
+  observeUpdateVisibilitySkill() {
+    this.subscriptions.push(
+      this.profileService.$updateVisibilitySkillLoadState.pipe(
+      ).subscribe(state => this.coreService.handleRequestState(state,
+        '',
+        'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert')
+      ));
   }
 
   ngOnDestroy(): void {

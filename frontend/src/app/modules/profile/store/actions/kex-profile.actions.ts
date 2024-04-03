@@ -1,12 +1,12 @@
 import {createActionGroup, emptyProps, props} from "@ngrx/store";
-import {Skill} from "../../models/kex-profile.model";
+import {KexUserSkill} from "../../models/kex-profile.model";
 import {Experience} from "../../models/kex-profile.model";
 
 export const GetSkillsActions = createActionGroup({
   source : '[PROFILE] get skills',
   events : {
     do : emptyProps(),
-    success : props<{skills : Skill[]}>(),
+    success : props<{skills : KexUserSkill[]}>(),
     fail : emptyProps,
   }
 });
@@ -14,7 +14,7 @@ export const GetSkillsActions = createActionGroup({
 export const DeleteSkillActions = createActionGroup({
   source : '[PROFILE] delete skill',
   events : {
-    do : props<Skill>(),
+    do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
   }
@@ -23,7 +23,16 @@ export const DeleteSkillActions = createActionGroup({
 export const EditSkillActions = createActionGroup({
   source : '[PROFILE] edit skill',
   events : {
-    do : props<Skill>(),
+    do : props<KexUserSkill>(),
+    success : emptyProps,
+    fail : emptyProps,
+  }
+});
+
+export const UpdateVisibilitySkillActions = createActionGroup({
+  source : '[PROFILE] update visibility skill',
+  events : {
+    do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
   }
@@ -32,7 +41,7 @@ export const EditSkillActions = createActionGroup({
 export const AddSkillActions = createActionGroup({
   source : '[PROFILE] add skill',
   events : {
-    do : props<Skill>(),
+    do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
   }

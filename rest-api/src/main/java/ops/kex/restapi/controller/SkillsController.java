@@ -2,6 +2,7 @@ package ops.kex.restapi.controller;
 
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.service.SkillsService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,27 +17,33 @@ public class SkillsController {
         this.skillsService = skillsService;
     }
 
-    @GetMapping("/skills")
+
+    @GetMapping("/skill")
     public List<Skills> getSkills() {
         return skillsService.getSkills();
     }
 
-    @PostMapping("/newskills")
+    @GetMapping("user/skill/suggestion")
+    public List<Skills> getSuggestedSkills(
+            @RequestParam String skillToFind){
+        return skillsService.getSuggestedSkills(skillToFind);
+    }
+
+    @PostMapping("/skill")
     public void registerNewSkill(@RequestBody Skills skills) {
         skillsService.addNewSkill(skills);
     }
 
-    @DeleteMapping("/deleteskill/{skillId}")
-    public void deleteSkill(
-            @PathVariable("skillId") Integer skillId){
-        skillsService.deleteSkill(skillId);
+    @PreAuthorize("hasRole('client_admin')")
+    @DeleteMapping("/skill")
+    public void deleteSkill(@RequestBody Skills skill){
+        skillsService.deleteSkill(skill);
     }
 
-    @PutMapping("/updateskill/{skillId}")
-    public void updateSkill(
-            @PathVariable("skillId") Integer skillId,
-            @RequestParam(required = false) String skill){
-        skillsService.updateSkill(skillId, skill);
+    @PreAuthorize("hasRole('client_admin')")
+    @PutMapping("/skill")
+    public void updateSkill(@RequestBody Skills skill){
+        skillsService.updateSkill(skill);
     }
 
 }

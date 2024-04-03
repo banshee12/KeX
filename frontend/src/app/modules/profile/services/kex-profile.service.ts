@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../store/kex-profile.state";
-import {Skill} from "../models/kex-profile.model";
+import {KexUserSkill} from "../models/kex-profile.model";
 import {Experience} from "../models/kex-profile.model";
 import {KexProfileSelector} from "../store/selectors/kex-profile.selectors";
 import {KexLoadState} from "../../../core/models/kex-core.models";
@@ -14,7 +14,7 @@ import {
   GetExperiencesActions,
   EditExperienceActions,
   DeleteExperienceActions,
-  AddExperienceActions,
+  AddExperienceActions, UpdateVisibilitySkillActions,
 } from "../store/actions/kex-profile.actions";
 
 @Injectable({
@@ -24,7 +24,7 @@ export class KexProfileService {
 
   constructor(private store : Store<KexProfileState>) { }
 
-  get $skills() : Observable<Skill[]>
+  get $skills() : Observable<KexUserSkill[]>
   {
     return this.store.select(KexProfileSelector.getSkills)
   }
@@ -75,19 +75,28 @@ export class KexProfileService {
     return this.store.select(KexProfileSelector.addSkillLoadState);
   }
 
+  get $updateVisibilitySkillLoadState() : Observable<KexLoadState>
+  {
+    return this.store.select(KexProfileSelector.getUpdateVisibilitySkillLoadState);
+  }
+
   loadSkills() {
     this.store.dispatch(GetSkillsActions.do());
   }
 
-  saveSkill(skill : Skill) {
+  saveSkill(skill : KexUserSkill) {
     this.store.dispatch(EditSkillActions.do(skill));
   }
 
-  deleteSkill(skill : Skill) {
+  updateVisibilitySkill(skill : KexUserSkill) {
+    this.store.dispatch(UpdateVisibilitySkillActions.do(skill));
+  }
+
+  deleteSkill(skill : KexUserSkill) {
     this.store.dispatch(DeleteSkillActions.do(skill));
   }
 
-  addSkill(skill : Skill) {
+  addSkill(skill : KexUserSkill) {
     this.store.dispatch(AddSkillActions.do(skill));
   }
 

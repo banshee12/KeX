@@ -52,6 +52,24 @@ export class KexProfileEffects {
       ))
   ));
 
+  updateVisibilitySkill = createEffect(() => this.actions$.pipe(
+    ofType(KexProfileActions.UpdateVisibilitySkillActions.do),
+    switchMap(action =>
+      this.connector.editSkill(action).pipe(
+        map((data) => KexProfileActions.UpdateVisibilitySkillActions.success()),
+        catchError(() => of(KexProfileActions.UpdateVisibilitySkillActions.fail()).pipe(tap(error => console.log(error))))
+      ))
+  ));
+
+  addExperience = createEffect(() => this.actions$.pipe(
+    ofType(KexProfileActions.AddExperienceActions.do),
+    switchMap(action =>
+      this.connector.addExperience(action).pipe(
+        map((data) => KexProfileActions.AddExperienceActions.success()),
+        catchError(() => of(KexProfileActions.AddExperienceActions.fail()).pipe(tap(error => console.log(error))))
+      ))
+  ));
+
 
   constructor(
     private actions$: Actions,

@@ -1,24 +1,37 @@
-import {Skill} from "./models/kex-profile.model";
+import {KexSkill, KexUserSkill} from "./models/kex-profile.model";
 import {Experience} from "./models/kex-profile.model";
 
-export const skill1 : Skill = {
+export const skill1 : KexSkill = {
+  id : 1,
+  title : 'Java',
+}
+export const skill2 : KexSkill = {
+  id : 2,
+  title : 'Angular',
+}
+
+export const skill3 : KexSkill = {
+  id : 3,
+  title : 'C#',
+}
+export const kexUserSkill1 : KexUserSkill = {
   id : 1,
   visible : true,
-  title : 'Java',
+  skill : skill1,
   level : 3
 }
 
-export const skill2 : Skill = {
+export const kexUserSkill2 : KexUserSkill = {
   id : 2,
   visible : false,
-  title : 'Angular',
+  skill : skill2,
   level : 2
 }
 
-export const skill3 : Skill = {
+export const kexUserSkill3 : KexUserSkill = {
   id : 3,
   visible : true,
-  title : 'C#',
+  skill : skill3,
   level : 4
 }
 
@@ -27,7 +40,7 @@ export const proj1 : Experience={
   title : 'TIA Safety',
   visible : true,
   description : 'Totally Integrated Automation providing engineering system for SIMATIC Failsafe Hardware',
-  linkedSkills : [skill1, skill2]
+  skill : [kexUserSkill1, kexUserSkill2]
 }
 
 export const proj2 : Experience={
@@ -35,5 +48,5 @@ export const proj2 : Experience={
   title:'OHM Kex',
   visible:false,
   description : 'Projekt zum Master SWE',
-  linkedSkills: [skill1]
+  skill: [kexUserSkill1]
 }
