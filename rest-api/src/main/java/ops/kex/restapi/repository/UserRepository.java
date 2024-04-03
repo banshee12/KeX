@@ -1,9 +1,8 @@
 package ops.kex.restapi.repository;
 
-import lombok.NonNull;
+
 import ops.kex.restapi.model.*;
 import ops.kex.restapi.projection.UserView;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -15,8 +14,9 @@ import java.util.Optional;
 public interface UserRepository
         extends JpaRepository<User, Integer>,
         JpaSpecificationExecutor<User> {
-    Optional<User> findUserByUserSub(String userIdStr);
+    Optional<User> findUserByUserSub(String userId);
     User findUserByUsernameIgnoreCase(String username);
+    User getUserByUserSub(String userId);
     List<User> findUsersByUserSkillsSkill(Skills skill);
     List<UserView> getUsersByUserSkillsSkill(Skills skill);
 }
