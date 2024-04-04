@@ -2,6 +2,7 @@ package ops.kex.restapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.*;
+import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +25,17 @@ public class UserController {
         return userService.getUser();
     }
 
+    @GetMapping("/user/Id")
+    public User getUserById(
+            @RequestParam String userId) {
+        return userService.getUserById(userId);
+    }
+
     @GetMapping("/user/search")
-    public List<User> findUser(
+    public List<UserView> findUser(
             @RequestParam String searchStr) {
         return userService.findUser(searchStr);
     }
-
 
     @PutMapping("/user/contactOption")
     public void updateUserContactOptions(

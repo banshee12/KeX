@@ -19,12 +19,6 @@ public class UserSkillsController {
         return userSkillsService.getUserSkills();
     }
 
-    @GetMapping("user/userSkill/search")
-    public List<UserSkills> searchUserSkill(
-            @RequestParam String searchUserSkill){
-        return userSkillsService.searchUserSkills(searchUserSkill);
-    }
-
     @PostMapping("/user/userSkill")
     public void addUserSkillToUser(@RequestBody UserSkills userSkills) {
         userSkillsService.addUserSkillToUser(userSkills);

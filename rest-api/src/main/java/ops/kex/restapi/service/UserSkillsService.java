@@ -116,8 +116,4 @@ public class UserSkillsService {
             userSkillsRepository.deleteById(userSkills.getId());
         }
     }
-
-    public List<UserSkills> searchUserSkills(String searchUserSkill) {
-        return userSkillsRepository.findAllUserSkillsBySkill_Title(searchUserSkill);
-    }
 }
