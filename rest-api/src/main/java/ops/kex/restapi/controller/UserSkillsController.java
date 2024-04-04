@@ -30,7 +30,7 @@ public class UserSkillsController {
     }
 
     @DeleteMapping("/user/userSkill")
-    public void deleteUserSkill(@RequestBody UserSkills userSkills) {
-        userSkillsService.deleteUserSkill(userSkills);
+    public void deleteUserSkill(@RequestParam Integer userSkillsId) {
+        userSkillsService.deleteUserSkill(userSkillsId);
     }
 }
