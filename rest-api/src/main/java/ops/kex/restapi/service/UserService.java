@@ -11,6 +11,7 @@ import ops.kex.restapi.repository.UserRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +28,25 @@ public class UserService {
     private final UserRepository userRepository;
     private final SkillsRepository skillsRepository;
 
-    public void SyncUser(User user) {
-        if (user == null) {
-            throw new EntityNotFoundException("Error while user sync");
-        } else {
+    public void SyncUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken))
+        {
+            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            String sub = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("sub"));
+            String username = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("preferred_username"));
+            String firstname = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("given_name"));
+            String lastname = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("family_name"));
+            String email = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("email"));
+
+            User user = User.builder()
+                    .userSub(sub)
+                    .username(username)
+                    .firstname(firstname)
+                    .lastname(lastname)
+                    .email(email)
+                    .build();
+
             User saveUser = user;
             Optional<User> optionalUser = userRepository.findUserByUserSub(user.getUserSub());
 

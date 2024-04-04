@@ -10,36 +10,41 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("api/user")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user/all")
+    @GetMapping("/all")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
-    @GetMapping("/user")
+    @GetMapping("")
     public User getUser() {
         return userService.getUser();
     }
 
-    @GetMapping("/user/Id")
+    @GetMapping("/Id")
     public User getUserById(
             @RequestParam String userId) {
         return userService.getUserById(userId);
     }
 
-    @GetMapping("/user/search")
+    @GetMapping("/search")
     public List<UserView> findUser(
             @RequestParam String searchStr) {
         return userService.findUser(searchStr);
     }
 
-    @PutMapping("/user/contactOption")
+    @PutMapping("/contactOption")
     public void updateUserContactOptions(
             @RequestBody User user) {
         userService.updateUserContactOptions(user);
+    }
+
+    @GetMapping("/sync")
+    public void syncUser(){
+        userService.SyncUser();
     }
 }

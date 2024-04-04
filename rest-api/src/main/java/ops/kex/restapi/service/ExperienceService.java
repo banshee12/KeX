@@ -40,7 +40,7 @@ public class ExperienceService {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
                 return user.getUserExperience();
-            } else log.error("User  " + authentication.getName() + " does not exist");
+            } else log.error("user " + authentication.getName() + " does not exist");
         }
         return null;
     }
