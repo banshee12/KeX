@@ -30,9 +30,6 @@ const _kexProfileReducer = createReducer(
       ...state,
       skills : [],
       skillsLoadState: KexLoadState.LOADING,
-      deleteSkillLoadState : KexLoadState.NONE,
-      editSkillLoadState : KexLoadState.NONE,
-      addSkillLoadState : KexLoadState.NONE,
     })
   ),
   on(
@@ -74,6 +71,14 @@ const _kexProfileReducer = createReducer(
       deleteSkillLoadState: KexLoadState.FAILURE
     })
   ),
+  on(
+    KexProfileActions.DeleteSkillActions.reset,
+    (state, action) => ({
+      ...state,
+      deleteSkillLoadState: KexLoadState.NONE
+    })
+  ),
+
 
   // edit skills
   on(
@@ -94,7 +99,14 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.EditSkillActions.fail,
     (state, action) => ({
       ...state,
-      addSkillLoadState: KexLoadState.FAILURE
+      editSkillLoadState: KexLoadState.FAILURE
+    })
+  ),
+  on(
+    KexProfileActions.EditSkillActions.reset,
+    (state, action) => ({
+      ...state,
+      editSkillLoadState: KexLoadState.NONE
     })
   ),
 
@@ -120,6 +132,13 @@ const _kexProfileReducer = createReducer(
       updateVisibilitySkillLoadState: KexLoadState.FAILURE
     })
   ),
+  on(
+    KexProfileActions.UpdateVisibilitySkillActions.reset,
+    (state, action) => ({
+      ...state,
+      updateVisibilitySkillLoadState: KexLoadState.NONE
+    })
+  ),
 
   // add skills
   on(
@@ -141,6 +160,13 @@ const _kexProfileReducer = createReducer(
     (state, action) => ({
       ...state,
       addSkillLoadState: KexLoadState.FAILURE
+    })
+  ),
+  on(
+    KexProfileActions.AddSkillActions.reset,
+    (state, action) => ({
+      ...state,
+      addSkillLoadState: KexLoadState.NONE
     })
   ),
   // get experiences

@@ -1,6 +1,16 @@
 <mat-toolbar color="primary" class="justify-content-between">
   <span routerLink="/home">KEX - Knowledge & Experience</span>
-  <button mat-icon-button aria-label="account" routerLink="/profile">
+  <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>account_box</mat-icon>
   </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/profile">
+      <span>Profil bearbeiten</span>
+    </button>
+    <button mat-menu-item (click)="onLogout()">
+      <span>Ausloggen</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>
+
+

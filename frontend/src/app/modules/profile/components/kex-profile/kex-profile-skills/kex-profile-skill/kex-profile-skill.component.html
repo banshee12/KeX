@@ -8,10 +8,24 @@
   <div class="kex-skill-content p-2">
     <div class="kex-skill-content-left">
       <kex-star-rating [rating]="level" [edit]="editMode" [color]="color" (ratingUpdated)="ratingUpdated($event)"></kex-star-rating>
-      <h3 *ngIf="!editMode">{{ this.title }}</h3>
-      <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
-        <input matInput [(ngModel)]="title">
+      <h3 *ngIf="!editMode">{{ title }}</h3>
+      <mat-form-field *ngIf="editMode" class="p-0">
+        <mat-label>Fähigkeit</mat-label>
+        <input type="text"
+               aria-label="Number"
+               matInput
+               [formControl]="controlTitle"
+               [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of suggestionSkillList; track option) {
+            <mat-option [value]="option.title">{{option.title}}</mat-option>
+          }
+        </mat-autocomplete>
       </mat-form-field>
+
+      <!-- <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
+        <input matInput [(ngModel)]="title">
+      </mat-form-field> -->
     </div>
     <div class="kex-skill-button-container">
       <ng-container *ngIf="!editMode">

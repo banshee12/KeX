@@ -8,6 +8,7 @@ export const GetSkillsActions = createActionGroup({
     do : emptyProps(),
     success : props<{skills : KexUserSkill[]}>(),
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
@@ -17,6 +18,7 @@ export const DeleteSkillActions = createActionGroup({
     do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
@@ -26,6 +28,7 @@ export const EditSkillActions = createActionGroup({
     do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
@@ -35,6 +38,7 @@ export const UpdateVisibilitySkillActions = createActionGroup({
     do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps
   }
 });
 
@@ -44,6 +48,7 @@ export const AddSkillActions = createActionGroup({
     do : props<KexUserSkill>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps
   }
 });
 
