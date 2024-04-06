@@ -23,6 +23,8 @@ import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {KexPublicComponent} from './kex-public/kex-public.component';
 import {SearchModule} from "./modules/search/search.module";
 import {KEX_SEARCH_STORE_FEATURE_KEY} from "./modules/search/store/reducers/kex-search.reducers";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 const reducers: ActionReducerMap<unknown, Action> = {
   [KEX_PROFILE_STORE_FEATURE_KEY]: fromKexProfile.kexProfileReducer,
@@ -59,8 +61,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
     BrowserModule,
     AppRoutingModule,
     MatButton,
-    StoreModule.forRoot(reducers, {}),
+    StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
+
     MatIcon,
     MatToolbar,
     MatIconButton,
@@ -72,7 +75,11 @@ function initializeKeycloak(keycloak: KeycloakService) {
     //Todo Lazy Load
     ProfileModule,
     HomeModule,
-    SearchModule
+    SearchModule,
+    MatMenu,
+    MatMenuTrigger,
+    MatMenuItem,
+    MatProgressSpinner
   ],
   providers: [
     {

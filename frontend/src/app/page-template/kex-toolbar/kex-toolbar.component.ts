@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'kex-toolbar',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class KexToolbarComponent {
 
+  constructor(private keycloakService : KeycloakService) {
+  }
+  onLogout() {
+    this.keycloakService.logout().then()
+  }
 }
