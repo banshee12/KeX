@@ -1,7 +1,5 @@
 package ops.kex.restapi.authentication;
 
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -24,13 +22,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
             new JwtGrantedAuthoritiesConverter();
-
-
-    //todo: add "jwt.auth.converter.resource-id=kex-client-alpha;jwt.auth.converter.principle-attribute=preferred_username" as environment variables
-    @Value("${jwt.auth.converter.principle-attribute}")
-    private String principleAttribute;
-    @Value("${jwt.auth.converter.resource-id}")
-    private String resourceId;
+    private String principleAttribute = "preferred_username";
+    private String resourceId = "kex-client-alpha";
     @Override
     public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
         Collection<GrantedAuthority> authorities = Stream.concat(
@@ -75,5 +68,3 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
                 .collect(Collectors.toSet());
     }
 }
-
-

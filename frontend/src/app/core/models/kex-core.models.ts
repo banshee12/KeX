@@ -33,3 +33,9 @@ export type User = {
   userExperience : Experience[],
   userContactTimes : ContactTime[]
 }
+
+export interface KexDialogData {
+  labelAction?: string,
+  labelHeadline: string,
+  labelDescription: string,
+}

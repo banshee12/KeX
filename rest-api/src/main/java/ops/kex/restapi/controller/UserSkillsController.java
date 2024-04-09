@@ -19,12 +19,6 @@ public class UserSkillsController {
         return userSkillsService.getUserSkills();
     }
 
-    @GetMapping("user/userSkill/search")
-    public List<UserSkills> searchUserSkill(
-            @RequestParam String searchUserSkill){
-        return userSkillsService.searchUserSkills(searchUserSkill);
-    }
-
     @PostMapping("/user/userSkill")
     public void addUserSkillToUser(@RequestBody UserSkills userSkills) {
         userSkillsService.addUserSkillToUser(userSkills);
@@ -36,7 +30,7 @@ public class UserSkillsController {
     }
 
     @DeleteMapping("/user/userSkill")
-    public void deleteUserSkill(@RequestBody UserSkills userSkills) {
-        userSkillsService.deleteUserSkill(userSkills);
+    public void deleteUserSkill(@RequestParam Integer userSkillsId) {
+        userSkillsService.deleteUserSkill(userSkillsId);
     }
 }

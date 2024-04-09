@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {ContactData, ContactOption, ContactTime, Experience, KexUserSkill} from "../models/kex-profile.model";
+import {ContactData, ContactOption, ContactTime, Experience, KexSkill, KexUserSkill} from "../models/kex-profile.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {kexUserSkill1, kexUserSkill2, kexUserSkill3} from "../dummy-data";
@@ -52,16 +52,17 @@ export class KexProfileConnectorService {
   }
 
   deleteSkill(skill : KexUserSkill) : Observable<string> {
-    return this.http.delete<string>(this.API_URL + '/user/userSkill/' + skill.id);
+    const params = new HttpParams().set('userSkillsId', skill.id)
+    return this.http.delete<string>(this.API_URL + '/user/userSkill', {params});
   }
 
   deleteExperience(experience : KexUserSkill) : Observable<string> {
     return this.http.get<string>(this.API_URL + '/user/experience/' + experience.id);
   }
 
-  getSkillSuggestions(value : string) : Observable<string[]> {
-    const params = new HttpParams().set('value', value)
-    return this.http.get<string[]>(this.API_URL + '/user/skill/suggestion', {params});
+  getSkillSuggestions(value : string) : Observable<KexSkill[]> {
+    const params = new HttpParams().set('skillToFind', value)
+    return this.http.get<KexSkill[]>(this.API_URL + '/user/skill/suggestion', {params});
   }
 
 }

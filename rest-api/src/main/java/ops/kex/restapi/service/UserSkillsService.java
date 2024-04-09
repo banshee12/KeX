@@ -87,37 +87,33 @@ public class UserSkillsService {
                                 .build();
                         skillsRepository.save(newSkill);
                         log.info("Skill " + userSkill.getSkill().getTitle() + " has been added to database");
-                    } else {
-                        List<User> usersThatHaveToBeAddedSkill = userRepository.findUsersByUserSkillsSkill(userSkill.getSkill());
-                        UserSkills checkUserSkill = userSkillsRepository.getUserSkillsById(userSkill.getId());
-                        if(!usersThatHaveToBeAddedSkill.contains(user) || userSkill.getSkill().getTitle().equals(checkUserSkill.getSkill().getTitle())){
-                            user.setUserSkills(allUserSkills);
-                            userSkill.setSkill(newSkill);
-                            user.addUserSkill(userSkill);
-                            userRepository.save(user);
-                        } else log.error("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle());
                     }
+                    List<User> usersThatHaveToBeAddedSkill = userRepository.findUsersByUserSkillsSkill(userSkill.getSkill());
+                    UserSkills checkUserSkill = userSkillsRepository.getUserSkillsById(userSkill.getId());
+                    if(!usersThatHaveToBeAddedSkill.contains(user) || userSkill.getSkill().getTitle().equals(checkUserSkill.getSkill().getTitle()) || usersThatHaveToBeAddedSkill.isEmpty()){
+                        user.setUserSkills(allUserSkills);
+                        userSkill.setSkill(newSkill);
+                        user.addUserSkill(userSkill);
+                        userRepository.save(user);
+                        log.info("skill " + newSkill.getTitle() + " updated " + user.getUsername());
+                    } else log.error("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle());
                 } else log.error("User " + authentication.getName() + " does not exist");
             } else log.error("User Skill with ID " + userSkill.getId() + " does not exist");
         }
     }
 
-    public void deleteUserSkill(UserSkills userSkills) {
-        boolean exist = userSkillsRepository.existsById(userSkills.getId());
+    public void deleteUserSkill(Integer userSkillsId) {
+        boolean exist = userSkillsRepository.existsById(userSkillsId);
         if (!exist) {
-            log.error("UserSkill with id " + userSkills.getId() + "can not be updated cause it does not exists");
+            log.error("UserSkill with id " + userSkillsId + " can not be deleted cause it does not exists");
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
         } else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
-            user.removeUserSkill(userSkills.getId());
-            userSkillsRepository.deleteById(userSkills.getId());
+            user.removeUserSkill(userSkillsId);
+            userSkillsRepository.deleteById(userSkillsId);
         }
-    }
-
-    public List<UserSkills> searchUserSkills(String searchUserSkill) {
-        return userSkillsRepository.findAllUserSkillsBySkill_Title(searchUserSkill);
     }
 }

@@ -1,16 +1,17 @@
 package ops.kex.restapi.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
+import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,19 +28,34 @@ public class UserService {
     private final UserRepository userRepository;
     private final SkillsRepository skillsRepository;
 
-    public void SyncUser(User user) {
-        if (user == null) {
-            throw new EntityNotFoundException("Error while user sync");
-        } else {
+    public void SyncUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken))
+        {
+            JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            String sub = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("sub"));
+            String username = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("preferred_username"));
+            String firstname = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("given_name"));
+            String lastname = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("family_name"));
+            String email = String.valueOf(jwtAuthenticationToken.getTokenAttributes().get("email"));
+
+            User user = User.builder()
+                    .userSub(sub)
+                    .username(username)
+                    .firstname(firstname)
+                    .lastname(lastname)
+                    .email(email)
+                    .build();
+
             User saveUser = user;
             Optional<User> optionalUser = userRepository.findUserByUserSub(user.getUserSub());
 
             if (optionalUser.isPresent()) {
                 saveUser = optionalUser.get();
-                saveUser.setUsername(optionalUser.get().getUsername());
-                saveUser.setLastname(optionalUser.get().getLastname());
-                saveUser.setFirstname(optionalUser.get().getFirstname());
-                saveUser.setEmail(optionalUser.get().getEmail());
+                saveUser.setUsername(user.getUsername());
+                saveUser.setLastname(user.getLastname());
+                saveUser.setFirstname(user.getFirstname());
+                saveUser.setEmail(user.getEmail());
             }
             else {
                 saveUser.setContactOptionPhone(false);
@@ -47,6 +63,7 @@ public class UserService {
                 saveUser.setContactOptionAppointment(false);
             }
             userRepository.save(saveUser);
+            log.info("user " + saveUser.getUsername() +" synchronized with database");
         }
     }
 
@@ -62,6 +79,16 @@ public class UserService {
         {
             String username = authentication.getName();
             return userRepository.findUserByUsernameIgnoreCase(username);
+        }
+        return null;
+    }
+
+
+    public User getUserById(String userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken))
+        {
+            return userRepository.getUserByUserSub(userId);
         }
         return null;
     }
@@ -90,12 +117,12 @@ public class UserService {
     //Todo improve search (add possibility to search for experience title)
     //Todo change return type to UserView
     //Todo only return user when searched skill/experience is visible
-    public List<User> findUser(String searchStr) {
+    public List<UserView> findUser(String searchStr) {
         List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(searchStr);
-        List<User> users = new ArrayList<>();
+        List<UserView> users = new ArrayList<>();
         for (Skills skill : skills ){
-            List<User> usersTemp = userRepository.findUsersByUserSkillsSkill(skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()));
-            for(User user : usersTemp){
+            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkill(skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()));
+            for(UserView user : usersTemp){
                 if (!users.contains(user)) {
                     users.add(user);
                 }

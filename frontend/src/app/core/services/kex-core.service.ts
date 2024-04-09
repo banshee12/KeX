@@ -2,16 +2,18 @@ import {Injectable} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {KexLoadState, KexNotificationType} from "../models/kex-core.models";
 import {KexNotificationComponent} from "../../shared/components/kex-notification/kex-notification.component";
+import {Store} from "@ngrx/store";
 
 @Injectable({
   providedIn: 'root'
 })
 export class KexCoreService {
 
-  constructor(private _snackBar: MatSnackBar) {
+  constructor(private _snackBar: MatSnackBar,
+              private store: Store) {
   }
 
-  handleRequestState(loadState : KexLoadState, textSuccess? : string, textError?: string, onSuccess?: Function, onError? : Function){
+  handleRequestState(loadState : KexLoadState, textSuccess? : string, textError?: string, onSuccess?: Function, onError? : Function, clearAction?: Function){
     if(loadState === KexLoadState.SUCCESS){
       if(textSuccess) this.openNotification(textSuccess, KexNotificationType.SUCCESS);
       if(onSuccess) onSuccess();
@@ -19,6 +21,7 @@ export class KexCoreService {
       if(textError) this.openNotification(textError, KexNotificationType.ERROR);
       if(onError) onError();
     }
+    if(clearAction && (loadState === KexLoadState.SUCCESS || KexLoadState.FAILURE)) clearAction();
   }
 
   openNotification(message: string, type: KexNotificationType = KexNotificationType.INFO) {
