@@ -14,7 +14,7 @@ import {
   GetExperiencesActions,
   EditExperienceActions,
   DeleteExperienceActions,
-  AddExperienceActions, UpdateVisibilitySkillActions,
+  AddExperienceActions, UpdateVisibilitySkillActions,UpdateVisibilityExperienceActions
 } from "../store/actions/kex-profile.actions";
 
 @Injectable({
@@ -115,5 +115,9 @@ export class KexProfileService {
 
     addExperience(experience : Experience) {
       this.store.dispatch(AddExperienceActions.do(experience));
+    }
+
+    updateVisibilityExperience(experience : Experience){
+    this.store.dispatch(UpdateVisibilityExperienceActions.do(experience));
     }
 }
