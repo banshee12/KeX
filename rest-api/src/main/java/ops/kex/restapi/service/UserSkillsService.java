@@ -8,6 +8,8 @@ import ops.kex.restapi.model.UserSkills;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import ops.kex.restapi.repository.UserSkillsRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,20 +50,21 @@ public class UserSkillsService {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
                 //does skill exist? if not add to database
-                Skills newSkill = skillsRepository.findSkillByTitleIgnoreCase(userSkill.getSkill().getTitle());
-                if (newSkill == null) {
+                Skills skillCheck = skillsRepository.findSkillByTitleIgnoreCase(userSkill.getSkill().getTitle());
+                if (skillCheck == null) {
                     log.info("Skill " + userSkill.getSkill().getTitle() + " does not exist in database");
-                    newSkill = Skills.builder()
+                    skillCheck = Skills.builder()
                             .title(userSkill.getSkill().getTitle())
                             .build();
-                    skillsRepository.save(newSkill);
+                    skillsRepository.save(skillCheck);
                     log.info("Skill " + userSkill.getSkill().getTitle() + " has been added to database");
                 }
-                List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(newSkill);
+                List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skillCheck);
                 if (!userSkillCheck.contains(user)) {
-                    userSkill.setSkill(newSkill);
+                    userSkill.setSkill(skillCheck);
                     user.addUserSkill(userSkill);
                     userRepository.save(user);
+                    log.info("Skill '" + userSkill.getSkill().getTitle() +"' added to " + user.getUsername());
                 } else log.warn("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle());
             } else log.error("user " + authentication.getName() + " does not exist");
         }
@@ -69,10 +72,13 @@ public class UserSkillsService {
 
 
     @Transactional
-    public void updateUserSkill(UserSkills userSkill) {
+    public ResponseEntity<String> updateUserSkill(UserSkills userSkill) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
+            return new ResponseEntity<>(
+                    "no user logged in",
+                    HttpStatus.UNAUTHORIZED);
         } else {
             if (userSkillsRepository.findUserSkillsById(userSkill.getId()).isPresent()){
                 User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
@@ -95,25 +101,47 @@ public class UserSkillsService {
                         userSkill.setSkill(newSkill);
                         user.addUserSkill(userSkill);
                         userRepository.save(user);
-                        log.info("skill " + newSkill.getTitle() + " updated " + user.getUsername());
-                    } else log.error("user " + user.getUsername() + " already has skill " + userSkill.getSkill().getTitle());
-                } else log.error("User " + authentication.getName() + " does not exist");
-            } else log.error("User Skill with ID " + userSkill.getId() + " does not exist");
+                        log.info("skill '" + newSkill.getTitle() + "' updated for " + user.getUsername());
+                        return new ResponseEntity<>(
+                                "skill '" + newSkill.getTitle() + "' updated for '" + user.getUsername()+ "'" ,
+                                HttpStatus.OK);
+                    } else{
+                        log.error("user " + user.getUsername() + " already has skill '" + userSkill.getSkill().getTitle()+"'");
+                        return new ResponseEntity<>(
+                                "user " + user.getUsername() + " already has skill '" + userSkill.getSkill().getTitle()+"'",
+                                HttpStatus.CONFLICT);
+                    }
+                } else {
+                    log.error("User " + authentication.getName() + " does not exist");
+                    return new ResponseEntity<>(
+                            "User " + authentication.getName() + " does not exist",
+                            HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            } else {
+                log.error("User Skill with ID " + userSkill.getId() + " does not exist");
+                return new ResponseEntity<>(
+                        "User Skill with ID " + userSkill.getId() + " does not exist",
+                        HttpStatus.CONFLICT);
+            }
         }
     }
+
+
 
     public void deleteUserSkill(Integer userSkillsId) {
         boolean exist = userSkillsRepository.existsById(userSkillsId);
         if (!exist) {
             log.error("UserSkill with id " + userSkillsId + " can not be deleted cause it does not exists");
-        }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            log.error("no user logged in");
         } else {
-            User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
-            user.removeUserSkill(userSkillsId);
-            userSkillsRepository.deleteById(userSkillsId);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                log.error("no user logged in");
+            } else {
+                User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+                user.removeUserSkill(userSkillsId);
+                userSkillsRepository.deleteById(userSkillsId);
+                log.info("UserSkill deleted");
+            }
         }
     }
 }
