@@ -49,4 +49,15 @@ public class User {
             this.userSkills.remove(userSkills);
         }
     }
+
+    public void addExperience(Experience experience){
+        this.userExperience.add(experience);
+    }
+
+    public void removeExperience(Integer experienceId) {
+        Experience experience = this.userExperience.stream().filter(t -> t.getId() == experienceId).findFirst().orElse(null);
+        if (experience != null) {
+            this.userExperience.remove(experience);
+        }
+    }
 }
