@@ -67,7 +67,7 @@ public class ExperienceService {
                     }
                     experienceSkills.add(skillsRepository.findSkillByTitleIgnoreCase(skillCheck.getTitle()));
                     //check if user has skill
-                    List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skill);
+                    List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skillCheck);
                     if (!userSkillCheck.contains(user)) {
                         UserSkills userSkill = UserSkills.builder()
                                 .visible(false)
@@ -99,9 +99,17 @@ public class ExperienceService {
         boolean exists = experienceRepository.existsById(experience.getId());
         if (!exists) {
             log.error("Experience with id " + experience.getId() + " does not exists");
+        } else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                log.error("no user logged in");
+            } else {
+                User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+                user.removeExperience(experience.getId());
+                experienceRepository.deleteById(experience.getId());
+                log.info("Experience deleted");
+            }
         }
-        experienceRepository.deleteById(experience.getId());
-        log.info("Experience deleted");
     }
 
     @Transactional
