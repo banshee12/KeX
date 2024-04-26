@@ -29,8 +29,8 @@ public class UserSkillsController {
         userSkillsService.updateUserSkill(userSkills);
     }
 
-    @DeleteMapping("/user/userSkill")
-    public void deleteUserSkill(@RequestParam Integer userSkillsId) {
+    @DeleteMapping("/user/userSkill/{userSkillsId}")
+    public void deleteUserSkill(@PathVariable Integer userSkillsId) {
         userSkillsService.deleteUserSkill(userSkillsId);
     }
 }

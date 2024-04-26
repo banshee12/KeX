@@ -15,7 +15,7 @@ export const SearchUserActions = createActionGroup({
 export const GetUserProfileActions = createActionGroup({
   source : '[SEARCH] get user profile',
   events : {
-    do : props<{userId : number}>(),
+    do : props<{userId : string}>(),
     success : props<User>(),
     fail : emptyProps,
   }

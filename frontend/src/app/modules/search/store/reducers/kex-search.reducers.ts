@@ -27,7 +27,12 @@ const _kexSearchReducer = createReducer(
         ...state,
         loadState : KexLoadState.LOADING,
         data : undefined
-      }
+      },
+      userProfile : {
+        ...state,
+        data : undefined,
+        loadState : KexLoadState.NONE
+      },
     })
   ),
 

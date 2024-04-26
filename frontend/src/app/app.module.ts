@@ -25,13 +25,15 @@ import {SearchModule} from "./modules/search/search.module";
 import {KEX_SEARCH_STORE_FEATURE_KEY} from "./modules/search/store/reducers/kex-search.reducers";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import { KexSearchEffects } from './modules/search/store/effects/kex-search.effects';
 
 const reducers: ActionReducerMap<unknown, Action> = {
   [KEX_PROFILE_STORE_FEATURE_KEY]: fromKexProfile.kexProfileReducer,
   [KEX_SEARCH_STORE_FEATURE_KEY]: fromKexSearch.kexSearchReducer,
 };
 const effects = [
-  KexProfileEffects
+  KexProfileEffects,
+  KexSearchEffects
 ];
 
 function initializeKeycloak(keycloak: KeycloakService) {
