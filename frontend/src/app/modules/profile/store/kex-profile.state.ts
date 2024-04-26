@@ -16,4 +16,5 @@ export interface KexProfileState {
   editExperienceLoadState: KexLoadState,
   deleteExperienceLoadState : KexLoadState,
   addExperienceLoadState : KexLoadState,
+  updateVisibilityExperienceLoadState : KexLoadState
 }

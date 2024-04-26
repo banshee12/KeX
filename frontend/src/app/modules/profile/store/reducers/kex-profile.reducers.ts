@@ -17,7 +17,8 @@ const initialState : KexProfileState = {
   deleteSkillLoadState : KexLoadState.NONE,
   editSkillLoadState : KexLoadState.NONE,
   addSkillLoadState : KexLoadState.NONE,
-  updateVisibilitySkillLoadState : KexLoadState.NONE
+  updateVisibilitySkillLoadState : KexLoadState.NONE,
+  updateVisibilityExperienceLoadState : KexLoadState.NONE
 }
 
 const _kexProfileReducer = createReducer(
@@ -193,8 +194,96 @@ const _kexProfileReducer = createReducer(
         experiences : [],
         experiencesLoadState: KexLoadState.FAILURE
       })
-    )
+    ),
+    //add experience
+    on(
+      KexProfileActions.AddExperienceActions.do,
+      (state, action) => ({
+        ...state,
+        addExperienceLoadState: KexLoadState.LOADING,
+      })
+    ),
+    on(
+      KexProfileActions.AddExperienceActions.success,
+      (state, action) => ({
+        ...state,
+        addExperienceLoadState: KexLoadState.SUCCESS
+      })
+    ),
+    on(
+      KexProfileActions.AddExperienceActions.fail,
+      (state, action) => ({
+        ...state,
+        addExperienceLoadState: KexLoadState.FAILURE
+      })
+    ),
+    on(
+      KexProfileActions.AddExperienceActions.reset,
+      (state, action) => ({
+        ...state,
+        addExperienceLoadState: KexLoadState.NONE
+      })
+    ),
 
+    //delte experience
+        on(
+          KexProfileActions.DeleteExperienceActions.do,
+          (state, action) => ({
+            ...state,
+            deleteExperienceLoadState: KexLoadState.LOADING,
+          })
+        ),
+        on(
+          KexProfileActions.DeleteExperienceActions.success,
+          (state, action) => ({
+            ...state,
+            deleteExperienceLoadState: KexLoadState.SUCCESS
+          })
+        ),
+        on(
+          KexProfileActions.DeleteExperienceActions.fail,
+          (state, action) => ({
+            ...state,
+            deleteExperienceLoadState: KexLoadState.FAILURE
+          })
+        ),
+        on(
+          KexProfileActions.DeleteExperienceActions.reset,
+          (state, action) => ({
+            ...state,
+            deleteExperienceLoadState: KexLoadState.NONE
+          })
+        ),
+
+    // update visibility experience
+      on(
+        KexProfileActions.UpdateVisibilityExperienceActions.do,
+        (state, action) => ({
+          ...state,
+          updateVisibilityExperienceLoadState: KexLoadState.LOADING,
+        })
+      ),
+      on(
+        KexProfileActions.UpdateVisibilityExperienceActions.success,
+        (state, action) => ({
+          ...state,
+          updateVisibilityExperienceLoadState: KexLoadState.SUCCESS
+        })
+      ),
+      on(
+        KexProfileActions.UpdateVisibilityExperienceActions.fail,
+        (state, action) => ({
+          ...state,
+          updateVisibilityExperienceLoadState: KexLoadState.FAILURE
+        })
+      ),
+      on(
+        KexProfileActions.UpdateVisibilityExperienceActions.reset,
+        (state, action) => ({
+          ...state,
+          updateVisibilityExperienceLoadState: KexLoadState.NONE
+        })
+      )
 
 );
 

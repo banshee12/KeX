@@ -19,7 +19,7 @@ import {
   AddExperienceActions,
   DeleteExperienceActions,
   EditExperienceActions,
-  UpdateVisibilitySkillActions
+  UpdateVisibilityExperienceActions
 } from "../../../../store/actions/kex-profile.actions";
 
 import {
@@ -169,6 +169,19 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
                  () => {},
                  () => this.store.dispatch(AddExperienceActions.reset())
     )));
+    }
+
+    observeUpdateExperience(){
+    this.subscriptions.push(
+          this.profileService.$updateVisibilityExperienceLoadState.pipe(
+          ).subscribe(state => this.coreService.handleRequestState(state,
+            '',
+            'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert',
+            () => {},
+            () => {},
+            () => this.store.dispatch(UpdateVisibilityExperienceActions.reset())
+            )
+          ));
     }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung

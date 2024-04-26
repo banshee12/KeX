@@ -80,6 +80,10 @@ export class KexProfileService {
     return this.store.select(KexProfileSelector.getUpdateVisibilitySkillLoadState);
   }
 
+  get $updateVisibilityExperienceLoadState():Observable<KexLoadState>{
+    return this.store.select(KexProfileSelector.getUpdateVisibilityExperienceLoadState);
+  }
+
   loadSkills() {
     this.store.dispatch(GetSkillsActions.do());
   }

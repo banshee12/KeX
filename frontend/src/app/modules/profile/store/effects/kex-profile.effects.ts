@@ -70,7 +70,7 @@ export class KexProfileEffects {
       ))
   ));
 
-  deleExperience = createEffect(()=> this.actions$.pipe(
+  deleteExperience = createEffect(()=> this.actions$.pipe(
   ofType(KexProfileActions.DeleteExperienceActions.do),
   switchMap(action=>
     this.connector.deleteExperience(action).pipe(
