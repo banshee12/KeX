@@ -52,8 +52,7 @@ export class KexProfileConnectorService {
   }
 
   deleteSkill(skill : KexUserSkill) : Observable<string> {
-    const params = new HttpParams().set('userSkillsId', skill.id)
-    return this.http.delete<string>(this.API_URL + '/user/userSkill', {params});
+    return this.http.delete<string>(this.API_URL + '/user/userSkill/' + skill.id);
   }
 
   deleteExperience(experience : KexUserSkill) : Observable<string> {

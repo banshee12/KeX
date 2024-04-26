@@ -11,7 +11,7 @@ import { KexModalComponent } from './components/kex-modal/kex-modal.component';
 import { KexModalConfirmationComponent } from './components/kex-modal/kex-modal-confirmation/kex-modal-confirmation.component';
 import { KexSearchFieldComponent } from './components/kex-search-field/kex-search-field.component';
 import {FormsModule} from "@angular/forms";
-import {MatInput, MatSuffix} from "@angular/material/input";
+import {MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/input";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
 
 
@@ -33,21 +33,23 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
     KexModalConfirmationComponent,
     KexSearchFieldComponent
   ],
-  imports: [
-    CommonModule,
-    MatIcon,
-    MatTooltip,
-    MatProgressSpinner,
-    MatMiniFabButton,
-    FormsModule,
-    MatInput,
-    MatIconButton,
-    MatSuffix,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatButton,
-    MatDialogClose,
-  ]
+    imports: [
+        CommonModule,
+        MatIcon,
+        MatTooltip,
+        MatProgressSpinner,
+        MatMiniFabButton,
+        FormsModule,
+        MatInput,
+        MatIconButton,
+        MatSuffix,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose,
+        MatFormField,
+        MatLabel
+    ]
 })
 export class SharedModule { }

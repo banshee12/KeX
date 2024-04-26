@@ -1,1 +1,18 @@
-<p>kex-search-user-profile works!</p>
+<ng-container [ngSwitch]="userProfileLoadState$ | async">
+  <ng-container *ngSwitchCase="KexLoadState.NONE">
+    <p>Bitte wählen Sie eine Person aus</p>
+  </ng-container>
+  <ng-container *ngSwitchCase="KexLoadState.LOADING">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+  <ng-container *ngSwitchCase="KexLoadState.FAILURE">
+    ERROR
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <ng-container *ngIf="userProfile$ | async as user">
+      <p>{{user.firstname + ' ' + user.lastname}}</p>
+      <p>Anrufe: {{user.contactOptionPhone}}</p>
+    </ng-container>
+  </ng-container>
+</ng-container>
+<ng-container></ng-container>

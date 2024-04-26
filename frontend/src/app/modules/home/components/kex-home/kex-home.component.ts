@@ -4,6 +4,7 @@ import {KexSearchState} from "../../../search/store/kex-search.state";
 import {KexSearchSelector} from "../../../search/store/selectors/kex-search.selectors";
 import {GetSkillsActions} from "../../../profile/store/actions/kex-profile.actions";
 import {SearchUserActions} from "../../../search/store/actions/kex-search.actions";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'kex-home',
@@ -12,4 +13,9 @@ import {SearchUserActions} from "../../../search/store/actions/kex-search.action
 })
 export class KexHomeComponent {
 
+  constructor(private router : Router) {
+  }
+  goToSearchPage() {
+    this.router.navigate(['/search']).then();
+  }
 }

@@ -1,0 +1,8 @@
+<div *ngIf="user" class="kex-search-user-container my-4">
+  <div class="kex-search-user-content p-2">
+    <h3 class="m-0">{{user.firstname}} {{user.lastname}}</h3>
+  </div>
+  <div class="kex-search-user-action p-1">
+    <mat-icon (click)="openUserDetails()" >chevron_right</mat-icon>
+  </div>
+</div>
