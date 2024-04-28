@@ -115,16 +115,31 @@ public class UserService {
 
 
     //Todo improve search (add possibility to search for experience title)
-    //Todo change return type to UserView
-    //Todo only return user when searched skill/experience is visible
-    public List<UserView> findUser(String searchStr) {
+    public List<UserView> findUser(String searchStr, Integer level) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User loggedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+        Integer minLevel = 0;
         List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(searchStr);
         List<UserView> users = new ArrayList<>();
+        if(level!=null){
+            minLevel = level;
+        }
         for (Skills skill : skills ){
-            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkill(skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()));
+            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                    skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()),
+                    true,
+                    minLevel);
             for(UserView user : usersTemp){
-                if (!users.contains(user)) {
-                    users.add(user);
+                boolean exist = false;
+                for(UserView userView : users){
+                    if(userView.getUserSub().equals(user.getUserSub())){
+                        exist = true;
+                    }
+                }
+                if(!exist){
+                    if(!user.getUserSub().equals(loggedUser.getUserSub())){
+                        users.add(user);
+                    }
                 }
             }
         }

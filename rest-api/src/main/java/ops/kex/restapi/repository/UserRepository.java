@@ -19,5 +19,7 @@ public interface UserRepository
     User getUserByUserSub(String userId);
     List<User> findUsersByUserSkillsSkill(Skills skill);
     List<UserView> getUsersByUserSkillsSkill(Skills skill);
+    List<UserView> getUsersByUserSkillsSkillAndUserSkillsVisible(Skills skill, Boolean visible);
+    List<UserView> getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Skills skill, Boolean visible, Integer level);
 }
 

@@ -33,8 +33,9 @@ public class UserController {
 
     @GetMapping("/search")
     public List<UserView> findUser(
-            @RequestParam String searchStr) {
-        return userService.findUser(searchStr);
+            @RequestParam String searchStr,
+            @RequestParam(required = false) Integer level) {
+        return userService.findUser(searchStr, level);
     }
 
     @PutMapping("/contactOption")
