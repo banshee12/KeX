@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
+import ops.kex.restapi.model.UserSearch;
 import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
@@ -113,16 +114,15 @@ public class UserService {
         }
     }
 
-
     //Todo improve search (add possibility to search for experience title)
-    public List<UserView> findUser(String searchStr, Integer level) {
+    public List<UserView> findUser(UserSearch userSearch) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User loggedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
         Integer minLevel = 0;
-        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(searchStr);
+        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(userSearch.getSearchSkill());
         List<UserView> users = new ArrayList<>();
-        if(level!=null){
-            minLevel = level;
+        if(userSearch.getLevel()!=null){
+            minLevel = userSearch.getLevel();
         }
         for (Skills skill : skills ){
             List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
