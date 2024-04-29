@@ -1,6 +1,7 @@
 import {createActionGroup, emptyProps, props} from "@ngrx/store";
-import {KexUserSkill} from "../../models/kex-profile.model";
+import {ContactTime, KexUserSkill} from "../../models/kex-profile.model";
 import {Experience} from "../../models/kex-profile.model";
+import {User} from "../../../../core/models/kex-core.models";
 
 export const GetSkillsActions = createActionGroup({
   source : '[PROFILE] get skills',
@@ -85,5 +86,35 @@ export const AddExperienceActions = createActionGroup({
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+  }
+});
+
+export const GetCurrentUser = createActionGroup({
+  source : '[PROFILE] get current user',
+  events : {
+    do : emptyProps(),
+    success : props<{user : User}>(),
+    fail : emptyProps,
+    reset : emptyProps,
+  }
+});
+
+export const SetContactOptions = createActionGroup({
+  source : '[PROFILE] set contact options',
+  events : {
+    do : props<{user : User}>(),
+    success : emptyProps,
+    fail : emptyProps,
+    reset : emptyProps,
+  }
+});
+
+export const SetContactTimes = createActionGroup({
+  source : '[PROFILE] set contact times',
+  events : {
+    do : props<{contactTimes : ContactTime}>(),
+    success : emptyProps,
+    fail : emptyProps,
+    reset : emptyProps,
   }
 });

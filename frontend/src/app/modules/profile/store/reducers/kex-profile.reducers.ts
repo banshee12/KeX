@@ -1,23 +1,27 @@
 import {KexProfileState} from "../kex-profile.state";
-import {KexLoadState} from "../../../../core/models/kex-core.models";
+import {KexLoadState, User} from "../../../../core/models/kex-core.models";
 import {Action, createReducer, on} from "@ngrx/store";
 import * as KexProfileActions from '../actions/kex-profile.actions';
 
-const initialState : KexProfileState = {
-  skills : [],
-  skillsLoadState : KexLoadState.NONE,
-  experiences : [],
-  experienceLoadState : KexLoadState.NONE,
-  experiencesLoadState : KexLoadState.NONE,
-  editExperienceLoadState : KexLoadState.NONE,
-  deleteExperienceLoadState : KexLoadState.NONE,
-  addExperienceLoadState : KexLoadState.NONE,
-  contactData : undefined,
-  contactDataLoadState : KexLoadState.NONE,
-  deleteSkillLoadState : KexLoadState.NONE,
-  editSkillLoadState : KexLoadState.NONE,
-  addSkillLoadState : KexLoadState.NONE,
-  updateVisibilitySkillLoadState : KexLoadState.NONE
+const initialState: KexProfileState = {
+  skills: [],
+  skillsLoadState: KexLoadState.NONE,
+  experiences: [],
+  experienceLoadState: KexLoadState.NONE,
+  experiencesLoadState: KexLoadState.NONE,
+  editExperienceLoadState: KexLoadState.NONE,
+  deleteExperienceLoadState: KexLoadState.NONE,
+  addExperienceLoadState: KexLoadState.NONE,
+  contactData: undefined,
+  contactDataLoadState: KexLoadState.NONE,
+  deleteSkillLoadState: KexLoadState.NONE,
+  editSkillLoadState: KexLoadState.NONE,
+  addSkillLoadState: KexLoadState.NONE,
+  updateVisibilitySkillLoadState: KexLoadState.NONE,
+  currentUser: undefined,
+  currentUserLoadState: KexLoadState.NONE,
+  setContactTimeLoadState: KexLoadState.NONE,
+  setContactOptionLoadState: KexLoadState.NONE
 }
 
 const _kexProfileReducer = createReducer(
@@ -28,7 +32,7 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.GetSkillsActions.do,
     (state, action) => ({
       ...state,
-      skills : [],
+      skills: [],
       skillsLoadState: KexLoadState.LOADING,
     })
   ),
@@ -36,7 +40,7 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.GetSkillsActions.success,
     (state, action) => ({
       ...state,
-      skills : action.skills,
+      skills: action.skills,
       skillsLoadState: KexLoadState.SUCCESS
     })
   ),
@@ -44,7 +48,7 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.GetSkillsActions.fail,
     (state, action) => ({
       ...state,
-      skills : [],
+      skills: [],
       skillsLoadState: KexLoadState.FAILURE
     })
   ),
@@ -171,31 +175,101 @@ const _kexProfileReducer = createReducer(
   ),
   // get experiences
   on(
-      KexProfileActions.GetExperiencesActions.do,
-      (state, action) => ({
-        ...state,
-        experiences : [],
-        experiencesLoadState: KexLoadState.LOADING
-      })
-    ),
-    on(
-      KexProfileActions.GetExperiencesActions.success,
-      (state, action) => ({
-        ...state,
-        experiences : action.experiences,
-        experiencesLoadState: KexLoadState.SUCCESS
-      })
-    ),
-    on(
-      KexProfileActions.GetExperiencesActions.fail,
-      (state, action) => ({
-        ...state,
-        experiences : [],
-        experiencesLoadState: KexLoadState.FAILURE
-      })
-    )
+    KexProfileActions.GetExperiencesActions.do,
+    (state, action) => ({
+      ...state,
+      experiences: [],
+      experiencesLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.GetExperiencesActions.success,
+    (state, action) => ({
+      ...state,
+      experiences: action.experiences,
+      experiencesLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.GetExperiencesActions.fail,
+    (state, action) => ({
+      ...state,
+      experiences: [],
+      experiencesLoadState: KexLoadState.FAILURE
+    })
+  ),
 
+  //get current user
+  on(
+    KexProfileActions.GetCurrentUser.do,
+    (state, action) => ({
+      ...state,
+      currentUser: undefined,
+      currentUserLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.GetCurrentUser.success,
+    (state, action) => ({
+      ...state,
+      currentUser: action.user,
+      currentUserLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.GetCurrentUser.fail,
+    (state, action) => ({
+      ...state,
+      currentUser: undefined,
+      currentUserLoadState: KexLoadState.FAILURE
+    })
+  ),
 
+  //set contact options
+  on(
+    KexProfileActions.SetContactOptions.do,
+    (state, action) => ({
+      ...state,
+      setContactOptionLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.SetContactOptions.success,
+    (state, action) => ({
+      ...state,
+      setContactOptionLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.SetContactOptions.fail,
+    (state, action) => ({
+      ...state,
+      setContactOptionLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+  // set contact options
+  on(
+    KexProfileActions.SetContactTimes.do,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.SetContactTimes.success,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.SetContactTimes.fail,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.FAILURE
+    })
+  ),
 );
 
 export function kexProfileReducer(state: KexProfileState, action: Action) {

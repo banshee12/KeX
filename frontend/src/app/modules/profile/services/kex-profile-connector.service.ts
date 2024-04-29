@@ -6,6 +6,7 @@ import {kexUserSkill1, kexUserSkill2, kexUserSkill3} from "../dummy-data";
 import {proj1} from "../dummy-data";
 import {proj2} from "../dummy-data";
 import {environment} from "../../../../environments/environment";
+import {User} from "../../../core/models/kex-core.models";
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class KexProfileConnectorService {
     //return of([proj1, proj2]);//testing
   }
 
-  getContactDataFromCurrentUser() : Observable<ContactData> {
-    return this.http.get<ContactData>(this.API_URL + '/user/contactTime');
+  getCurrentUser() : Observable<User> {
+    return this.http.get<User>(this.API_URL + '/user');
   }
 
   addSkill(newSkill : KexUserSkill) : Observable<string> {
@@ -43,8 +44,8 @@ export class KexProfileConnectorService {
     return this.http.put<string>(this.API_URL + '/user/experience', experience);
   }
 
-  setContactOption(contactOption : ContactOption) : Observable<string> {
-    return this.http.put<string>(this.API_URL + '/user/contactOption', contactOption);
+  setContactOption(user : User) : Observable<string> {
+    return this.http.put<string>(this.API_URL + '/user/contactOption', user);
   }
 
   saveContactTime(contactTime : ContactTime) : Observable<string> {

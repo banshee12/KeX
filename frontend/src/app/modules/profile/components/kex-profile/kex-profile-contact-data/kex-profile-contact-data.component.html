@@ -1,1 +1,9 @@
-<p>kex-profile-contact-data works!</p>
+<ng-container [ngSwitch]="$loadState| async">
+  <ng-container *ngSwitchCase="KexLoadState.LOADING">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+  <ng-container *ngSwitchCase="KexLoadState.FAILURE">ERROR</ng-container>
+  <ng-container *ngSwitchCase="KexLoadState.SUCCESS">
+    <kex-profile-contact-option></kex-profile-contact-option>
+  </ng-container>
+</ng-container>

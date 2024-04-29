@@ -1,9 +1,21 @@
+@import 'bootstrap/scss/bootstrap';
+
 .kex-skills-button-container {
   display: flex;
   justify-content: flex-end;
+
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+  }
 }
 
 #kex-skills-button-add {
-  margin-left: 0.25rem;
-  margin-bottom: 0.25rem;
+  margin-left: 8px;
+  margin-bottom: 8px;
+
+  @include media-breakpoint-down(sm) {
+    margin-left: 0;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
 }

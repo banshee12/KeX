@@ -1,9 +1,7 @@
-<mat-form-field>
+<mat-form-field appearance="outline">
   <mat-label>Suche</mat-label>
   <input matInput type="text" [(ngModel)]="searchValue" placeholder="Fähigkeit eingeben">
-  @if (searchValue) {
-    <button matSuffix mat-icon-button aria-label="search" (click)="onSearch()">
-      <mat-icon>search</mat-icon>
-    </button>
-  }
+  <button matSuffix mat-icon-button aria-label="search" (click)="onSearch()">
+    <mat-icon>search</mat-icon>
+  </button>
 </mat-form-field>
