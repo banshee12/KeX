@@ -121,8 +121,8 @@ public class UserService {
         Integer minLevel = 0;
         List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(userSearch.getSearchSkill());
         List<UserView> users = new ArrayList<>();
-        if(userSearch.getLevel()!=null){
-            minLevel = userSearch.getLevel();
+        if(userSearch.getMinLevel()!=null){
+            minLevel = userSearch.getMinLevel();
         }
         for (Skills skill : skills ){
             List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(

@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserSearch {
     private String searchSkill;
-    private Integer level;
+    private Integer minLevel;
 }
