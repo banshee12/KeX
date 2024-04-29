@@ -1,0 +1,4 @@
+<div *ngIf="userSkill" class="kex-user-details-skill-container p-2 my-2">
+  <kex-star-rating [rating]="userSkill.level"></kex-star-rating>
+  <h5>{{userSkill.skill.title}}</h5>
+</div>
