@@ -10,7 +10,7 @@ export class KexSearchEffects {
   getUserList = createEffect(() => this.actions$.pipe(
     ofType(KexSearchActions.SearchUserActions.do),
     switchMap(action =>
-      this.connector.searchUsers(action.value).pipe(
+      this.connector.searchUsers(action).pipe(
         map((data) => KexSearchActions.SearchUserActions.success({userList : data, count : data.length})),
         catchError(() => of(KexSearchActions.SearchUserActions.fail()).pipe(tap(error => console.log(error))))
       ))
