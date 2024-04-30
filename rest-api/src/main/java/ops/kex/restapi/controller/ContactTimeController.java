@@ -31,10 +31,9 @@ public class ContactTimeController {
         contactTimeService.addContactTimeToUser(contactTime);
     }
 
-    @DeleteMapping("/ContactTime")
-    public void deleteContactTime(
-            @RequestBody ContactTime contactTime){
-        contactTimeService.deleteContactTime(contactTime);
+    @DeleteMapping("/ContactTime/{contactTimeId}")
+    public void deleteContactTime(@PathVariable Integer contactTimeId){
+        contactTimeService.deleteContactTime(contactTimeId);
     }
 
     @PutMapping("user/contactTime")

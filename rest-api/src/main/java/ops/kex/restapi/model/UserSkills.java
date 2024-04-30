@@ -17,8 +17,7 @@ public class UserSkills {
     private Integer id;
     private Boolean visible;
     private Integer level;
-    @ManyToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "user_skills_id")
     private Skills skill;
 }
