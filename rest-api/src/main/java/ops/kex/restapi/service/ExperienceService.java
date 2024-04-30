@@ -97,18 +97,18 @@ public class ExperienceService {
         }
     }
 
-    public void deleteExperience(Experience experience) {
-        boolean exists = experienceRepository.existsById(experience.getId());
+    public void deleteExperience(Integer experienceId) {
+        boolean exists = experienceRepository.existsById(experienceId);
         if (!exists) {
-            log.error("Experience with id " + experience.getId() + " does not exists");
+            log.error("Experience with id " + experienceId + " does not exists");
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication instanceof AnonymousAuthenticationToken) {
                 log.error("no user logged in");
             } else {
                 User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
-                user.removeExperience(experience.getId());
-                experienceRepository.deleteById(experience.getId());
+                user.removeExperience(experienceId);
+                experienceRepository.deleteById(experienceId);
                 log.info("Experience deleted");
             }
         }

@@ -58,12 +58,12 @@ public class ContactTimeService {
         }
     }
 
-    public void deleteContactTime(ContactTime contactTime) {
-        boolean exists = contactTimeRepository.existsById(contactTime.getId());
+    public void deleteContactTime(Integer contactTimeId) {
+        boolean exists = contactTimeRepository.existsById(contactTimeId);
         if (!exists){
-            log.error("Contact Time with id "+ contactTime.getId() + " does not exists");
+            log.error("Contact Time with id "+ contactTimeId + " does not exists");
         }
-        contactTimeRepository.deleteById(contactTime.getId());
+        contactTimeRepository.deleteById(contactTimeId);
     }
 
     public void updateContactTime(ContactTime contactTime) {
