@@ -45,6 +45,7 @@ public class ExperienceService {
         return null;
     }
 
+
     public void addExperienceToUser(Experience experience) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
@@ -66,6 +67,7 @@ public class ExperienceService {
                         log.info("Skill " + skill.getTitle() + " has been added to database");
                     }
                     experienceSkills.add(skillsRepository.findSkillByTitleIgnoreCase(skillCheck.getTitle()));
+
                     //check if user has skill
                     List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skillCheck);
                     if (!userSkillCheck.contains(user)) {
@@ -138,8 +140,9 @@ public class ExperienceService {
                             log.info("Skill " + skill.getTitle() + " has been added to database");
                         }
                         experienceSkills.add(skillsRepository.findSkillByTitleIgnoreCase(skillCheck.getTitle()));
+
                         //check if user has skill
-                        List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skill);
+                        List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skillCheck);
                         if (!userSkillCheck.contains(user)) {
                             UserSkills userSkill = UserSkills.builder()
                                     .visible(false)
@@ -149,7 +152,6 @@ public class ExperienceService {
                             user.addUserSkill(userSkill);
                             log.info("Skill " + skill.getTitle() + " has been added to " + user.getUsername());
                         }
-
                     }
                     userExperience.setSkill(experienceSkills);
                     experienceRepository.save(userExperience);
