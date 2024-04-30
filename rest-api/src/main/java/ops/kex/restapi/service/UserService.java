@@ -1,11 +1,8 @@
 package ops.kex.restapi.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ops.kex.restapi.model.Skills;
-import ops.kex.restapi.model.User;
-import ops.kex.restapi.model.UserSearch;
+import ops.kex.restapi.model.*;
 import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
@@ -89,7 +86,14 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken))
         {
-            return userRepository.getUserByUserSub(userId);
+            User user = userRepository.getUserByUserSub(userId);
+            List<Experience> experienceList = user.getUserExperience();
+            List<UserSkills> userSkillsList = user.getUserSkills();
+            experienceList.removeIf(experience -> !experience.getVisible());
+            userSkillsList.removeIf(UserSkills -> !UserSkills.getVisible());
+            user.setUserExperience(experienceList);
+            user.setUserSkills(userSkillsList);
+            return user;
         }
         return null;
     }
