@@ -22,4 +22,16 @@ public class Experience {
     private String description;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     private List<Skills> skill;
+
+
+    public void addSkill(Skills skills){
+        this.skill.add(skills);
+    }
+
+    public void removeSkill(Integer skillsId) {
+        Skills skills = this.skill.stream().filter(t -> t.getId() == skillsId).findFirst().orElse(null);
+        if (skills != null) {
+            this.skill.remove(skills);
+        }
+    }
 }

@@ -2,9 +2,11 @@ package ops.kex.restapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ops.kex.restapi.model.Experience;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.model.UserSkills;
+import ops.kex.restapi.repository.ExperienceRepository;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import ops.kex.restapi.repository.UserSkillsRepository;
@@ -22,6 +24,7 @@ public class SkillsService {
     private final UserRepository userRepository;
     private final UserSkillsRepository userSkillsRepository;
     private final SkillsRepository skillsRepository;
+    private final ExperienceRepository experienceRepository;
 
     public List<Skills> getSkills(){
         return skillsRepository.findAll();
@@ -54,7 +57,13 @@ public class SkillsService {
                     userSkillsRepository.deleteById(userSkill.getId());
                 }
             }
-            //Todo delete experience or only remove from experience
+            //Remove Skills from experience
+            List<Experience> experienceList = experienceRepository.findExperiencesBySkillTitle(optionalSkills.get().getTitle());
+            for(Experience experience : experienceList){
+                experience.removeSkill(optionalSkills.get().getId());
+                experienceRepository.save(experience);
+            }
+
             //delete skill
             skillsRepository.deleteById(skillId);
             //log
