@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {Action, ActionReducerMap, StoreModule} from '@ngrx/store';
 import {KexToolbarComponent} from './page-template/kex-toolbar/kex-toolbar.component';
@@ -20,7 +19,6 @@ import {CoreModule} from "./core/core.module";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
-import {KexPublicComponent} from './kex-public/kex-public.component';
 import {SearchModule} from "./modules/search/search.module";
 import {KEX_SEARCH_STORE_FEATURE_KEY} from "./modules/search/store/reducers/kex-search.reducers";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
@@ -56,8 +54,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
 @NgModule({
   declarations: [
     AppComponent,
-    KexToolbarComponent,
-    KexPublicComponent
+    KexToolbarComponent
   ],
   imports: [
     BrowserModule,
