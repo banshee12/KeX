@@ -17,7 +17,7 @@ export type Experience = {
   title : string,
   visible : boolean,
   description : string,
-  skill : KexUserSkill[] //noch nicht relevant
+  skill? : KexSkill[]
 }
 
 export type ContactData = {
@@ -30,7 +30,8 @@ export type ContactTime = {
 }
 
 export type ContactTimeSlot = {
-  day : string, //type enum, number?
+  id? : number,
+  day : string,
   fromTime : Time,
   toTime : Time,
 }

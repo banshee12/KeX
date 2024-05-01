@@ -70,6 +70,32 @@ export class KexProfileEffects {
       ))
   ));
 
+  setContactOptions = createEffect(() => this.actions$.pipe(
+    ofType(KexProfileActions.SetContactOptions.do),
+    switchMap(action =>
+      this.connector.setContactOption(action.user).pipe(
+        map((data) => KexProfileActions.SetContactOptions.success()),
+        catchError(() => of(KexProfileActions.SetContactOptions.fail()).pipe(tap(error => console.log(error))))
+      ))
+  ));
+
+  setContactTime = createEffect(() => this.actions$.pipe(
+    ofType(KexProfileActions.SetContactTimes.do),
+    switchMap(action =>
+      this.connector.saveContactTime(action.contactTimes).pipe(
+        map((data) => KexProfileActions.SetContactOptions.success()),
+        catchError(() => of(KexProfileActions.SetContactOptions.fail()).pipe(tap(error => console.log(error))))
+      ))
+  ));
+
+  getCurrentUser = createEffect(() => this.actions$.pipe(
+    ofType(KexProfileActions.GetCurrentUser.do),
+    switchMap(action =>
+      this.connector.getCurrentUser().pipe(
+        map((data) => KexProfileActions.GetCurrentUser.success({user : data})),
+        catchError(() => of(KexProfileActions.GetCurrentUser.fail()).pipe(tap(error => console.log(error))))
+      ))
+  ));
 
   constructor(
     private actions$: Actions,

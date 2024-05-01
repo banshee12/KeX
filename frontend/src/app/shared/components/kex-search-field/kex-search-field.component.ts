@@ -17,7 +17,7 @@ export class KexSearchFieldComponent {
   }
 
   onSearch() {
-    this.store.dispatch(SearchUserActions.do({value: this.searchValue}));
+    this.store.dispatch(SearchUserActions.do({searchSkill: this.searchValue}));
     this.searchStart.emit(true);
   }
 
