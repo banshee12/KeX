@@ -2,7 +2,7 @@
 
 .kex-skills-button-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 
   @include media-breakpoint-down(sm) {
     flex-direction: column;
