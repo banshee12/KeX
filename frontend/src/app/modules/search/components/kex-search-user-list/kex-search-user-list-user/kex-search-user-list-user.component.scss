@@ -3,13 +3,13 @@
   background-color: #EEEEEE;
   border-radius: 4px;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .kex-search-user-action {
   border-radius: 0 4px 4px 0;
   display: flex;
   align-items: center;
-  cursor: pointer;
   background: #3F51B5;
   mat-icon {
     color : white;

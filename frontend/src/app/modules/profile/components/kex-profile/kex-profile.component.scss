@@ -2,12 +2,12 @@
 
 :host{
   .kex-profile-container {
-    max-width: 800px;
     margin-left: 12px;
     margin-right: 12px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
   }
 
   ::ng-deep{
