@@ -35,9 +35,9 @@ public class SkillsController {
     }
 
 //    @PreAuthorize("hasRole('client_admin')")
-    @DeleteMapping("/skill")
-    public void deleteSkill(@RequestBody Skills skill){
-        skillsService.deleteSkill(skill);
+    @DeleteMapping("/skill/{skillId}")
+    public void deleteSkill(@PathVariable Integer skillId){
+        skillsService.deleteSkill(skillId);
     }
 
 //    @PreAuthorize("hasRole('client_admin')")

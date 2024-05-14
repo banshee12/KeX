@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {KexSearchState} from "../../../modules/search/store/kex-search.state";
 import {SearchUserActions} from "../../../modules/search/store/actions/kex-search.actions";
@@ -9,14 +9,16 @@ import {SearchUserActions} from "../../../modules/search/store/actions/kex-searc
   styleUrl: './kex-search-field.component.scss'
 })
 export class KexSearchFieldComponent {
-
+@Output() searchStart = new EventEmitter<boolean>();
   public searchValue = '';
+
 
   constructor(private store: Store<KexSearchState>) {
   }
 
   onSearch() {
-    this.store.dispatch(SearchUserActions.do({value: this.searchValue}));
+    this.store.dispatch(SearchUserActions.do({searchSkill: this.searchValue}));
+    this.searchStart.emit(true);
   }
 
 }

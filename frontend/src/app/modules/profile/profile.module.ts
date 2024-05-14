@@ -10,7 +10,7 @@ import {MatTab, MatTabGroup} from "@angular/material/tabs";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatIcon} from "@angular/material/icon";
 import {SharedModule} from "../../shared/shared.module";
-import {MatButton, MatMiniFabButton} from "@angular/material/button";
+import {MatButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatTooltip} from "@angular/material/tooltip";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -20,6 +20,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {AsyncPipe} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { KexProfileContactOptionComponent } from './components/kex-profile/kex-profile-contact-data/kex-profile-contact-option/kex-profile-contact-option.component';
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     KexProfileExperienceComponent,
     KexProfileExperiencesComponent,
     KexProfileSkillsComponent,
-    KexProfileSkillComponent
+    KexProfileSkillComponent,
+    KexProfileContactOptionComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +52,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatAutocompleteModule,
     ReactiveFormsModule,
     AsyncPipe,
-    FormsModule
+    FormsModule,
+    MatCheckbox,
+    MatIconButton
   ]
 })
 export class ProfileModule { }

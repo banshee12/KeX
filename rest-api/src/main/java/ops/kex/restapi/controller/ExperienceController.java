@@ -30,10 +30,9 @@ public class ExperienceController {
         experienceService.addExperienceToUser(experience);
     }
 
-    @DeleteMapping("/user/experience")
-    public void deleteExperience(
-            @RequestBody Experience experience){
-        experienceService.deleteExperience(experience);
+    @DeleteMapping("/user/experience/{experienceId}")
+    public void deleteExperience(@PathVariable Integer experienceId){
+        experienceService.deleteExperience(experienceId);
     }
 
     @PutMapping("/user/experience")

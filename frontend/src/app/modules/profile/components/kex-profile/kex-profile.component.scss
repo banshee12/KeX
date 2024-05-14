@@ -1,7 +1,13 @@
+@import 'bootstrap/scss/bootstrap';
+
 :host{
   .kex-profile-container {
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 12px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
   }
 
   ::ng-deep{

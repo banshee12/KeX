@@ -1,0 +1,13 @@
+<div class="d-flex">
+  <p class="fw-bold">Gewünschte Option für Kontaktaufnahme</p>
+  <button *ngIf="!editMode" color="primary" mat-icon-button matTooltip="Bearbeiten" (click)="this.editMode = true">
+    <mat-icon>edit</mat-icon>
+  </button>
+</div>
+<p><mat-checkbox [(ngModel)]="contactOptionPhone" [disabled]="!editMode">Anrufen</mat-checkbox></p>
+<p><mat-checkbox [(ngModel)]="contactOptionMail" [disabled]="!editMode">E-Mail schreiben</mat-checkbox></p>
+<p><mat-checkbox [(ngModel)]="contactOptionAppointment" [disabled]="!editMode">Terminanfrage senden</mat-checkbox>
+<div *ngIf="editMode">
+  <button mat-raised-button (click)="cancel()">Abbrechen</button>
+  <button mat-raised-button color="primary" (click)="saveContactOption()">Speichern</button>
+</div>

@@ -25,16 +25,14 @@ public class UserController {
         return userService.getUser();
     }
 
-    @GetMapping("/Id")
-    public User getUserById(
-            @RequestParam String userId) {
+    @GetMapping("/{userId}")
+    public User getUserById(@PathVariable String userId) {
         return userService.getUserById(userId);
     }
 
-    @GetMapping("/search")
-    public List<UserView> findUser(
-            @RequestParam String searchStr) {
-        return userService.findUser(searchStr);
+    @PostMapping("/search")
+    public List<UserView> findUser(@RequestBody UserSearch userSearch) {
+        return userService.findUser(userSearch);
     }
 
     @PutMapping("/contactOption")

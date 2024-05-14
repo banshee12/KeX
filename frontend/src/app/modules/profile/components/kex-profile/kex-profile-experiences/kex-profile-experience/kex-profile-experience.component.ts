@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ElementRef, 
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Experience, KexUserSkill } from "../../../../models/kex-profile.model";
+import {Experience, KexSkill, KexUserSkill} from "../../../../models/kex-profile.model";
 import { KexCoreService } from "../../../../../../core/services/kex-core.service";
 import { KexProfileService } from "../../../../services/kex-profile.service";
 import {KexLoadState} from "../../../../../../core/models/kex-core.models";
@@ -67,7 +67,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
    title = '';
    visible = false;
    description = '';
-   linkedSkills: KexUserSkill[] = []; // Array für ausgewählte Fähigkeiten
+   linkedSkills: KexSkill[] = []; // Array für ausgewählte Fähigkeiten
    editMode = false;
    addNewExperience=false;
 
@@ -78,7 +78,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         this.title = this.experience.title;
         this.visible = this.experience.visible;
         this.description = this.experience.description;
-        this.linkedSkills= this.experience.skill;
+        this.linkedSkills= this.experience.skill || [];
       } else {
         this.addNewExperience = true;
         this.editMode = true;
@@ -185,9 +185,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
-      private _filterSkills(value: string): KexUserSkill[] {
+      private _filterSkills(value: string): KexSkill[] {
         const filterValue = value.toLowerCase();
-        return this.linkedSkills.filter(skill => skill.skill.title.toLowerCase().includes(filterValue));
+        return this.linkedSkills.filter(skill => skill.title.toLowerCase().includes(filterValue));
       }
 
       // Methode zum Hinzufügen einer Fähigkeit
@@ -208,7 +208,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         }
 
       // Methode zum Entfernen einer Fähigkeit
-       removeSkill(skill: KexUserSkill): void {
+       removeSkill(skill: KexSkill): void {
           const index = this.linkedSkills.indexOf(skill);
           if (index >= 0) {
             this.linkedSkills.splice(index, 1);

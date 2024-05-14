@@ -18,6 +18,6 @@ public interface UserRepository
     User findUserByUsernameIgnoreCase(String username);
     User getUserByUserSub(String userId);
     List<User> findUsersByUserSkillsSkill(Skills skill);
-    List<UserView> getUsersByUserSkillsSkill(Skills skill);
+    List<UserView> getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Skills skill, Boolean visible, Integer level);
 }
 

@@ -1,5 +1,24 @@
 <kex-search-field></kex-search-field>
-<p>Gefundene Person (x)</p>
-<div>
 
-</div>
+<ng-container [ngSwitch]="searchResultsLoadState$ | async">
+  <ng-container *ngSwitchCase="KexLoadState.LOADING">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+  <ng-container *ngSwitchCase="KexLoadState.FAILURE">
+    ERROR
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <ng-container *ngIf="searchResults$ | async as searchResult">
+      <p>Gefundene Person ({{ searchResult.count }})</p>
+      <div>
+        <ng-container *ngFor="let user of searchResult.userList">
+          <kex-search-user-list-user [user]="user"></kex-search-user-list-user>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
+<ng-container></ng-container>
+
+
+

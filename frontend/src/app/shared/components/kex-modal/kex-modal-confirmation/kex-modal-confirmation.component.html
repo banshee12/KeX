@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{data.labelHeadline}}</h2>
 <mat-dialog-content>{{data.labelDescription}}</mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions align="end">
   <button mat-button mat-dialog-close [mat-dialog-close]="false">Abbrechen</button>
   <button mat-button mat-dialog-close cdkFocusInitial [mat-dialog-close]="true">{{data.labelAction || 'Weiter'}}</button>
 </mat-dialog-actions>

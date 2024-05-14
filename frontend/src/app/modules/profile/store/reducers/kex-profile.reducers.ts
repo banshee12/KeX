@@ -3,21 +3,25 @@ import {KexLoadState} from "../../../../core/models/kex-core.models";
 import {Action, createReducer, on} from "@ngrx/store";
 import * as KexProfileActions from '../actions/kex-profile.actions';
 
-const initialState : KexProfileState = {
-  skills : [],
-  skillsLoadState : KexLoadState.NONE,
-  experiences : [],
-  experienceLoadState : KexLoadState.NONE,
-  experiencesLoadState : KexLoadState.NONE,
-  editExperienceLoadState : KexLoadState.NONE,
-  deleteExperienceLoadState : KexLoadState.NONE,
-  addExperienceLoadState : KexLoadState.NONE,
-  contactData : undefined,
-  contactDataLoadState : KexLoadState.NONE,
-  deleteSkillLoadState : KexLoadState.NONE,
-  editSkillLoadState : KexLoadState.NONE,
-  addSkillLoadState : KexLoadState.NONE,
-  updateVisibilitySkillLoadState : KexLoadState.NONE,
+const initialState: KexProfileState = {
+  skills: [],
+  skillsLoadState: KexLoadState.NONE,
+  experiences: [],
+  experienceLoadState: KexLoadState.NONE,
+  experiencesLoadState: KexLoadState.NONE,
+  editExperienceLoadState: KexLoadState.NONE,
+  deleteExperienceLoadState: KexLoadState.NONE,
+  addExperienceLoadState: KexLoadState.NONE,
+  contactData: undefined,
+  contactDataLoadState: KexLoadState.NONE,
+  deleteSkillLoadState: KexLoadState.NONE,
+  editSkillLoadState: KexLoadState.NONE,
+  addSkillLoadState: KexLoadState.NONE,
+  updateVisibilitySkillLoadState: KexLoadState.NONE,
+  currentUser: undefined,
+  currentUserLoadState: KexLoadState.NONE,
+  setContactTimeLoadState: KexLoadState.NONE,
+  setContactOptionLoadState: KexLoadState.NONE,
   updateVisibilityExperienceLoadState : KexLoadState.NONE
 }
 
@@ -196,95 +200,141 @@ const _kexProfileReducer = createReducer(
       })
     ),
     //add experience
-    on(
-      KexProfileActions.AddExperienceActions.do,
-      (state, action) => ({
-        ...state,
-        addExperienceLoadState: KexLoadState.LOADING,
-      })
-    ),
-    on(
-      KexProfileActions.AddExperienceActions.success,
-      (state, action) => ({
-        ...state,
-        addExperienceLoadState: KexLoadState.SUCCESS
-      })
-    ),
-    on(
-      KexProfileActions.AddExperienceActions.fail,
-      (state, action) => ({
-        ...state,
-        addExperienceLoadState: KexLoadState.FAILURE
-      })
-    ),
-    on(
-      KexProfileActions.AddExperienceActions.reset,
-      (state, action) => ({
-        ...state,
-        addExperienceLoadState: KexLoadState.NONE
-      })
-    ),
-
-    //delte experience
         on(
-          KexProfileActions.DeleteExperienceActions.do,
+          KexProfileActions.AddExperienceActions.do,
           (state, action) => ({
             ...state,
-            deleteExperienceLoadState: KexLoadState.LOADING,
+            addExperienceLoadState: KexLoadState.LOADING,
           })
         ),
         on(
-          KexProfileActions.DeleteExperienceActions.success,
+          KexProfileActions.AddExperienceActions.success,
           (state, action) => ({
             ...state,
-            deleteExperienceLoadState: KexLoadState.SUCCESS
+            addExperienceLoadState: KexLoadState.SUCCESS
           })
         ),
         on(
-          KexProfileActions.DeleteExperienceActions.fail,
+          KexProfileActions.AddExperienceActions.fail,
           (state, action) => ({
             ...state,
-            deleteExperienceLoadState: KexLoadState.FAILURE
+            addExperienceLoadState: KexLoadState.FAILURE
           })
         ),
         on(
-          KexProfileActions.DeleteExperienceActions.reset,
+          KexProfileActions.AddExperienceActions.reset,
           (state, action) => ({
             ...state,
-            deleteExperienceLoadState: KexLoadState.NONE
+            addExperienceLoadState: KexLoadState.NONE
           })
         ),
 
-    // update visibility experience
-      on(
-        KexProfileActions.UpdateVisibilityExperienceActions.do,
-        (state, action) => ({
-          ...state,
-          updateVisibilityExperienceLoadState: KexLoadState.LOADING,
-        })
-      ),
-      on(
-        KexProfileActions.UpdateVisibilityExperienceActions.success,
-        (state, action) => ({
-          ...state,
-          updateVisibilityExperienceLoadState: KexLoadState.SUCCESS
-        })
-      ),
-      on(
-        KexProfileActions.UpdateVisibilityExperienceActions.fail,
-        (state, action) => ({
-          ...state,
-          updateVisibilityExperienceLoadState: KexLoadState.FAILURE
-        })
-      ),
-      on(
-        KexProfileActions.UpdateVisibilityExperienceActions.reset,
-        (state, action) => ({
-          ...state,
-          updateVisibilityExperienceLoadState: KexLoadState.NONE
-        })
-      )
+        //delte experience
+            on(
+              KexProfileActions.DeleteExperienceActions.do,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.LOADING,
+              })
+            ),
+            on(
+              KexProfileActions.DeleteExperienceActions.success,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.SUCCESS
+              })
+            ),
+            on(
+              KexProfileActions.DeleteExperienceActions.fail,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.FAILURE
+              })
+            ),
+            on(
+              KexProfileActions.DeleteExperienceActions.reset,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.NONE
+              })
+            ),
 
+        // update visibility experience
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.do,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.LOADING,
+            })
+          ),
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.success,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.SUCCESS
+            })
+          ),
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.fail,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.FAILURE
+            })
+          ),
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.reset,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.NONE
+            })
+          )
+
+
+  //set contact options
+  on(
+    KexProfileActions.SetContactOptions.do,
+    (state, action) => ({
+      ...state,
+      setContactOptionLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.SetContactOptions.success,
+    (state, action) => ({
+      ...state,
+      setContactOptionLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.SetContactOptions.fail,
+    (state, action) => ({
+      ...state,
+      setContactOptionLoadState: KexLoadState.FAILURE
+    })
+  ),
+
+  // set contact options
+  on(
+    KexProfileActions.SetContactTimes.do,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.LOADING
+    })
+  ),
+  on(
+    KexProfileActions.SetContactTimes.success,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.SUCCESS
+    })
+  ),
+  on(
+    KexProfileActions.SetContactTimes.fail,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.FAILURE
+    })
+  ),
 );
 
 export function kexProfileReducer(state: KexProfileState, action: Action) {

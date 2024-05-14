@@ -13,5 +13,4 @@ public interface UserSkillsRepository
 
     UserSkills getUserSkillsById(Integer SkillId);
     Optional<UserSkills> findUserSkillsById(Integer SkillId);
-    List<UserSkills> findAllUserSkillsBySkill_Title(String SkillTitle);
 }
