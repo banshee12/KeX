@@ -287,7 +287,7 @@ const _kexProfileReducer = createReducer(
               ...state,
               updateVisibilityExperienceLoadState: KexLoadState.NONE
             })
-          )
+          ),
 
 
   //set contact options

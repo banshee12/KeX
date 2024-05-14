@@ -34,8 +34,7 @@ export const KexProfileSelector = {
   editExperienceLoadState : editExperienceLoadState,
   addExperienceLoadState : addExperienceLoadState,
   getUpdateVisibilitySkillLoadState : updateVisibilitySkillLoadState,
-  getUpdateVisibilityExperienceLoadState : updateExperienceVisibilityLoadState
-  getUpdateVisibilitySkillLoadState : updateVisibilitySkillLoadState,
+  getUpdateVisibilityExperienceLoadState : updateExperienceVisibilityLoadState,
   getCurrentUserLoadState : getCurrentUserLoadState,
   getCurrentUser : getCurrentUser,
   setContactOptionLoadState : setContactOptionLoadState,

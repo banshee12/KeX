@@ -79,6 +79,15 @@ export class KexProfileEffects {
     ))
   ));
 
+  editExperience = createEffect(()=> this.actions$.pipe(
+                   ofType(KexProfileActions.EditExperienceActions.do),
+                   switchMap(action=>
+                     this.connector.editExperience(action).pipe(
+                     map((data)=>KexProfileActions.DeleteExperienceActions.success()),
+                     catchError(()=>of(KexProfileActions.DeleteExperienceActions.fail()).pipe(tap(error => console.log(error))))
+                     ))
+  ));
+
   setContactOptions = createEffect(() => this.actions$.pipe(
     ofType(KexProfileActions.SetContactOptions.do),
     switchMap(action =>
