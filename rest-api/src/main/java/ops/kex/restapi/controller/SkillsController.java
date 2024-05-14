@@ -34,13 +34,13 @@ public class SkillsController {
         skillsService.addNewSkill(skills);
     }
 
-//    @PreAuthorize("hasRole('client_admin')")
+    @PreAuthorize("hasRole('client_admin')")
     @DeleteMapping("/skill/{skillId}")
     public void deleteSkill(@PathVariable Integer skillId){
         skillsService.deleteSkill(skillId);
     }
 
-//    @PreAuthorize("hasRole('client_admin')")
+    @PreAuthorize("hasRole('client_admin')")
     @PutMapping("/skill")
     public void updateSkill(@RequestBody Skills skill){
         skillsService.updateSkill(skill);
