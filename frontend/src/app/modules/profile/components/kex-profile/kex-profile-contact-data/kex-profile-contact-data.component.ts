@@ -16,16 +16,8 @@ export class KexProfileContactDataComponent implements OnInit{
 
   constructor(private store : Store<KexProfileState>) { }
 
-  get $contactTime() : Observable<ContactTimeSlot[] | undefined> {
-    return this.store.select(KexProfileSelector.getContactTime);
-  }
-
   get $loadState() : Observable<KexLoadState> {
     return this.store.select(KexProfileSelector.getCurrentUserLoadState);
-  }
-
-  get $setContactTimeLoadState() : Observable<KexLoadState> {
-    return this.store.select(KexProfileSelector.setContactTimeLoadState);
   }
 
   get $setContactOptionLoadState() : Observable<KexLoadState> {

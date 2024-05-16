@@ -3,7 +3,7 @@ import {Subscription} from "rxjs";
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../../store/kex-profile.state";
 import {KexProfileSelector} from "../../../../store/selectors/kex-profile.selectors";
-import {SetContactOptions} from "../../../../store/actions/kex-profile.actions";
+import {GetCurrentUser, SetContactOptions} from "../../../../store/actions/kex-profile.actions";
 import {User} from "../../../../../../core/models/kex-core.models";
 
 @Component({
