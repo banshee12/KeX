@@ -40,7 +40,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'https://keycloak.kexserver.de:8443',
+        url: 'https://kex-kc.kexserver.de/',
         realm: 'kex-application',
         clientId: 'kex-client-alpha'
       },
