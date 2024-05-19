@@ -2,8 +2,14 @@ package ops.kex.restapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ops.kex.restapi.model.Experience;
 import ops.kex.restapi.model.Skills;
+import ops.kex.restapi.model.User;
+import ops.kex.restapi.model.UserSkills;
+import ops.kex.restapi.repository.ExperienceRepository;
 import ops.kex.restapi.repository.SkillsRepository;
+import ops.kex.restapi.repository.UserRepository;
+import ops.kex.restapi.repository.UserSkillsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +20,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class SkillsService {
+
+    private final UserRepository userRepository;
+    private final UserSkillsRepository userSkillsRepository;
     private final SkillsRepository skillsRepository;
+    private final ExperienceRepository experienceRepository;
 
     public List<Skills> getSkills(){
         return skillsRepository.findAll();
@@ -24,16 +34,45 @@ public class SkillsService {
     public void addNewSkill(Skills skills){
         Optional<Skills> skillsOptional = skillsRepository
                 .findSkillsByTitleIgnoreCase(skills.getTitle());
-        skillsOptional.ifPresent(value -> log.warn("Skill " + value.getTitle() + " already exists in database"));
-        skillsRepository.save(skills);
+        if(skillsOptional.isPresent()){
+            log.warn("Skill " + skills.getTitle() + " already exists in database");
+        } else{
+            skillsRepository.save(skills);
+            log.info("Skill " + skills.getTitle() + " has been added to database");
+        }
     }
 
-    public void deleteSkill(Skills skill) {
-        boolean exists = skillsRepository.existsById(skill.getId());
-        if (!exists){
-            log.error("skill "+ skill.getTitle() + " can not be deleted cause it does not exists");
+    public void deleteSkill(Integer skillId) {
+        Optional<Skills> optionalSkills = skillsRepository.findById(skillId);
+        if (optionalSkills.isEmpty()){
+            log.error("skill "+ skillId + " can not be deleted cause it does not exists");
+        }else{
+            //delete userSkills
+            List<User> userList = userRepository.findUsersByUserSkillsSkill(optionalSkills.get());
+            for(User user : userList){
+                UserSkills userSkill = null;
+                for(UserSkills userSkills : user.getUserSkills()){
+                    if(userSkills.getSkill().equals(optionalSkills.get())){
+                        userSkill = userSkills;
+                    }
+                }
+                if(userSkill != null){
+                    user.removeUserSkill(userSkill.getId());
+                    userSkillsRepository.deleteById(userSkill.getId());
+                }
+            }
+            //Remove Skills from experience
+            List<Experience> experienceList = experienceRepository.findExperiencesBySkillTitle(optionalSkills.get().getTitle());
+            for(Experience experience : experienceList){
+                experience.removeSkill(optionalSkills.get().getId());
+                experienceRepository.save(experience);
+            }
+
+            //delete skill
+            skillsRepository.deleteById(skillId);
+            //log
+            log.info("Skill " + skillId + " deleted");
         }
-        skillsRepository.deleteById(skill.getId());
     }
 
     @Transactional
@@ -43,9 +82,11 @@ public class SkillsService {
             Optional<Skills> skillsOptional = skillsRepository
                     .findSkillsByTitleIgnoreCase(skill.getTitle());
             if (skillsOptional.isPresent()) {
-                log.error("skill " + skill.getTitle() +" already exists in database");
+                log.error("skill " + skill.getTitle() +" already exist in database");
+            } else{
+                skills.setTitle(skill.getTitle());
+                log.info("Skill updated");
             }
-            skills.setTitle(skill.getTitle());
         } else log.error("skill " + skill.getTitle() + " can not be updated cause it does not exist");
     }
 
