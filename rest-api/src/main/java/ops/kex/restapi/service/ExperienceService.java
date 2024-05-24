@@ -10,6 +10,9 @@ import ops.kex.restapi.model.sorting.SortData;
 import ops.kex.restapi.repository.ExperienceRepository;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +33,11 @@ public class ExperienceService {
 
 
     public List<Experience> getUserExperience(SortData sortData) {
+        String sortDirectionStr = "asc";
+        if (!sortData.getAsc()){
+            sortDirectionStr = "desc";
+        }
+        Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
@@ -37,7 +45,10 @@ public class ExperienceService {
         else{
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
-                return user.getUserExperience();
+                if(sortData.getSize() > 0){
+                    Pageable pageable = PageRequest.of(0,sortData.getSize(), Sort.by(sortDirection, sortData.getSortBy()));
+                    return experienceRepository.getExperiencesByUserUserId(pageable, user.getUserId());
+                } else return experienceRepository.findExperiencesByUserUserId(Sort.by(sortDirection, sortData.getSortBy()), user.getUserId());
             } else log.error("user " + authentication.getName() + " does not exist in database");
         }
         return null;

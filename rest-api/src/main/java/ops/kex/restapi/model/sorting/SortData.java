@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 public class SortData {
-    private String code;
+    private String sortBy;
     private Boolean asc;
+    private Integer size;
 }

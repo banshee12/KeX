@@ -5,9 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.model.UserSkills;
+import ops.kex.restapi.model.sorting.SortData;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import ops.kex.restapi.repository.UserSkillsRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -28,15 +32,23 @@ public class UserSkillsService {
     private final SkillsRepository skillsRepository;
 
 
-    public List<UserSkills> getUserSkills() {
+    public List<UserSkills> getUserSkills(SortData sortData) {
+        String sortDirectionStr = "asc";
+        if (!sortData.getAsc()){
+            sortDirectionStr = "desc";
+        }
+        Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
         } else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
-                return user.getUserSkills();
-            } else log.error("user " + authentication.getName() + " does not exist");
+                if(sortData.getSize() > 0){
+                    Pageable pageable = PageRequest.of(0,sortData.getSize(), Sort.by(sortDirection, sortData.getSortBy()));
+                    return userSkillsRepository.getUserSkillsByUserUserId(pageable, user.getUserId());
+                } else return userSkillsRepository.findUserSkillsByUserUserId(Sort.by(sortDirection, sortData.getSortBy()), user.getUserId());
+            } else log.error("user " + authentication.getName() + " does not exist in database");
         }
         return null;
     }
