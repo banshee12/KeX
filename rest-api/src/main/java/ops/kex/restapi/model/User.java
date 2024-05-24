@@ -29,12 +29,11 @@ public class User {
     private Boolean contactOptionPhone;
     private Boolean contactOptionMail;
     private Boolean contactOptionAppointment;
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserSkills> userSkills;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Experience> userExperience;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ContactTime> userContactTimes;
 
 

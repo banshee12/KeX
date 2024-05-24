@@ -1,11 +1,13 @@
 package ops.kex.restapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties({"user"})
 @Data
 @Entity
 @Builder
@@ -17,7 +19,10 @@ public class UserSkills {
     private Integer id;
     private Boolean visible;
     private Integer level;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
-    @JoinColumn(name = "user_skills_id")
+    @ManyToOne
+    @JoinColumn(name = "skills_id")
     private Skills skill;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

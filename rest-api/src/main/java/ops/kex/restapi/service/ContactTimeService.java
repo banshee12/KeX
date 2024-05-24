@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +23,7 @@ public class ContactTimeService {
     private final ContactTimeRepository contactTimeRepository;
     private final UserRepository userRepository;
 
-    public List<ContactTime> getContactTime() {
-        return contactTimeRepository.findAll();
-    }
-
-    public List<ContactTime> getUserContactTimes() {
+    public List<ContactTime> getContactTimes() {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if ((authentication instanceof AnonymousAuthenticationToken)) {
                 log.error("no user logged in");
@@ -40,39 +37,33 @@ public class ContactTimeService {
         return null;
     }
 
-    public void addContactTimeToUser(ContactTime contactTime) {
+
+    public void updateContactTime(List<ContactTime> contactTime) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if ((authentication instanceof AnonymousAuthenticationToken)) {
             log.error("no user logged in");
         }else {
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user == null) {
-                throw new EntityNotFoundException("Error while user sync");
+                log.error("user " + authentication.getName() + " does not exist");
             } else {
-                List<ContactTime> userContactTime = user.getUserContactTimes();
-                contactTimeRepository.save(contactTime);
-                userContactTime.add(contactTime);
-                user.setUserContactTimes(userContactTime);
-                userRepository.save(user);
+                List<ContactTime> contactTimeList = contactTimeRepository.findContactTimesByUserUserId(user.getUserId());
+                if (!contactTimeList.isEmpty()) {
+                    contactTimeRepository.deleteAll(contactTimeList);
+                }
+
+                for (ContactTime ct : contactTime) {
+                    //create contactTime and save it
+                    ContactTime newContactTime = ContactTime.builder()
+                            .day(ct.getDay())
+                            .fromTime(ct.getFromTime())
+                            .toTime(ct.getToTime())
+                            .user(user)
+                            .build();
+                    contactTimeRepository.save(newContactTime);
+                    log.info("contact time '" + ct.getDay() + ": " + ct.getFromTime() + " - " + ct.getToTime() + "' has been added to user " + user.getUsername());
+                }
             }
         }
-    }
-
-    public void deleteContactTime(Integer contactTimeId) {
-        boolean exists = contactTimeRepository.existsById(contactTimeId);
-        if (!exists){
-            log.error("Contact Time with id "+ contactTimeId + " does not exists");
-        }
-        contactTimeRepository.deleteById(contactTimeId);
-    }
-
-    public void updateContactTime(ContactTime contactTime) {
-        if (contactTimeRepository.findById(contactTime.getId()).isPresent()){
-            ContactTime userContactTime = contactTimeRepository.findById(contactTime.getId()).get();
-            userContactTime.setDay(contactTime.getDay());
-            userContactTime.setFromTime(contactTime.getFromTime());
-            userContactTime.setToTime(contactTime.getToTime());
-            contactTimeRepository.save(userContactTime);
-        } else log.error("Contact Time with id " + contactTime.getId() + " does not exists");
     }
 }

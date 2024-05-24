@@ -2,6 +2,7 @@ package ops.kex.restapi.repository;
 
 import ops.kex.restapi.model.Experience;
 import ops.kex.restapi.model.Skills;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,5 @@ public interface ExperienceRepository
         extends JpaRepository<Experience, Integer> {
 
     List<Experience> findExperiencesBySkillTitle(String title);
+    List<Experience> findExperiencesByUserUserId(Sort sort, Integer userId);
 }

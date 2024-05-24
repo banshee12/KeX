@@ -2,6 +2,7 @@ package ops.kex.restapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.*;
+import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.service.UserService;
 import org.springframework.web.bind.annotation.*;

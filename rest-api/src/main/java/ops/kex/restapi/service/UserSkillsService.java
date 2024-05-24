@@ -62,6 +62,7 @@ public class UserSkillsService {
                 List<User> userSkillCheck = userRepository.findUsersByUserSkillsSkill(skillCheck);
                 if (!userSkillCheck.contains(user)) {
                     userSkill.setSkill(skillCheck);
+                    userSkill.setUser(user);
                     user.addUserSkill(userSkill);
                     userRepository.save(user);
                     log.info("Skill '" + userSkill.getSkill().getTitle() +"' added to " + user.getUsername());
@@ -99,6 +100,7 @@ public class UserSkillsService {
                     if(!usersThatHaveToBeAddedSkill.contains(user) || userSkill.getSkill().getTitle().equals(checkUserSkill.getSkill().getTitle()) || usersThatHaveToBeAddedSkill.isEmpty()){
                         user.setUserSkills(allUserSkills);
                         userSkill.setSkill(newSkill);
+                        userSkill.setUser(user);
                         user.addUserSkill(userSkill);
                         userRepository.save(user);
                         log.info("skill '" + newSkill.getTitle() + "' updated for " + user.getUsername());
