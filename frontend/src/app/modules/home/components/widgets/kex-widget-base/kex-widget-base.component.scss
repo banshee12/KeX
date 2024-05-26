@@ -1,0 +1,27 @@
+
+
+:host {
+  height: 100%;
+  display: block;
+
+  ::ng-deep .mat-mdc-card-content{
+    display : flex;
+    flex-direction: column;
+    margin-top: 16px;
+  }
+
+  ::ng-deep .mat-mdc-card-title {
+    font-size: 24px;
+  }
+
+  mat-divider{
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  mat-card {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+}

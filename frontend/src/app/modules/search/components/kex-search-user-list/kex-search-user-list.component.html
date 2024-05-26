@@ -9,7 +9,7 @@
   </ng-container>
   <ng-container *ngSwitchDefault>
     <ng-container *ngIf="searchResults$ | async as searchResult">
-      <p>Gefundene Person ({{ searchResult.count }})</p>
+      <p class="fw-bold">Gefundene Person ({{ searchResult.count }})</p>
       <div>
         <ng-container *ngFor="let user of searchResult.userList">
           <kex-search-user-list-user [user]="user"></kex-search-user-list-user>
@@ -18,7 +18,6 @@
     </ng-container>
   </ng-container>
 </ng-container>
-<ng-container></ng-container>
 
 
 

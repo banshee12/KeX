@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline">
   <mat-label>Suche</mat-label>
-  <input matInput type="text" [(ngModel)]="searchValue" placeholder="Fähigkeit eingeben">
+  <input matInput type="text" [(ngModel)]="searchValue" placeholder="Fähigkeit eingeben" (keyup.enter)="onSearch()">
   <button matSuffix mat-icon-button aria-label="search" (click)="onSearch()">
     <mat-icon>search</mat-icon>
   </button>

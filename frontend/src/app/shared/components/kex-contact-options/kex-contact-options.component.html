@@ -1,0 +1,4 @@
+<p class="fw-bold">Gewünschte Kontaktarten</p>
+<mat-chip [disabled]="!user?.contactOptionPhone" [color]="chipColor(user?.contactOptionPhone)" class="kex-contact-option-chip">Anrufen</mat-chip>
+<mat-chip [disabled]="!user?.contactOptionMail" [color]="chipColor(user?.contactOptionMail)" class="kex-contact-option-chip">E-Mail schreiben</mat-chip>
+<mat-chip [disabled]="!user?.contactOptionAppointment" [color]="'accent'">Terminanfrage senden</mat-chip>
