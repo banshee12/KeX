@@ -1,0 +1,9 @@
+<h4>Kontaktdaten</h4>
+<div class="kex-profile-contact-data-container">
+  <div class="kex-profile-contact-container p-2 my-2">
+    <kex-contact-options [user]="user"></kex-contact-options>
+  </div>
+  <div class="kex-profile-contact-container p-2 my-2">
+   <kex-contact-times [userContactTimes]="user?.userContactTimes || []"></kex-contact-times>
+  </div>
+</div>

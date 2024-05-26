@@ -1,0 +1,10 @@
+<p class="fw-bold">Gewünschte Kontaktzeiten</p>
+<div *ngIf="showContactTimes">
+  <div *ngFor="let contactTime of userContactTimes" class="kex-profile-contact-time-line">
+    <p class="kex-profile-contact-time-day">{{contactTime.day}}</p>
+    <p class="kex-profile-contact-time-time">{{contactTime.fromTime}} - {{contactTime.toTime}}</p>
+  </div>
+</div>
+<div *ngIf="!showContactTimes">
+  <p>Keine Zeiten hinterlegt</p>
+</div>

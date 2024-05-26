@@ -26,6 +26,10 @@ export class KexSearchUserProfileComponent implements OnInit {
     return this.store.select(KexSearchSelector.getUserProfileLoadState);
   }
 
+  get searchResultsLoadState$(): Observable<KexLoadState> {
+    return this.store.select(KexSearchSelector.getSearchResultsLoadState);
+  }
+
   protected readonly KexLoadState = KexLoadState;
 
   ngOnInit(): void {

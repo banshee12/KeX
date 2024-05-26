@@ -1,0 +1,36 @@
+:host{
+
+
+  .kex-profile-contact-data-container{
+    display: flex;
+    justify-content: space-between;
+
+  }
+
+  .kex-profile-contact-container {
+    background:  #EEEEEE;
+    border-radius: 4px;
+    width: 48%;
+  }
+
+  .kex-profile-contact-time-line{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .kex-profile-contact-time-container, .kex-profile-contact-options-container{
+    flex: 1;
+  }
+
+  .kex-profile-contact-time-day {
+    flex: 1;
+  }
+
+  .kex-profile-contact-time-time{
+    flex: 2;
+  }
+
+
+}
+
+

@@ -1,4 +1,4 @@
-import {Time} from "@angular/common";
+
 
 export type KexUserSkill = {
   id : number,
@@ -32,8 +32,8 @@ export type ContactTime = {
 export type ContactTimeSlot = {
   id? : number,
   day : string,
-  fromTime : Time,
-  toTime : Time,
+  fromTime : Date,
+  toTime : Date,
 }
 
 export type ContactOption = {
