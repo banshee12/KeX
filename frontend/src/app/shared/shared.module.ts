@@ -13,6 +13,9 @@ import { KexSearchFieldComponent } from './components/kex-search-field/kex-searc
 import {FormsModule} from "@angular/forms";
 import {MatFormField, MatInput, MatLabel, MatSuffix} from "@angular/material/input";
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from "@angular/material/dialog";
+import { KexContactOptionsComponent } from './components/kex-contact-options/kex-contact-options.component';
+import {MatChip} from "@angular/material/chips";
+import { KexContactTimesComponent } from './components/kex-contact-times/kex-contact-times.component';
 
 
 
@@ -23,7 +26,9 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
     KexButtonComponent,
     KexModalComponent,
     KexModalConfirmationComponent,
-    KexSearchFieldComponent
+    KexSearchFieldComponent,
+    KexContactOptionsComponent,
+    KexContactTimesComponent
   ],
   exports: [
     KexNotificationComponent,
@@ -31,25 +36,28 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
     KexButtonComponent,
     KexModalComponent,
     KexModalConfirmationComponent,
-    KexSearchFieldComponent
+    KexSearchFieldComponent,
+    KexContactOptionsComponent,
+    KexContactTimesComponent
   ],
-    imports: [
-        CommonModule,
-        MatIcon,
-        MatTooltip,
-        MatProgressSpinner,
-        MatMiniFabButton,
-        FormsModule,
-        MatInput,
-        MatIconButton,
-        MatSuffix,
-        MatDialogTitle,
-        MatDialogContent,
-        MatDialogActions,
-        MatButton,
-        MatDialogClose,
-        MatFormField,
-        MatLabel
-    ]
+  imports: [
+    CommonModule,
+    MatIcon,
+    MatTooltip,
+    MatProgressSpinner,
+    MatMiniFabButton,
+    FormsModule,
+    MatInput,
+    MatIconButton,
+    MatSuffix,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    MatFormField,
+    MatLabel,
+    MatChip
+  ]
 })
 export class SharedModule { }

@@ -1,0 +1,35 @@
+:host{
+  .kex-skill-number {
+    border-radius: 100%;
+    background-color: #3F51B5;
+    color: white;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  ul li {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: #EEEEEE 1px solid;
+    h4 {
+      padding: 0;
+    }
+  }
+
+  ul li:last-child {
+    border: none;
+    margin-bottom: 0;
+  }
+
+  .kex-widget-skill-container {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+

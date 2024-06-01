@@ -1,12 +1,15 @@
 <kex-toolbar></kex-toolbar>
-<ng-container [ngSwitch]="loadState">
-  <ng-container *ngSwitchCase="KexLoadState.FAILURE">ERROR</ng-container>
-  <ng-container *ngSwitchCase="KexLoadState.SUCCESS">
-    <router-outlet></router-outlet>
+<div class="kex-page-content">
+  <ng-container [ngSwitch]="loadState">
+    <ng-container *ngSwitchCase="KexLoadState.FAILURE">ERROR</ng-container>
+    <ng-container *ngSwitchCase="KexLoadState.SUCCESS">
+      <router-outlet></router-outlet>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <mat-spinner></mat-spinner>
+    </ng-container>
   </ng-container>
-  <ng-container *ngSwitchDefault>
-    <mat-spinner></mat-spinner>
-  </ng-container>
-</ng-container>
+</div>
+
 
 

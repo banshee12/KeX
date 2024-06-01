@@ -45,7 +45,7 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
   }
 
   get color() {
-    return this.visible ? 'primary' : 'accent';
+    return this.editMode ? this.visible ? 'primary' : 'accent' : '';
   }
 
   get title(): string {

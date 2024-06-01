@@ -8,7 +8,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class KexStarRatingComponent {
   @Input() rating: number = 1;
   @Input() starCount: number = 5;
-  @Input() color: string = 'primary';
+  @Input() color: string = '';
   @Input() edit = false;
   @Output() ratingUpdated = new EventEmitter();
 

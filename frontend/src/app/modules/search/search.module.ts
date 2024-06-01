@@ -14,6 +14,11 @@ import {MatChip, MatChipSet} from "@angular/material/chips";
 import {
   KexUserDetailsExperienceComponent
 } from "./components/kex-search-user-profile/kex-user-details-experiences/kex-user-details-experience/kex-user-details-experience.component";
+import { KexSearchUserProfileContactDataComponent } from './components/kex-search-user-profile/kex-search-user-profile-contact-data/kex-search-user-profile-contact-data.component';
+import {MatCheckbox} from "@angular/material/checkbox";
+import { KexUserProfileComponent } from './components/kex-user-profile/kex-user-profile.component';
+import {MatButton} from "@angular/material/button";
+import {MatDivider} from "@angular/material/divider";
 
 
 
@@ -26,7 +31,9 @@ import {
     KexUserDetailsSkillsComponent,
     KexUserDetailsExperiencesComponent,
     KexUserDetailsSkillComponent,
-    KexUserDetailsExperienceComponent
+    KexUserDetailsExperienceComponent,
+    KexSearchUserProfileContactDataComponent,
+    KexUserProfileComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +41,10 @@ import {
     MatProgressSpinner,
     MatIcon,
     MatChipSet,
-    MatChip
+    MatChip,
+    MatCheckbox,
+    MatButton,
+    MatDivider
   ]
 })
 export class SearchModule { }

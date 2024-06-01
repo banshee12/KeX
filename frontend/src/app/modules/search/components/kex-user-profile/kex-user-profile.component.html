@@ -1,0 +1,10 @@
+
+<div class="kex-user-profile-container">
+  <div *ngIf="showBackToSearchButton" class="kex-user-profile-header">
+    <button mat-button  (click)="backToSearch()" >
+      <mat-icon>chevron_left</mat-icon>Zurück zur Ergebnisliste</button>
+    <mat-divider></mat-divider>
+  </div>
+  <kex-search-user-profile [userId]="userId"></kex-search-user-profile>
+</div>
+

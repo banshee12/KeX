@@ -34,8 +34,12 @@ public class SkillsService {
     public void addNewSkill(Skills skills){
         Optional<Skills> skillsOptional = skillsRepository
                 .findSkillsByTitleIgnoreCase(skills.getTitle());
-        skillsOptional.ifPresent(value -> log.warn("Skill " + value.getTitle() + " already exists in database"));
-        skillsRepository.save(skills);
+        if(skillsOptional.isPresent()){
+            log.warn("Skill " + skills.getTitle() + " already exists in database");
+        } else{
+            skillsRepository.save(skills);
+            log.info("Skill " + skills.getTitle() + " has been added to database");
+        }
     }
 
     public void deleteSkill(Integer skillId) {
@@ -79,8 +83,10 @@ public class SkillsService {
                     .findSkillsByTitleIgnoreCase(skill.getTitle());
             if (skillsOptional.isPresent()) {
                 log.error("skill " + skill.getTitle() +" already exist in database");
+            } else{
+                skills.setTitle(skill.getTitle());
+                log.info("Skill updated");
             }
-            skills.setTitle(skill.getTitle());
         } else log.error("skill " + skill.getTitle() + " can not be updated cause it does not exist");
     }
 

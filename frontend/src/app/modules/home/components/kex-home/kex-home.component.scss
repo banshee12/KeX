@@ -1,6 +1,30 @@
-.kex-home-search-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 16px;
+@import 'bootstrap/scss/bootstrap';
+
+:host{
+
+  .kex-home-search-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+  }
+
+  .kex-home-widgets {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .kex-widget {
+    flex: 1;
+    min-width: 100%;
+    @include media-breakpoint-up(md) {
+      min-width: 400px;
+    }
+  }
 }
+
+
+
+

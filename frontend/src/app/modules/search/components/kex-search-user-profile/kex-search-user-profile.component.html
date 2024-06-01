@@ -1,6 +1,11 @@
 <ng-container [ngSwitch]="userProfileLoadState$ | async">
   <ng-container *ngSwitchCase="KexLoadState.NONE">
-    <p>Bitte wählen Sie eine Person aus</p>
+    <ng-container *ngIf="(searchResultsLoadState$ | async) === KexLoadState.SUCCESS">
+      <p>Bitte wähle eine Person aus</p>
+    </ng-container>
+    <ng-container *ngIf="(searchResultsLoadState$ | async) === KexLoadState.NONE">
+      <p>Bitte gib ein Suchbegriff ein um Personen zu finden</p>
+    </ng-container>
   </ng-container>
   <ng-container *ngSwitchCase="KexLoadState.LOADING">
     <mat-spinner></mat-spinner>
@@ -10,9 +15,10 @@
   </ng-container>
   <ng-container *ngSwitchDefault>
     <ng-container *ngIf="userProfile$ | async as user">
-      <p>{{user.firstname + ' ' + user.lastname}}</p>
-      <kex-user-details-skills [skillList]="user.userSkills || []"></kex-user-details-skills>
-      <kex-user-details-experiences [experienceList]="user.userExperience || []"></kex-user-details-experiences>
+      <h1>{{user.firstname + ' ' + user.lastname}}</h1>
+      <kex-search-user-profile-contact-data [user]="user" class="kex-user-profile-section"></kex-search-user-profile-contact-data>
+      <kex-user-details-skills [skillList]="user.userSkills || []" class="kex-user-profile-section"></kex-user-details-skills>
+      <kex-user-details-experiences [experienceList]="user.userExperience || []" class="kex-user-profile-section"></kex-user-details-experiences>
     </ng-container>
   </ng-container>
 </ng-container>

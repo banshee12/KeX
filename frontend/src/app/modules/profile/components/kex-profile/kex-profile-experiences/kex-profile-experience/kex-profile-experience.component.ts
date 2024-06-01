@@ -51,8 +51,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
                             private store : Store<KexProfileState>,
                             public dialog: MatDialog) {
 
-  var temp = this.profileService.$skills
-  this.allProfileSkills = temp;
+  this.allProfileSkills = this.profileService.$skills
   }
 
   get color() {
@@ -67,7 +66,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
    title = '';
    visible = false;
    description = '';
-   linkedSkills: KexSkill[] = []; // Array für ausgewählte Fähigkeiten
+   linkedSkills: KexUserSkill[] = []; // Array für ausgewählte Fähigkeiten
    editMode = false;
    addNewExperience=false;
 
@@ -126,7 +125,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   }
 
 
-  saveExperience(){
+  saveExperience(): void {
   if (this.experience) {
         const experience: Experience = {...this.experience, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
         this.profileService.saveExperience(experience);
@@ -185,9 +184,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
-      private _filterSkills(value: string): KexSkill[] {
+      private _filterSkills(value: string): KexUserSkill[] {
         const filterValue = value.toLowerCase();
-        return this.linkedSkills.filter(skill => skill.title.toLowerCase().includes(filterValue));
+        return this.linkedSkills.filter(skill => skill.skill.title.toLowerCase().includes(filterValue));
       }
 
       // Methode zum Hinzufügen einer Fähigkeit
@@ -195,23 +194,33 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
           const input = event.input;
           const value = event.value;
 
-          if ((value || '').trim()) {
+          if ((value).trim() != '') {
             //TODO
+            //Title
+            let skillTitle = value.trim();
+            //Skill ID :0
             //this.linkedSkills.push({title:value.trim() });
-          }
-
-          if (input) {
-            input.value = '';
+            const skill: KexUserSkill = {
+                      id: 0,
+                      skill: {id: 0, title: skillTitle},
+                      level: 0,
+                      visible: false
+                    };
+            this.profileService.addSkill(skill);
+            //Problem: linkedSkills is not extendable
+            this.linkedSkills.push(skill);
           }
 
           this.skillCtrl.setValue(null);
         }
 
       // Methode zum Entfernen einer Fähigkeit
-       removeSkill(skill: KexSkill): void {
+       removeSkill(skill: KexUserSkill): void {
           const index = this.linkedSkills.indexOf(skill);
           if (index >= 0) {
+          //Problem: Kann objekt nicht aus dem Array Löschen
             this.linkedSkills.splice(index, 1);
+            this.saveExperience();
           }
        }
 
@@ -219,7 +228,20 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
        selectExistingSkill(event: MatAutocompleteSelectedEvent): void {
           //TODO
           //this.linkedSkills.push({ title: event.option.viewValue });
+          console.log(Array.isArray(this.linkedSkills));
+          var selectedSkill = event.option.value; //KexUserSkill
+          //Umwandlung in KexSkill
+          const skillClone = { ...selectedSkill }; // Flache Kopie von selectedSkill
+          const skill: KexUserSkill = {
+              id: skillClone.skill.id,
+              skill: { id: skillClone.id, title: skillClone.skill.title },
+              level: skillClone.level,
+              visible: skillClone.visible
+          };
+          //Problem: linkedSkills is not extendable
+          this.linkedSkills.push(skill);
           this.skillInput.nativeElement.value = '';
           this.skillCtrl.setValue(null);
+          this.saveExperience();
        }
 }

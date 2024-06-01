@@ -9,7 +9,7 @@
     <div class="kex-skill-content-left">
       <kex-star-rating [rating]="level" [edit]="editMode" [color]="color" (ratingUpdated)="ratingUpdated($event)"></kex-star-rating>
       <h3 *ngIf="!editMode">{{ title }}</h3>
-      <mat-form-field *ngIf="editMode" class="p-0">
+      <mat-form-field *ngIf="editMode" class="p-0 kex-form-field">
         <mat-label>Fähigkeit</mat-label>
         <input type="text"
                aria-label="Number"
