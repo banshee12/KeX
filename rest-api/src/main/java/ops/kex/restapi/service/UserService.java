@@ -7,6 +7,9 @@ import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +17,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -120,34 +121,66 @@ public class UserService {
     }
 
     //Todo improve search (add possibility to search for experience title)
+//    public List<UserView> findUser(UserSearch userSearch) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User loggedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+//        Integer minLevel = 0;
+//        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(userSearch.getSearchSkill());
+//        List<UserView> users = new ArrayList<>();
+//        if(userSearch.getMinLevel()!=null){
+//            minLevel = userSearch.getMinLevel();
+//        }
+//        for (Skills skill : skills ){
+//            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+//                    skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()),
+//                    true,
+//                    minLevel);
+//            for(UserView user : usersTemp){
+//                boolean exist = false;
+//                for(UserView userView : users){
+//                    if(userView.getUserSub().equals(user.getUserSub())){
+//                        exist = true;
+//                    }
+//                }
+//                if(!exist){
+//                    if(!user.getUserSub().equals(loggedUser.getUserSub())){
+//                        users.add(user);
+//                    }
+//                }
+//            }
+//        }
+//        return users;
+//    }
     public List<UserView> findUser(UserSearch userSearch) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User loggedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+        String sortDirectionStr = "asc";
+        if (!userSearch.getSortData().getAsc()){
+            sortDirectionStr = "desc";
+        }
+        Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
+
         Integer minLevel = 0;
-        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(userSearch.getSearchSkill());
-        List<UserView> users = new ArrayList<>();
         if(userSearch.getMinLevel()!=null){
             minLevel = userSearch.getMinLevel();
         }
-        for (Skills skill : skills ){
-            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
-                    skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()),
-                    true,
-                    minLevel);
-            for(UserView user : usersTemp){
-                boolean exist = false;
-                for(UserView userView : users){
-                    if(userView.getUserSub().equals(user.getUserSub())){
-                        exist = true;
-                    }
-                }
-                if(!exist){
-                    if(!user.getUserSub().equals(loggedUser.getUserSub())){
-                        users.add(user);
-                    }
-                }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+        if (user != null) {
+            if(userSearch.getSortData().getSize() > 0){
+                Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
+                //Todo search when pageable possible (specific amount of users)
+            } else{
+                //todo remove logged user from return
+                List<UserView> foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                        Sort.by(sortDirection, userSearch.getSortData().getSortBy()),
+                        userSearch.getSearchSkill(),
+                        true,
+                        minLevel);
+
+                foundUsers.remove(userRepository.findUsersByUserSub(user.getUserSub()));
+                return foundUsers;
             }
-        }
-        return users;
+        } else log.error("user " + authentication.getName() + " does not exist in database");
+        return null;
     }
 }

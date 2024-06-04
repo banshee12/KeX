@@ -84,6 +84,7 @@ public class ExperienceService {
                                 .visible(false)
                                 .level(0)
                                 .skill(skillCheck)
+                                .user(user)
                                 .build();
                         user.addUserSkill(userSkill);
                         log.info("Skill " + skill.getTitle() + " has been added to " + user.getUsername());
