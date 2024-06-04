@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.*;
 import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
-import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +25,6 @@ public class UserService {
 
 
     private final UserRepository userRepository;
-    private final SkillsRepository skillsRepository;
 
     public void SyncUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -119,38 +117,6 @@ public class UserService {
             }
         }
     }
-
-    //Todo improve search (add possibility to search for experience title)
-//    public List<UserView> findUser(UserSearch userSearch) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User loggedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
-//        Integer minLevel = 0;
-//        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(userSearch.getSearchSkill());
-//        List<UserView> users = new ArrayList<>();
-//        if(userSearch.getMinLevel()!=null){
-//            minLevel = userSearch.getMinLevel();
-//        }
-//        for (Skills skill : skills ){
-//            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
-//                    skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()),
-//                    true,
-//                    minLevel);
-//            for(UserView user : usersTemp){
-//                boolean exist = false;
-//                for(UserView userView : users){
-//                    if(userView.getUserSub().equals(user.getUserSub())){
-//                        exist = true;
-//                    }
-//                }
-//                if(!exist){
-//                    if(!user.getUserSub().equals(loggedUser.getUserSub())){
-//                        users.add(user);
-//                    }
-//                }
-//            }
-//        }
-//        return users;
-//    }
     public List<UserView> findUser(UserSearch userSearch) {
         String sortDirectionStr = "asc";
         if (!userSearch.getSortData().getAsc()){
@@ -165,21 +131,25 @@ public class UserService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+        List<UserView> foundUsers = new ArrayList<>();
         if (user != null) {
+            //Pageable if sort size greater 0
             if(userSearch.getSortData().getSize() > 0){
                 Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
-                //Todo search when pageable possible (specific amount of users)
+                foundUsers = userRepository.findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                        pageable,
+                        userSearch.getSearchSkill(),
+                        true,
+                        minLevel);
             } else{
-                //todo remove logged user from return
-                List<UserView> foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
                         Sort.by(sortDirection, userSearch.getSortData().getSortBy()),
                         userSearch.getSearchSkill(),
                         true,
                         minLevel);
-
-                foundUsers.remove(userRepository.findUsersByUserSub(user.getUserSub()));
-                return foundUsers;
             }
+            foundUsers.removeIf(userView -> userView.getUserSub().equals(user.getUserSub()));
+            return foundUsers;
         } else log.error("user " + authentication.getName() + " does not exist in database");
         return null;
     }

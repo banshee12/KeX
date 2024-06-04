@@ -22,9 +22,7 @@ public interface UserRepository
     User getUserByUserSub(String userId);
     UserView findUsersByUserSub(String userId);
     List<User> findUsersByUserSkillsSkill(Skills skill);
-//    List<UserView> getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Skills skill, Boolean visible, Integer level);
-    List<UserView> findUsersByUserSkillsSkillContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Pageable pageable, Skills skill, Boolean visible, Integer level);
-//    List<UserView> getUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Sort sort, String searchSkill, Boolean visible, Integer level);
+    List<UserView> findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Pageable pageable, String searchSkill, Boolean visible, Integer level);
     List<UserView> getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Sort sort, String searchSkill, Boolean visible, Integer level);
 }
 
