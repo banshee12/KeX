@@ -5,7 +5,7 @@ import {GetSkillsActions} from "../../../../profile/store/actions/kex-profile.ac
 import {Observable, Subscription} from "rxjs";
 import {KexUserSkill} from "../../../../profile/models/kex-profile.model";
 import {KexProfileSelector} from "../../../../profile/store/selectors/kex-profile.selectors";
-import {KexLoadState} from "../../../../../core/models/kex-core.models";
+import {KexLoadState, KexSortData} from "../../../../../core/models/kex-core.models";
 import {Router} from "@angular/router";
 
 @Component({
@@ -43,7 +43,8 @@ export class KexWidgetSkillsComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.store.dispatch(GetSkillsActions.do());
+    let sortData : KexSortData = {sortBy : 'level', asc : false, size : 3};
+    this.store.dispatch(GetSkillsActions.do(sortData));
     this.subs.push(this.$skills.subscribe(skills => {
       if(skills.length > this.limitOfSkills){
         this.userSkills = skills.slice(0, this.limitOfSkills - 1);

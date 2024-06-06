@@ -24,6 +24,7 @@ import {KEX_SEARCH_STORE_FEATURE_KEY} from "./modules/search/store/reducers/kex-
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import { KexSearchEffects } from './modules/search/store/effects/kex-search.effects';
+import {environment} from "../environments/environment";
 
 const reducers: ActionReducerMap<unknown, Action> = {
   [KEX_PROFILE_STORE_FEATURE_KEY]: fromKexProfile.kexProfileReducer,
@@ -38,9 +39,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'https://kex-kc.kexserver.de/',
-        realm: 'kex-application',
-        clientId: 'kex-client-alpha'
+        url: environment.KEYCLOAK_URL,
+        realm: environment.KEYCLOAK_REALM,
+
+        clientId: environment.KEYCLOAK_CLIENT_ID
       },
       initOptions: {
         onLoad: 'check-sso',

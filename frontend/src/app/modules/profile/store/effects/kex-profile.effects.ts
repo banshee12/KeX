@@ -10,7 +10,7 @@ export class KexProfileEffects {
   getSkills = createEffect(() => this.actions$.pipe(
     ofType(KexProfileActions.GetSkillsActions.do),
     switchMap(action =>
-      this.connector.getSkillsFromCurrentUser().pipe(
+      this.connector.getSkillsFromCurrentUser(action).pipe(
         map((data) => KexProfileActions.GetSkillsActions.success({skills: data})),
         catchError(() => of(KexProfileActions.GetSkillsActions.fail()).pipe(tap(error => console.log(error))))
       ))
@@ -82,7 +82,7 @@ export class KexProfileEffects {
   setContactTime = createEffect(() => this.actions$.pipe(
     ofType(KexProfileActions.SetContactTimes.do),
     switchMap(action =>
-      this.connector.saveContactTime(action.contactTimes).pipe(
+      this.connector.saveContactTime(action.contactTimeSlots).pipe(
         map((data) => KexProfileActions.SetContactOptions.success()),
         catchError(() => of(KexProfileActions.SetContactOptions.fail()).pipe(tap(error => console.log(error))))
       ))

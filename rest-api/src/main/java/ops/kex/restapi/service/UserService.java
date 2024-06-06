@@ -3,6 +3,7 @@ package ops.kex.restapi.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.*;
+import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;

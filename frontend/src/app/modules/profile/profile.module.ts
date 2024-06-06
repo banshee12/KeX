@@ -23,6 +23,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { KexProfileContactOptionComponent } from './components/kex-profile/kex-profile-contact-data/kex-profile-contact-option/kex-profile-contact-option.component';
 import {MatCheckbox} from "@angular/material/checkbox";
 import { KexProfileContactTimeComponent } from './components/kex-profile/kex-profile-contact-data/kex-profile-contact-time/kex-profile-contact-time.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -35,28 +36,29 @@ import { KexProfileContactTimeComponent } from './components/kex-profile/kex-pro
     KexProfileContactOptionComponent,
     KexProfileContactTimeComponent
   ],
-  imports: [
-    CommonModule,
-    MatTab,
-    MatTabGroup,
-    MatProgressSpinner,
-    MatIcon,
-    SharedModule,
-    MatMiniFabButton,
-    MatTooltip,
-    MatButton,
-    MatFormField,
-    MatInput,
-    FormsModule,
-    MatFormFieldModule,
-    MatChipsModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    AsyncPipe,
-    FormsModule,
-    MatCheckbox,
-    MatIconButton
-  ]
+    imports: [
+        CommonModule,
+        MatTab,
+        MatTabGroup,
+        MatProgressSpinner,
+        MatIcon,
+        SharedModule,
+        MatMiniFabButton,
+        MatTooltip,
+        MatButton,
+        MatFormField,
+        MatInput,
+        FormsModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        AsyncPipe,
+        FormsModule,
+        MatCheckbox,
+        MatIconButton,
+        MatSelectModule
+    ]
 })
 export class ProfileModule { }

@@ -39,3 +39,9 @@ export interface KexDialogData {
   labelHeadline: string,
   labelDescription: string,
 }
+
+export interface KexSortData {
+  sortBy? : string,
+  asc? : boolean,
+  size? : number
+}

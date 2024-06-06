@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
-import {ContactData, ContactOption, ContactTime, Experience, KexSkill, KexUserSkill} from "../models/kex-profile.model";
+import {
+  ContactData,
+  ContactOption,
+  ContactTime,
+  ContactTimeSlot,
+  Experience,
+  KexSkill,
+  KexUserSkill
+} from "../models/kex-profile.model";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {kexUserSkill1, kexUserSkill2, kexUserSkill3} from "../dummy-data";
 import {proj1} from "../dummy-data";
 import {proj2} from "../dummy-data";
 import {environment} from "../../../../environments/environment";
-import {User} from "../../../core/models/kex-core.models";
+import {KexSortData, User} from "../../../core/models/kex-core.models";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +23,9 @@ export class KexProfileConnectorService {
   private API_URL= environment.API_URL;
   constructor(private http : HttpClient) { }
 
-  getSkillsFromCurrentUser() : Observable<KexUserSkill[]> {
-    return this.http.get<KexUserSkill[]>(this.API_URL + '/user/userSkill');
+  getSkillsFromCurrentUser(sortData : KexSortData) : Observable<KexUserSkill[]> {
+    console.log(sortData);
+    return this.http.put<KexUserSkill[]>(this.API_URL + '/user/userSkill/sorted', sortData);
     //return of([skill1, skill2, skill3]); //testing
   }
   getExperiencesFromCurrentUser() : Observable<Experience[]> {
@@ -48,8 +57,8 @@ export class KexProfileConnectorService {
     return this.http.put<string>(this.API_URL + '/user/contactOption', user);
   }
 
-  saveContactTime(contactTime : ContactTime) : Observable<string> {
-    return this.http.put<string>(this.API_URL + '/user/contactTime', contactTime);
+  saveContactTime(contactTimeSlotList : ContactTimeSlot[]) : Observable<string> {
+    return this.http.put<string>(this.API_URL + '/user/contactTime', contactTimeSlotList);
   }
 
   deleteSkill(skill : KexUserSkill) : Observable<string> {

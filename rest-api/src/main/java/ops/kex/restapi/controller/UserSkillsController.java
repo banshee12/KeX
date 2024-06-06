@@ -2,6 +2,7 @@ package ops.kex.restapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.UserSkills;
+import ops.kex.restapi.model.sorting.SortData;
 import ops.kex.restapi.service.UserSkillsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,9 @@ public class UserSkillsController {
 
     private final UserSkillsService userSkillsService;
 
-    @GetMapping("user/userSkill")
-    public List<UserSkills> getUserSkill(){
-        return userSkillsService.getUserSkills();
+    @PutMapping("user/userSkill/sorted")
+    public List<UserSkills> getUserSkill(@RequestBody SortData sortData){
+        return userSkillsService.getUserSkills(sortData);
     }
 
     @PostMapping("/user/userSkill")
@@ -26,8 +27,8 @@ public class UserSkillsController {
     }
 
     @PutMapping("/user/userSkill")
-    public ResponseEntity<String> updateUserSkill(@RequestBody UserSkills userSkills) {
-        return userSkillsService.updateUserSkill(userSkills);
+    public void updateUserSkill(@RequestBody UserSkills userSkills) {
+        userSkillsService.updateUserSkill(userSkills);
     }
 
     @DeleteMapping("/user/userSkill/{userSkillsId}")

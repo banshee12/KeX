@@ -16,15 +16,21 @@
 
       <mat-form-field class="example-form-field">
         <mat-label>Tag</mat-label>
-        <input matInput type="text" [(ngModel)]="timeSlot.day">
+        <mat-select [(ngModel)]="timeSlot.day">
+          <mat-option value="MONDAY" >Montag</mat-option>
+          <mat-option value="TUESDAY">Dienstag</mat-option>
+          <mat-option value="WEDNESDAY">Mittwoch</mat-option>
+          <mat-option value="THURSDAY">Donnerstag</mat-option>
+          <mat-option value="FRIDAY">Freitag</mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field class="example-form-field">
         <mat-label>Von</mat-label>
-        <input matInput type="time" [(ngModel)]="timeSlot.fromTime">
+        <input matInput type="time" [(ngModel)]="timeSlot.fromTimeDisplayed">
       </mat-form-field>
       <mat-form-field class="example-form-field">
         <mat-label>Bis</mat-label>
-        <input matInput type="time" [(ngModel)]="timeSlot.toTime">
+        <input matInput type="time" [(ngModel)]="timeSlot.toTimeDisplayed">
       </mat-form-field>
       <kex-button class="mx-2" tooltip="Löschen" icon="delete" (click)="deleteTimeSlot(i)"></kex-button>
 

@@ -6,9 +6,13 @@ import ops.kex.restapi.model.Experience;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.model.UserSkills;
+import ops.kex.restapi.model.sorting.SortData;
 import ops.kex.restapi.repository.ExperienceRepository;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,11 +31,13 @@ public class ExperienceService {
     private final UserRepository userRepository;
     private final SkillsRepository skillsRepository;
 
-    public List<Experience> getExperience() {
-        return experienceRepository.findAll();
-    }
 
-    public List<Experience> getUserExperience() {
+    public List<Experience> getUserExperience(SortData sortData) {
+        String sortDirectionStr = "asc";
+        if (!sortData.getAsc()){
+            sortDirectionStr = "desc";
+        }
+        Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
@@ -39,8 +45,11 @@ public class ExperienceService {
         else{
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
-                return user.getUserExperience();
-            } else log.error("user " + authentication.getName() + " does not exist");
+                if(sortData.getSize() > 0){
+                    Pageable pageable = PageRequest.of(0,sortData.getSize(), Sort.by(sortDirection, sortData.getSortBy()));
+                    return experienceRepository.getExperiencesByUserUserId(pageable, user.getUserId());
+                } else return experienceRepository.findExperiencesByUserUserId(Sort.by(sortDirection, sortData.getSortBy()), user.getUserId());
+            } else log.error("user " + authentication.getName() + " does not exist in database");
         }
         return null;
     }
@@ -88,11 +97,12 @@ public class ExperienceService {
                         .description(experience.getDescription())
                         .visible(experience.getVisible())
                         .skill(experienceSkills)
+                        .user(user)
                         .build();
                 userExperience.add(newExperience);
                 user.setUserExperience(userExperience);
                 userRepository.save(user);
-                log.info("Experience added");
+                log.info("Experience '" + newExperience.getTitle() + "' added to user " + user.getUsername());
             }
         }
     }

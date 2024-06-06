@@ -1,12 +1,12 @@
 import {createActionGroup, emptyProps, props} from "@ngrx/store";
-import {ContactTime, KexUserSkill} from "../../models/kex-profile.model";
+import {ContactTime, ContactTimeSlot, KexUserSkill} from "../../models/kex-profile.model";
 import {Experience} from "../../models/kex-profile.model";
-import {User} from "../../../../core/models/kex-core.models";
+import {KexSortData, User} from "../../../../core/models/kex-core.models";
 
 export const GetSkillsActions = createActionGroup({
   source : '[PROFILE] get skills',
   events : {
-    do : emptyProps(),
+    do : props<KexSortData>(),
     success : props<{skills : KexUserSkill[]}>(),
     fail : emptyProps,
     reset : emptyProps,
@@ -112,7 +112,7 @@ export const SetContactOptions = createActionGroup({
 export const SetContactTimes = createActionGroup({
   source : '[PROFILE] set contact times',
   events : {
-    do : props<{contactTimes : ContactTime}>(),
+    do : props<{contactTimeSlots : ContactTimeSlot[]}>(),
     success : emptyProps,
     fail : emptyProps,
     reset : emptyProps,
