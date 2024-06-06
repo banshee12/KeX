@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -25,6 +25,11 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import { KexSearchEffects } from './modules/search/store/effects/kex-search.effects';
 import {environment} from "../environments/environment";
+import {registerLocaleData} from "@angular/common";
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
+
+registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 const reducers: ActionReducerMap<unknown, Action> = {
   [KEX_PROFILE_STORE_FEATURE_KEY]: fromKexProfile.kexProfileReducer,
@@ -88,7 +93,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'de-DE' }
   ],
   bootstrap: [AppComponent]
 })

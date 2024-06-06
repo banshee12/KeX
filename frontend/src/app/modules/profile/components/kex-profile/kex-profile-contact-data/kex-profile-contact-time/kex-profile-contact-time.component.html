@@ -1,45 +1,42 @@
-<div class="d-flex">
-  <p class="fw-bold">Gewünschte Kontaktzeiten</p>
-  <button *ngIf="!editMode" color="primary" mat-icon-button matTooltip="Bearbeiten" (click)="this.editMode = true">
+<div class="d-flex align-items-center">
+  <p class="fw-bold m-0">Gewünschte Kontaktzeiten</p>
+  <button *ngIf="!editMode" color="primary" mat-icon-button matTooltip="Bearbeiten" (click)="goToEditMode()">
     <mat-icon>edit</mat-icon>
   </button>
 </div>
 <ng-container *ngIf="($contactTime | async) as contactTimeSlots">
   <div *ngIf="!editMode">
-    <div *ngFor="let timeSlot of contactTimeSlots">
-      <span>{{timeSlot.day}}</span>
-      <span>{{timeSlot.fromTime}} - {{timeSlot.toTime}}</span>
-    </div>
+    <kex-contact-times [userContactTimes]="contactTimeSlots || []" [showHeadline]="false"></kex-contact-times>
   </div>
-  <div *ngIf="editMode">
+  <div *ngIf="editMode" >
     <div *ngFor="let timeSlot of contactTimeSlotsEdit; index as i">
-
-      <mat-form-field class="example-form-field">
-        <mat-label>Tag</mat-label>
-        <mat-select [(ngModel)]="timeSlot.day">
-          <mat-option value="MONDAY" >Montag</mat-option>
-          <mat-option value="TUESDAY">Dienstag</mat-option>
-          <mat-option value="WEDNESDAY">Mittwoch</mat-option>
-          <mat-option value="THURSDAY">Donnerstag</mat-option>
-          <mat-option value="FRIDAY">Freitag</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="example-form-field">
-        <mat-label>Von</mat-label>
-        <input matInput type="time" [(ngModel)]="timeSlot.fromTimeDisplayed">
-      </mat-form-field>
-      <mat-form-field class="example-form-field">
-        <mat-label>Bis</mat-label>
-        <input matInput type="time" [(ngModel)]="timeSlot.toTimeDisplayed">
-      </mat-form-field>
-      <kex-button class="mx-2" tooltip="Löschen" icon="delete" (click)="deleteTimeSlot(i)"></kex-button>
-
+      <div class="kex-contact-time-line my-4">
+        <mat-form-field class="example-form-field">
+          <mat-label>Tag</mat-label>
+          <mat-select [(ngModel)]="timeSlot.day">
+            <mat-option value="MONDAY">Montag</mat-option>
+            <mat-option value="TUESDAY">Dienstag</mat-option>
+            <mat-option value="WEDNESDAY">Mittwoch</mat-option>
+            <mat-option value="THURSDAY">Donnerstag</mat-option>
+            <mat-option value="FRIDAY">Freitag</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-form-field">
+          <mat-label>Von</mat-label>
+          <input matInput type="time" [(ngModel)]="timeSlot.fromTimeDisplayed">
+        </mat-form-field>
+        <mat-form-field class="example-form-field">
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" [(ngModel)]="timeSlot.toTimeDisplayed">
+        </mat-form-field>
+        <kex-button class="mx-2" tooltip="Löschen" icon="delete" (click)="deleteTimeSlot(i)"></kex-button>
+      </div>
 
     </div>
     <div class="kex-profile-contact-time-button-footer">
       <button mat-raised-button (click)="addTimeSlot()">Zeile hinzufügen</button>
       <div>
-        <button mat-raised-button (click)="cancel()">Abbrechen</button>
+        <button mat-raised-button (click)="cancel()" id="kex-contact-time-cancel-button">Abbrechen</button>
         <button mat-raised-button color="primary" (click)="saveContactTime()">Speichern</button>
       </div>
     </div>

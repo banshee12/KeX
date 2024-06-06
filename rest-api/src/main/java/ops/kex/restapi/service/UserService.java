@@ -118,14 +118,11 @@ public class UserService {
         }
     }
     public List<UserView> findUser(UserSearch userSearch) {
-        String sortDirectionStr = "asc";
-        if (!userSearch.getSortData().getAsc()){
-            sortDirectionStr = "desc";
-        }
+        String sortDirectionStr = userSearch.getSortData() != null && !userSearch.getSortData().getAsc() ? "desc" : "asc";
         Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
 
         Integer minLevel = 0;
-        if(userSearch.getMinLevel()!=null){
+        if(userSearch.getMinLevel() != null){
             minLevel = userSearch.getMinLevel();
         }
 
@@ -134,7 +131,7 @@ public class UserService {
         List<UserView> foundUsers = new ArrayList<>();
         if (user != null) {
             //Pageable if sort size greater 0
-            if(userSearch.getSortData().getSize() > 0){
+            if(userSearch.getSortData() != null && userSearch.getSortData().getSize() != null && userSearch.getSortData().getSize() > 0){
                 Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
                 foundUsers = userRepository.findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
                         pageable,

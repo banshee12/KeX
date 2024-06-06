@@ -83,8 +83,8 @@ export class KexProfileEffects {
     ofType(KexProfileActions.SetContactTimes.do),
     switchMap(action =>
       this.connector.saveContactTime(action.contactTimeSlots).pipe(
-        map((data) => KexProfileActions.SetContactOptions.success()),
-        catchError(() => of(KexProfileActions.SetContactOptions.fail()).pipe(tap(error => console.log(error))))
+        map((data) => KexProfileActions.SetContactTimes.success()),
+        catchError(() => of(KexProfileActions.SetContactTimes.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
 
