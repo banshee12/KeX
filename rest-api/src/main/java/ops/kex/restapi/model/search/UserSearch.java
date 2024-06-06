@@ -1,6 +1,7 @@
 package ops.kex.restapi.model.search;
 
 import lombok.*;
+import ops.kex.restapi.model.sorting.SortData;
 
 
 @Builder
@@ -11,4 +12,5 @@ import lombok.*;
 public class UserSearch {
     private String searchSkill;
     private Integer minLevel;
+    private SortData sortData;
 }
