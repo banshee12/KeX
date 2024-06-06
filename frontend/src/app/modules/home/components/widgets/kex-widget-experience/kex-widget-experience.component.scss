@@ -1,0 +1,37 @@
+:host{
+  .kex-experience-number {
+    border-radius: 100%;
+    background-color: #3F51B5;
+    color: white;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 15px;
+  }
+
+  ul li {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: #EEEEEE 1px solid;
+    h4 {
+      padding: 0;
+    }
+  }
+
+  ul li:last-child {
+    border: none;
+    margin-bottom: 0;
+  }
+
+  .kex-widget-experience-container {
+    padding: 15px;
+    margin:15px;
+  }
+}
+
+
