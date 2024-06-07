@@ -13,6 +13,8 @@ import ops.kex.restapi.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,7 +34,7 @@ public class ExperienceService {
     private final SkillsRepository skillsRepository;
 
 
-    public List<Experience> getUserExperience(SortData sortData) {
+    public ResponseEntity<List<Experience>> getUserExperience(SortData sortData) {
         String sortDirectionStr = "asc";
         if (!sortData.getAsc()){
             sortDirectionStr = "desc";
@@ -41,24 +43,34 @@ public class ExperienceService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         else{
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
                 if(sortData.getSize() > 0){
                     Pageable pageable = PageRequest.of(0,sortData.getSize(), Sort.by(sortDirection, sortData.getSortBy()));
-                    return experienceRepository.getExperiencesByUserUserId(pageable, user.getUserId());
-                } else return experienceRepository.findExperiencesByUserUserId(Sort.by(sortDirection, sortData.getSortBy()), user.getUserId());
-            } else log.error("user " + authentication.getName() + " does not exist in database");
+                    return new ResponseEntity<>(
+                            experienceRepository.getExperiencesByUserUserId(pageable, user.getUserId()),
+                            HttpStatus.OK);
+                } else return new ResponseEntity<>(
+                        experienceRepository.findExperiencesByUserUserId(Sort.by(sortDirection, sortData.getSortBy()), user.getUserId()),
+                        HttpStatus.OK);
+            } else {
+                log.error("user " + authentication.getName() + " does not exist in database");
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
-        return null;
     }
 
 
-    public void addExperienceToUser(Experience experience) {
+    public ResponseEntity<String> addExperienceToUser(Experience experience) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
+            return new ResponseEntity<>(
+                    "no user logged in",
+                    HttpStatus.UNAUTHORIZED);
         }
         else{
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
@@ -104,32 +116,52 @@ public class ExperienceService {
                 user.setUserExperience(userExperience);
                 userRepository.save(user);
                 log.info("Experience '" + newExperience.getTitle() + "' added to user " + user.getUsername());
+                return new ResponseEntity<>(
+                        "Experience '" + newExperience.getTitle() + "' added to user " + user.getUsername(),
+                        HttpStatus.CREATED);
+            } else{
+                log.error("user " + authentication.getName() + " does not exist in database");
+                return new ResponseEntity<>(
+                        "user " + authentication.getName() + " does not exist in database",
+                        HttpStatus.NOT_FOUND);
             }
         }
     }
 
-    public void deleteExperience(Integer experienceId) {
+    public ResponseEntity<String> deleteExperience(Integer experienceId) {
         boolean exists = experienceRepository.existsById(experienceId);
         if (!exists) {
-            log.error("Experience with id " + experienceId + " does not exists");
+            log.error("Experience with id " + experienceId + " does not exist in database");
+            return new ResponseEntity<>(
+                    "Experience with id " + experienceId + " does not exist in database",
+                    HttpStatus.NOT_FOUND);
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication instanceof AnonymousAuthenticationToken) {
                 log.error("no user logged in");
+                return new ResponseEntity<>(
+                        "no user logged in",
+                        HttpStatus.UNAUTHORIZED);
             } else {
                 User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
                 user.removeExperience(experienceId);
                 experienceRepository.deleteById(experienceId);
                 log.info("Experience deleted");
+                return new ResponseEntity<>(
+                        "Experience deleted",
+                        HttpStatus.OK);
             }
         }
     }
 
     @Transactional
-    public void updateExperience(Experience experience) {
+    public ResponseEntity<String> updateExperience(Experience experience) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             log.error("no user logged in");
+            return new ResponseEntity<>(
+                    "no user logged in",
+                    HttpStatus.UNAUTHORIZED);
         }
         else{
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
@@ -167,7 +199,20 @@ public class ExperienceService {
                     userExperience.setSkill(experienceSkills);
                     experienceRepository.save(userExperience);
                     log.info("Experience updated");
-                } else log.error("Experience with id " + experience.getId() + "does not exists");
+                    return new ResponseEntity<>(
+                            "Experience updated",
+                            HttpStatus.OK);
+                } else {
+                    log.error("Experience with id " + experience.getId() + "does not exists");
+                    return new ResponseEntity<>(
+                            "Experience with id " + experience.getId() + "does not exists",
+                            HttpStatus.NOT_FOUND);
+                }
+            } else {
+                log.error("user " + authentication.getName() + " does not exist in database");
+                return new ResponseEntity<>(
+                        "user " + authentication.getName() + " does not exist in database",
+                        HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }

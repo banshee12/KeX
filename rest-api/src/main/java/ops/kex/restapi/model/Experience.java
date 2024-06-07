@@ -17,7 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Experience {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EXPERIENCE_ID_GEN")
+    @SequenceGenerator(name = "EXPERIENCE_ID_GEN", sequenceName = "EXPERIENCE_ID_SEQ", initialValue = 1)
     private Integer id;
     private String title;
     private Boolean visible;
