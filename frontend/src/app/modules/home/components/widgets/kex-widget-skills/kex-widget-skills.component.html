@@ -1,0 +1,19 @@
+<kex-widget-base [title]="'Deine Top-Fähigkeiten'" [actionLabel]="'Fähigkeiten bearbeiten'" [loadState]="$skillsLoadState | async" (actionClicked)="goToProfile()">
+  <ul *ngIf="hasSkills" class="kex-widget-skill-container">
+    @for (skill of userSkills; track skill.id; let index = $index) {
+      <li >
+        <div class="kex-skill-number">
+          {{index + 1}}
+        </div>
+        <div>
+          <kex-star-rating [rating]="skill.level"></kex-star-rating>
+          <h4 >{{skill.skill.title}}</h4>
+        </div>
+      </li>
+    }
+  </ul>
+  <div *ngIf="!hasSkills">
+    <p>Noch keine Fähigkeiten eingetragen. Füge jetzt deine erste Fähgigkeit deinem Profil hinzu</p>
+  </div>
+</kex-widget-base>
+

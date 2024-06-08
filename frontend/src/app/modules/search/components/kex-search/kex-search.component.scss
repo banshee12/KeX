@@ -1,17 +1,32 @@
-.kex-search-container {
-  display: flex;
-  margin-left: 12px;
-  margin-right: 12px;
-  height: 100%;
+@import 'bootstrap/scss/bootstrap';
 
-  kex-search-user-list {
-    padding-right: 8px;
-    margin-right: 8px;
-    border-right: #9e9e9e 1px solid;
-    flex: 1;
-  }
+@include media-breakpoint-up(md) {
+  .kex-search-container {
+    display: flex;
+    margin-left: 24px;
+    margin-right: 24px;
+    height: 100%;
 
-  kex-search-user-profile {
-    flex: 2;
+    kex-search-user-list {
+      padding-right: 24px;
+      margin-right: 24px;
+      border-right: #9e9e9e 1px solid;
+      flex: 1;
+    }
+
+    kex-search-user-profile {
+      flex: 2;
+    }
   }
 }
+
+@include media-breakpoint-down(md) {
+  .kex-search-container {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+  kex-search-user-profile {
+    display: none;
+  }
+}
+

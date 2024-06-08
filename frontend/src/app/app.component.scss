@@ -1,7 +1,20 @@
-kex-toolbar {
-  margin-bottom: 16px;
+:host{
   display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .kex-page-content {
+    padding: 0 12px 12px 12px;
+    height: 100%;
+  }
+
+  kex-toolbar {
+    margin-bottom: 16px;
+    display: flex;
+  }
+
 }
+
 
 
 

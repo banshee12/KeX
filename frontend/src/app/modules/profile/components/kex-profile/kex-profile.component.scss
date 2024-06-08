@@ -1,19 +1,29 @@
 @import 'bootstrap/scss/bootstrap';
 
 :host{
+  display: flex;
+  justify-content: center;
+
   .kex-profile-container {
-    margin-left: 12px;
-    margin-right: 12px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
+    min-width: 600px;
+    @include media-breakpoint-down(md) {
+      min-width: 100%;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    @include media-breakpoint-up(lg) {
+      min-width: 800px;
+    }
   }
 
   ::ng-deep{
     .mat-mdc-tab-body-content {
       overflow: hidden !important;
     }
+    .mat-mdc-tab-group {
+      width: 100% !important;
+    }
   }
 }
+
 

@@ -1,0 +1,6 @@
+<kex-widget-base [title]="'Deine Kontaktdaten'" [actionLabel]="'Kontaktdaten bearbeiten'" (actionClicked)="goToProfile()">
+  <ng-container *ngIf="currentUser$ | async as currentUser">
+    <kex-contact-options *ngIf="currentUser" [user]="currentUser"></kex-contact-options>
+    <kex-contact-times [userContactTimes]="currentUser.userContactTimes || []"></kex-contact-times>
+  </ng-container>
+</kex-widget-base>
