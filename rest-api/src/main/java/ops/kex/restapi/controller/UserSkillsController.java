@@ -17,13 +17,13 @@ public class UserSkillsController {
     private final UserSkillsService userSkillsService;
 
     @PutMapping("user/userSkill/sorted")
-    public List<UserSkills> getUserSkill(@RequestBody SortData sortData){
+    public ResponseEntity<List<UserSkills>> getUserSkill(@RequestBody SortData sortData){
         return userSkillsService.getUserSkills(sortData);
     }
 
     @PostMapping("/user/userSkill")
-    public void addUserSkillToUser(@RequestBody UserSkills userSkills) {
-        userSkillsService.addUserSkillToUser(userSkills);
+    public ResponseEntity<String> addUserSkillToUser(@RequestBody UserSkills userSkills) {
+        return userSkillsService.addUserSkillToUser(userSkills);
     }
 
     @PutMapping("/user/userSkill")
@@ -32,7 +32,7 @@ public class UserSkillsController {
     }
 
     @DeleteMapping("/user/userSkill/{userSkillsId}")
-    public void deleteUserSkill(@PathVariable Integer userSkillsId) {
-        userSkillsService.deleteUserSkill(userSkillsId);
+    public ResponseEntity<String> deleteUserSkill(@PathVariable Integer userSkillsId) {
+        return userSkillsService.deleteUserSkill(userSkillsId);
     }
 }

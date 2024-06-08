@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ContactTime {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTACT_TIME_ID_GEN")
+    @SequenceGenerator(name = "CONTACT_TIME_ID_GEN", sequenceName = "CONTACT_TIME_ID_SEQ", initialValue = 1, allocationSize = 1)
     private Integer id;
     private String day;
     private LocalDateTime fromTime;
