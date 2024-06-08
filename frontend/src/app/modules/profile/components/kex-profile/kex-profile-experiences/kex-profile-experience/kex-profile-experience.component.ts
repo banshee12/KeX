@@ -5,11 +5,27 @@ import { map, startWith } from 'rxjs/operators';
 import {Experience, KexSkill, KexUserSkill} from "../../../../models/kex-profile.model";
 import { KexCoreService } from "../../../../../../core/services/kex-core.service";
 import { KexProfileService } from "../../../../services/kex-profile.service";
+import {KexLoadState} from "../../../../../../core/models/kex-core.models";
 import { Subscription } from "rxjs";
 import { state } from "@angular/animations";
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {MatDialog} from "@angular/material/dialog";
+import {KexProfileConnectorService} from "../../../../services/kex-profile-connector.service";
+import {KexProfileState} from "../../../../store/kex-profile.state";
+import {Store} from "@ngrx/store";
+import {
+  AddExperienceActions,
+  DeleteExperienceActions,
+  EditExperienceActions,
+  UpdateVisibilityExperienceActions
+} from "../../../../store/actions/kex-profile.actions";
+
+import {
+  KexModalConfirmationComponent
+} from "../../../../../../shared/components/kex-modal/kex-modal-confirmation/kex-modal-confirmation.component";
+
 
 @Component({
   selector: 'kex-profile-experience',
@@ -30,10 +46,12 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
 
   constructor(private coreService: KexCoreService,
-                            private profileService: KexProfileService) {
+                            private profileService: KexProfileService,
+                            private profileConnectorService: KexProfileConnectorService,
+                            private store : Store<KexProfileState>,
+                            public dialog: MatDialog) {
 
-  var temp = this.profileService.$skills
-  this.allProfileSkills = temp;
+  this.allProfileSkills = this.profileService.$skills
   }
 
   get color() {
@@ -48,8 +66,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
    title = '';
    visible = false;
    description = '';
-   linkedSkills: KexSkill[] = []; // Array für ausgewählte Fähigkeiten
+   linkedSkills: KexUserSkill[] = []; // Array für ausgewählte Fähigkeiten
    editMode = false;
+   addNewExperience=false;
 
   private subscriptions: Subscription[] = [];
 
@@ -60,6 +79,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         this.description = this.experience.description;
         this.linkedSkills= this.experience.skill || [];
       } else {
+        this.addNewExperience = true;
         this.editMode = true;
       }
       this.observeEditExperience();
@@ -71,17 +91,33 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   }
 
   setVisibility(): void{
+  this.visible = !this.visible;
+  if(this.experience && !this.editMode){
+  const experienceTemp : Experience = {...this.experience,visible:this.visible};
+  this.profileService.updateVisibilityExperience(experienceTemp);
+  }
   }
 
   deleteExperience():void{
-  if (this.experience) {
-        this.profileService.deleteExperience(this.experience);
-      }
+          const dialogRef = this.dialog.open(KexModalConfirmationComponent, {
+            data: {labelAction: 'Löschen',
+              labelHeadline: 'Erfahrung löschen',
+              labelDescription: 'Soll die Erfahrung wirklich gelöscht werden? Die Aktion kann nicht wieder rückgängig gemacht werden.'},
+          });
+          dialogRef.afterClosed().subscribe(result => {
+                    if(result && this.experience){
+                      this.profileService.deleteExperience(this.experience);
+                    }
+                  });
   }
+
+    get $deleteExperienceLoadState(): Observable<KexLoadState> {
+      return this.profileService.$deleteExperienceLoadState;
+    }
 
 
   leaveEditMode(){
-  if (this.experience) {
+  if (!this.addNewExperience) {
         this.editMode = false;
       } else {
         this.leaveNewExperienceMode.emit(true);
@@ -89,7 +125,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   }
 
 
-  saveExperience(){
+  saveExperience(): void {
   if (this.experience) {
         const experience: Experience = {...this.experience, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
         this.profileService.saveExperience(experience);
@@ -102,24 +138,55 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   observeEditExperience() {
       this.subscriptions.push(
         this.profileService.$editExperienceLoadState.pipe(
-        ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit erfolgreich gespeichert', 'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert')));
+        ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit erfolgreich gespeichert', 'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert',
+        ()=> this.leaveEditMode(),
+        ()=>{},
+        ()=>this.store.dispatch(EditExperienceActions.reset())
+        )
+      ));
     }
 
     observeDeleteExperience() {
       this.subscriptions.push(
         this.profileService.$deleteExperienceLoadState.pipe(
-        ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit wurde gelöscht', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.')));
+        ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit wurde gelöscht', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.',
+        ()=>this.profileService.loadExperiences(),
+        ()=>{},
+        ()=>this.store.dispatch(DeleteExperienceActions.reset())
+        )
+        )
+        );
     }
 
     observeAddExperience() {
     this.subscriptions.push(this.profileService.$addExperienceLoadState.pipe(
-    ).subscribe(state=>this.coreService.handleRequestState(state,'Fähigkeit wurde hinzugefügt', 'Es ist ein Fehler aufgetreten')));
+    ).subscribe(state=>this.coreService.handleRequestState(state,'Fähigkeit wurde hinzugefügt', 'Es ist ein Fehler aufgetreten',
+    () => {
+                this.leaveEditMode();
+                this.profileService.loadExperiences();
+                },
+                 () => {},
+                 () => this.store.dispatch(AddExperienceActions.reset())
+    )));
+    }
+
+    observeUpdateExperience(){
+    this.subscriptions.push(
+          this.profileService.$updateVisibilityExperienceLoadState.pipe(
+          ).subscribe(state => this.coreService.handleRequestState(state,
+            '',
+            'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert',
+            () => {},
+            () => {},
+            () => this.store.dispatch(UpdateVisibilityExperienceActions.reset())
+            )
+          ));
     }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
-      private _filterSkills(value: string): KexSkill[] {
+      private _filterSkills(value: string): KexUserSkill[] {
         const filterValue = value.toLowerCase();
-        return this.linkedSkills.filter(skill => skill.title.toLowerCase().includes(filterValue));
+        return this.linkedSkills.filter(skill => skill.skill.title.toLowerCase().includes(filterValue));
       }
 
       // Methode zum Hinzufügen einer Fähigkeit
@@ -127,23 +194,33 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
           const input = event.input;
           const value = event.value;
 
-          if ((value || '').trim()) {
+          if ((value).trim() != '') {
             //TODO
+            //Title
+            let skillTitle = value.trim();
+            //Skill ID :0
             //this.linkedSkills.push({title:value.trim() });
-          }
-
-          if (input) {
-            input.value = '';
+            const skill: KexUserSkill = {
+                      id: 0,
+                      skill: {id: 0, title: skillTitle},
+                      level: 0,
+                      visible: false
+                    };
+            this.profileService.addSkill(skill);
+            //Problem: linkedSkills is not extendable
+            this.linkedSkills.push(skill);
           }
 
           this.skillCtrl.setValue(null);
         }
 
       // Methode zum Entfernen einer Fähigkeit
-       removeSkill(skill: KexSkill): void {
+       removeSkill(skill: KexUserSkill): void {
           const index = this.linkedSkills.indexOf(skill);
           if (index >= 0) {
+          //Problem: Kann objekt nicht aus dem Array Löschen
             this.linkedSkills.splice(index, 1);
+            this.saveExperience();
           }
        }
 
@@ -151,7 +228,20 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
        selectExistingSkill(event: MatAutocompleteSelectedEvent): void {
           //TODO
           //this.linkedSkills.push({ title: event.option.viewValue });
+          console.log(Array.isArray(this.linkedSkills));
+          var selectedSkill = event.option.value; //KexUserSkill
+          //Umwandlung in KexSkill
+          const skillClone = { ...selectedSkill }; // Flache Kopie von selectedSkill
+          const skill: KexUserSkill = {
+              id: skillClone.skill.id,
+              skill: { id: skillClone.id, title: skillClone.skill.title },
+              level: skillClone.level,
+              visible: skillClone.visible
+          };
+          //Problem: linkedSkills is not extendable
+          this.linkedSkills.push(skill);
           this.skillInput.nativeElement.value = '';
           this.skillCtrl.setValue(null);
+          this.saveExperience();
        }
 }

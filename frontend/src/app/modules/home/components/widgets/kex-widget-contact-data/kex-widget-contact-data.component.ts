@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {KexProfileSelector} from "../../../../profile/store/selectors/kex-profile.selectors";
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../../profile/store/kex-profile.state";
-import {User} from "../../../../../core/models/kex-core.models";
+import {KexLoadState, User} from "../../../../../core/models/kex-core.models";
 import {Observable} from "rxjs";
 import {GetCurrentUser} from "../../../../profile/store/actions/kex-profile.actions";
 import {Router} from "@angular/router";
@@ -27,8 +27,13 @@ export class KexWidgetContactDataComponent implements OnInit{
     return this.store.select(KexProfileSelector.getCurrentUser);
   }
 
+  get currentUserLoadState$() : Observable<KexLoadState | undefined>{
+    return this.store.select(KexProfileSelector.getCurrentUserLoadState);
+  }
+
   ngOnInit(): void {
     this.store.dispatch(GetCurrentUser.do());
+    this.currentUser$.subscribe(user => console.log(user));
   }
 
 }

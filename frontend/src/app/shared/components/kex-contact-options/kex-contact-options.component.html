@@ -1,4 +1,4 @@
 <p class="fw-bold">Gewünschte Kontaktarten</p>
-<mat-chip [disabled]="!user?.contactOptionPhone" [color]="chipColor(user?.contactOptionPhone)" class="kex-contact-option-chip">Anrufen</mat-chip>
-<mat-chip [disabled]="!user?.contactOptionMail" [color]="chipColor(user?.contactOptionMail)" class="kex-contact-option-chip">E-Mail schreiben</mat-chip>
-<mat-chip [disabled]="!user?.contactOptionAppointment" [color]="'accent'">Terminanfrage senden</mat-chip>
+<mat-chip [disabled]="!user?.contactOptionPhone" [ngClass]="{'kex-chip-primary' : user && user?.contactOptionPhone}" class="kex-contact-option-chip">Anrufen</mat-chip>
+<mat-chip [disabled]="!user?.contactOptionMail"  [ngClass]="{'kex-chip-primary' : user && user?.contactOptionMail}" class="kex-contact-option-chip">E-Mail schreiben</mat-chip>
+<mat-chip [disabled]="!user?.contactOptionAppointment"  [ngClass]="{'kex-chip-primary' : user && user?.contactOptionAppointment}">Terminanfrage senden</mat-chip>

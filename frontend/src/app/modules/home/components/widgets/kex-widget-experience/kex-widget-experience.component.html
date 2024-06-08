@@ -1,3 +1,17 @@
 <kex-widget-base [title]="'Deine zuletzt hinzugefügten Erfahrungen'" [actionLabel]="'Erfahrungen bearbeiten'" (actionClicked)="goToProfile()">
-
+  <ul *ngIf="hasExperiences" class="kex-widget-experience-container ">
+    @for (experience of userExperiences; track experience.id; let index = $index) {
+    <li >
+      <div class="kex-experience-number">
+        {{index + 1}}
+      </div>
+      <div>
+        <h4 >{{experience.title}}</h4>
+      </div>
+    </li>
+    }
+  </ul>
+  <div *ngIf="!hasExperiences">
+    <p>Noch keine Erfahrung eingetragen. Füge jetzt deine erste Erfahrung deinem Profil hinzu</p>
+  </div>
 </kex-widget-base>

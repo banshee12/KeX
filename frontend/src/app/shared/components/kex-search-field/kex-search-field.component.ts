@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {KexSearchState} from "../../../modules/search/store/kex-search.state";
 import {SearchUserActions} from "../../../modules/search/store/actions/kex-search.actions";
+import {KexSortData} from "../../../core/models/kex-core.models";
 
 @Component({
   selector: 'kex-search-field',
@@ -17,7 +18,8 @@ export class KexSearchFieldComponent {
   }
 
   onSearch() {
-    this.store.dispatch(SearchUserActions.do({searchSkill: this.searchValue}));
+    const sortData : KexSortData = { sortBy : 'lastname', asc : true }
+    this.store.dispatch(SearchUserActions.do({searchSkill: this.searchValue, sortData : sortData}));
     this.searchStart.emit(true);
   }
 

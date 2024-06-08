@@ -19,6 +19,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   KexModalConfirmationComponent
 } from "../../../../../../shared/components/kex-modal/kex-modal-confirmation/kex-modal-confirmation.component";
+import {KexModalComponent} from "../../../../../../shared/components/kex-modal/kex-modal.component";
 
 @Component({
   selector: 'kex-profile-skill',
@@ -73,7 +74,6 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
   }
 
   deleteSkill() {
-
         const dialogRef = this.dialog.open(KexModalConfirmationComponent, {
           data: {labelAction: 'Löschen',
             labelHeadline: 'Fähigkeit löschen',

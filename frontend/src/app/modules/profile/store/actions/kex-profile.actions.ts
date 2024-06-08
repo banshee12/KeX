@@ -1,12 +1,12 @@
 import {createActionGroup, emptyProps, props} from "@ngrx/store";
-import {ContactTime, KexUserSkill} from "../../models/kex-profile.model";
+import {ContactTime, ContactTimeSlot, KexUserSkill} from "../../models/kex-profile.model";
 import {Experience} from "../../models/kex-profile.model";
-import {User} from "../../../../core/models/kex-core.models";
+import {KexSortData, User} from "../../../../core/models/kex-core.models";
 
 export const GetSkillsActions = createActionGroup({
   source : '[PROFILE] get skills',
   events : {
-    do : emptyProps(),
+    do : props<KexSortData>(),
     success : props<{skills : KexUserSkill[]}>(),
     fail : emptyProps,
     reset : emptyProps,
@@ -56,36 +56,50 @@ export const AddSkillActions = createActionGroup({
 export const GetExperiencesActions= createActionGroup({
   source : '[PROFILE] get experiences',
   events : {
-    do : emptyProps(),
+    do : props<KexSortData>(),
     success : props<{experiences : Experience[]}>(),
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
 export const EditExperienceActions= createActionGroup({
-  source : '',
+  source : '[PROFILE] edit experience',
   events : {
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
 export const DeleteExperienceActions= createActionGroup({
-  source : '',
+  source : '[PROFILE] delete experience',
   events : {
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
 export const AddExperienceActions = createActionGroup({
-  source : '',
+  source : '[PROFILE] add experience',
   events : {
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
+  }
+});
+
+export const UpdateVisibilityExperienceActions = createActionGroup({
+  source : '[PROFILE] update visibility experience',
+  events : {
+    do : props<Experience>(),
+    success : emptyProps,
+    fail : emptyProps,
+    reset : emptyProps
   }
 });
 
@@ -112,7 +126,7 @@ export const SetContactOptions = createActionGroup({
 export const SetContactTimes = createActionGroup({
   source : '[PROFILE] set contact times',
   events : {
-    do : props<{contactTimes : ContactTime}>(),
+    do : props<{contactTimeSlots : ContactTimeSlot[]}>(),
     success : emptyProps,
     fail : emptyProps,
     reset : emptyProps,

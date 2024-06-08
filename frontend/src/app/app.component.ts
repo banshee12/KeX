@@ -19,10 +19,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    return this.http.get<string>(this.API_URL + '/user/sync').pipe(take(1)).subscribe(
+    return this.http.get<string>(this.API_URL + '/user/sync', { responseType : 'text' as 'json'}).pipe(take(1)).subscribe(
       {
         next: (data) => this.loadState = KexLoadState.SUCCESS,
-        error: (e) => this.loadState = KexLoadState.FAILURE
+        error: (e) => {
+          this.loadState = KexLoadState.FAILURE;
+          console.log(e);
+        }
       }
     );
   }

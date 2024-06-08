@@ -17,9 +17,9 @@ import java.util.List;
 @Table(name = "users")
 @StaticMetamodel(User.class)
 public class User {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_GEN")
+    @SequenceGenerator(name = "USER_ID_GEN", sequenceName = "USER_ID_SEQ", initialValue = 1, allocationSize = 1)
     private Integer userId;
     private String userSub;
     private String username;
@@ -29,12 +29,11 @@ public class User {
     private Boolean contactOptionPhone;
     private Boolean contactOptionMail;
     private Boolean contactOptionAppointment;
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserSkills> userSkills;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "user")
     private List<Experience> userExperience;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ContactTime> userContactTimes;
 
 

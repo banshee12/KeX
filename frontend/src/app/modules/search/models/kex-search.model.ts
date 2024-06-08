@@ -1,4 +1,4 @@
-import {User} from "../../../core/models/kex-core.models";
+import {KexSortData, User} from "../../../core/models/kex-core.models";
 
 export type KexSearchResult = {
   userList : User[],
@@ -8,4 +8,5 @@ export type KexSearchResult = {
 export type KexSearchRequest = {
   searchSkill : string,
   minLevel? : number,
+  sortData : KexSortData
 }
