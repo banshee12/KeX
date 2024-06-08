@@ -59,33 +59,47 @@ export const GetExperiencesActions= createActionGroup({
     do : emptyProps(),
     success : props<{experiences : Experience[]}>(),
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
 export const EditExperienceActions= createActionGroup({
-  source : '',
+  source : '[PROFILE] edit experience',
   events : {
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
 export const DeleteExperienceActions= createActionGroup({
-  source : '',
+  source : '[PROFILE] delete experience',
   events : {
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
   }
 });
 
 export const AddExperienceActions = createActionGroup({
-  source : '',
+  source : '[PROFILE] add experience',
   events : {
     do : props<Experience>(),
     success : emptyProps,
     fail : emptyProps,
+    reset : emptyProps,
+  }
+});
+
+export const UpdateVisibilityExperienceActions = createActionGroup({
+  source : '[PROFILE] update visibility experience',
+  events : {
+    do : props<Experience>(),
+    success : emptyProps,
+    fail : emptyProps,
+    reset : emptyProps
   }
 });
 

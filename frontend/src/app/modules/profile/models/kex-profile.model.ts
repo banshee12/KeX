@@ -17,7 +17,7 @@ export type Experience = {
   title : string,
   visible : boolean,
   description : string,
-  skill? : KexSkill[]
+  skill? : KexUserSkill[]
 }
 
 export type ContactData = {

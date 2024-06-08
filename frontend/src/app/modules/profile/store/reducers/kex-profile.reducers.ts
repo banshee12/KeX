@@ -1,5 +1,5 @@
 import {KexProfileState} from "../kex-profile.state";
-import {KexLoadState, User} from "../../../../core/models/kex-core.models";
+import {KexLoadState} from "../../../../core/models/kex-core.models";
 import {Action, createReducer, on} from "@ngrx/store";
 import * as KexProfileActions from '../actions/kex-profile.actions';
 
@@ -21,7 +21,8 @@ const initialState: KexProfileState = {
   currentUser: undefined,
   currentUserLoadState: KexLoadState.NONE,
   setContactTimeLoadState: KexLoadState.NONE,
-  setContactOptionLoadState: KexLoadState.NONE
+  setContactOptionLoadState: KexLoadState.NONE,
+  updateVisibilityExperienceLoadState : KexLoadState.NONE
 }
 
 const _kexProfileReducer = createReducer(
@@ -32,7 +33,7 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.GetSkillsActions.do,
     (state, action) => ({
       ...state,
-      skills: [],
+      skills : [],
       skillsLoadState: KexLoadState.LOADING,
     })
   ),
@@ -40,7 +41,7 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.GetSkillsActions.success,
     (state, action) => ({
       ...state,
-      skills: action.skills,
+      skills : action.skills,
       skillsLoadState: KexLoadState.SUCCESS
     })
   ),
@@ -48,7 +49,7 @@ const _kexProfileReducer = createReducer(
     KexProfileActions.GetSkillsActions.fail,
     (state, action) => ({
       ...state,
-      skills: [],
+      skills : [],
       skillsLoadState: KexLoadState.FAILURE
     })
   ),
@@ -175,55 +176,119 @@ const _kexProfileReducer = createReducer(
   ),
   // get experiences
   on(
-    KexProfileActions.GetExperiencesActions.do,
-    (state, action) => ({
-      ...state,
-      experiences: [],
-      experiencesLoadState: KexLoadState.LOADING
-    })
-  ),
-  on(
-    KexProfileActions.GetExperiencesActions.success,
-    (state, action) => ({
-      ...state,
-      experiences: action.experiences,
-      experiencesLoadState: KexLoadState.SUCCESS
-    })
-  ),
-  on(
-    KexProfileActions.GetExperiencesActions.fail,
-    (state, action) => ({
-      ...state,
-      experiences: [],
-      experiencesLoadState: KexLoadState.FAILURE
-    })
-  ),
+      KexProfileActions.GetExperiencesActions.do,
+      (state, action) => ({
+        ...state,
+        experiences : [],
+        experiencesLoadState: KexLoadState.LOADING
+      })
+    ),
+    on(
+      KexProfileActions.GetExperiencesActions.success,
+      (state, action) => ({
+        ...state,
+        experiences : action.experiences,
+        experiencesLoadState: KexLoadState.SUCCESS
+      })
+    ),
+    on(
+      KexProfileActions.GetExperiencesActions.fail,
+      (state, action) => ({
+        ...state,
+        experiences : [],
+        experiencesLoadState: KexLoadState.FAILURE
+      })
+    ),
+    //add experience
+        on(
+          KexProfileActions.AddExperienceActions.do,
+          (state, action) => ({
+            ...state,
+            addExperienceLoadState: KexLoadState.LOADING,
+          })
+        ),
+        on(
+          KexProfileActions.AddExperienceActions.success,
+          (state, action) => ({
+            ...state,
+            addExperienceLoadState: KexLoadState.SUCCESS
+          })
+        ),
+        on(
+          KexProfileActions.AddExperienceActions.fail,
+          (state, action) => ({
+            ...state,
+            addExperienceLoadState: KexLoadState.FAILURE
+          })
+        ),
+        on(
+          KexProfileActions.AddExperienceActions.reset,
+          (state, action) => ({
+            ...state,
+            addExperienceLoadState: KexLoadState.NONE
+          })
+        ),
 
-  //get current user
-  on(
-    KexProfileActions.GetCurrentUser.do,
-    (state, action) => ({
-      ...state,
-      currentUser: undefined,
-      currentUserLoadState: KexLoadState.LOADING
-    })
-  ),
-  on(
-    KexProfileActions.GetCurrentUser.success,
-    (state, action) => ({
-      ...state,
-      currentUser: action.user,
-      currentUserLoadState: KexLoadState.SUCCESS
-    })
-  ),
-  on(
-    KexProfileActions.GetCurrentUser.fail,
-    (state, action) => ({
-      ...state,
-      currentUser: undefined,
-      currentUserLoadState: KexLoadState.FAILURE
-    })
-  ),
+        //delte experience
+            on(
+              KexProfileActions.DeleteExperienceActions.do,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.LOADING,
+              })
+            ),
+            on(
+              KexProfileActions.DeleteExperienceActions.success,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.SUCCESS
+              })
+            ),
+            on(
+              KexProfileActions.DeleteExperienceActions.fail,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.FAILURE
+              })
+            ),
+            on(
+              KexProfileActions.DeleteExperienceActions.reset,
+              (state, action) => ({
+                ...state,
+                deleteExperienceLoadState: KexLoadState.NONE
+              })
+            ),
+
+        // update visibility experience
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.do,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.LOADING,
+            })
+          ),
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.success,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.SUCCESS
+            })
+          ),
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.fail,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.FAILURE
+            })
+          ),
+          on(
+            KexProfileActions.UpdateVisibilityExperienceActions.reset,
+            (state, action) => ({
+              ...state,
+              updateVisibilityExperienceLoadState: KexLoadState.NONE
+            })
+          ),
+
 
   //set contact options
   on(
