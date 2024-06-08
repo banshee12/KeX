@@ -14,9 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSkills {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SKILLS_ID_GEN")
-    @SequenceGenerator(name = "USER_SKILLS_ID_GEN", sequenceName = "USER_SKILLS_ID_SEQ", initialValue = 1)
+    @SequenceGenerator(name = "USER_SKILLS_ID_GEN", sequenceName = "USER_SKILLS_ID_SEQ", initialValue = 1, allocationSize = 1)
     private Integer id;
     private Boolean visible;
     private Integer level;

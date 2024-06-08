@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Skills {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SKILLS_ID_GEN")
-    @SequenceGenerator(name = "SKILLS_ID_GEN", sequenceName = "SKILLS_ID_SEQ", initialValue = 1)
+    @SequenceGenerator(name = "SKILLS_ID_GEN", sequenceName = "SKILLS_ID_SEQ", initialValue = 1, allocationSize = 1)
     private Integer id;
     private String title;
 }
