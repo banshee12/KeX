@@ -56,7 +56,7 @@ export const AddSkillActions = createActionGroup({
 export const GetExperiencesActions= createActionGroup({
   source : '[PROFILE] get experiences',
   events : {
-    do : emptyProps(),
+    do : props<KexSortData>(),
     success : props<{experiences : Experience[]}>(),
     fail : emptyProps,
     reset : emptyProps,

@@ -8,14 +8,17 @@
   <div class="kex-experience-content p-2">
     <div class="kex-experience-content-left">
       <h3 *ngIf="!editMode">{{ experience?.title }}</h3>
-      <mat-form-field appearance="outline" *ngIf="editMode" class="p-0">
+      <mat-form-field *ngIf="editMode" class="p-0 kex-form-field">
+        <mat-label>Titel</mat-label>
         <input matInput [(ngModel)]="title">
       </mat-form-field>
       <p *ngIf="!editMode">{{ experience?.description }}</p>
-      <mat-form-field appearance="outline" *ngIf="editMode" class="p-1">
-        <textarea matInput [(ngModel)]="description"></textarea>
+      <mat-form-field *ngIf="editMode" class="p-1 kex-form-field">
+        <mat-label>Beschreibung</mat-label>
+        <textarea matInput [(ngModel)]="description" maxlength="255"></textarea>
       </mat-form-field>
-      <p style="font-weight:bold">Fähigkeiten</p>
+
+     <!-- <p style="font-weight:bold">Fähigkeiten</p> -->
       <!-- Integration des Fähigkeiten Auto Complete Chip Lets -->
       <!--<form>
         <mat-form-field  class="kex-chip-list">
@@ -44,15 +47,15 @@
     </div>
     <div class="kex-experience-button-container">
       <ng-container *ngIf="!editMode">
-        <button class="mx-2" mat-mini-fab matTooltip="Löschen" [color]="color" (click)="deleteExperience()">
+        <button class="mx-2" mat-mini-fab matTooltip="Löschen" color="secondary" (click)="deleteExperience()">
           <mat-icon>delete</mat-icon>
         </button>
-        <button mat-mini-fab matTooltip="Bearbeiten" [color]="color" (click)="goToEditMode()">
+        <button mat-mini-fab matTooltip="Bearbeiten" color="primary" (click)="goToEditMode()">
           <mat-icon>edit</mat-icon>
         </button>
       </ng-container>
       <ng-container *ngIf="editMode">
-        <button class="mx-2" mat-mini-fab matTooltip="Abbrechen"  (click)="leaveEditMode()">
+        <button class="mx-2" mat-mini-fab matTooltip="Abbrechen" color="secondary" (click)="leaveEditMode()">
           <mat-icon>close</mat-icon>
         </button>
         <button mat-mini-fab matTooltip="Speichern" color="primary" (click)="saveExperience()">

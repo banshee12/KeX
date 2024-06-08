@@ -110,8 +110,11 @@ export class KexProfileService {
   }
 
 
-  loadExperiences() {
-      this.store.dispatch(GetExperiencesActions.do());
+  loadExperiences(sortData? : KexSortData) {
+    if(!sortData) {
+      sortData = {sortBy : 'title', asc : true};
+    }
+      this.store.dispatch(GetExperiencesActions.do(sortData));
     }
 
     saveExperience(experience : Experience) {

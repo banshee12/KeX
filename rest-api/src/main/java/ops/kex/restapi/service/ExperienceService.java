@@ -48,7 +48,7 @@ public class ExperienceService {
         else{
             User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
             if (user != null) {
-                if(sortData.getSize() > 0){
+                if(sortData.getSize() != null && sortData.getSize() > 0){
                     Pageable pageable = PageRequest.of(0,sortData.getSize(), Sort.by(sortDirection, sortData.getSortBy()));
                     return new ResponseEntity<>(
                             experienceRepository.getExperiencesByUserUserId(pageable, user.getUserId()),

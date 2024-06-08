@@ -29,11 +29,11 @@
     </div>
     <div class="kex-skill-button-container">
       <ng-container *ngIf="!editMode">
-        <kex-button class="mx-2" tooltip="Löschen" icon="delete" [loadingState]="$deleteSkillLoadState | async" color=primary (click)="deleteSkill()"></kex-button>
+        <kex-button class="mx-2" tooltip="Löschen" icon="delete" [loadingState]="$deleteSkillLoadState | async" color="secondary" (click)="deleteSkill()"></kex-button>
         <kex-button tooltip="Bearbeiten" color="primary" icon="edit" (click)="goToEditMode()"></kex-button>
       </ng-container>
       <ng-container *ngIf="editMode">
-        <kex-button class="mx-2" icon="close" tooltip="Abbrechen" color="accent" (click)="leaveEditMode()"></kex-button>
+        <kex-button class="mx-2" icon="close" tooltip="Abbrechen" color="secondary" (click)="leaveEditMode()"></kex-button>
         <kex-button tooltip="Speichern" color="primary" icon="check" (click)="saveSkill()"></kex-button>
       </ng-container>
     </div>

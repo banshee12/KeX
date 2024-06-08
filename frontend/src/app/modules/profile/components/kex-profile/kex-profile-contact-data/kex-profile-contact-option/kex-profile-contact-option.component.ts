@@ -28,9 +28,9 @@ export class KexProfileContactOptionComponent implements OnInit, OnDestroy{
         this.contactOptionPhone = user?.contactOptionPhone || false;
         this.contactOptionAppointment = user?.contactOptionAppointment || false;
         this.contactOptionMail = user?.contactOptionMail || false;
-        this.contactOptionPhoneInitial = this.contactOptionPhone;
-        this.contactOptionAppointmentInitial = this.contactOptionAppointment;
-        this.contactOptionMailInitial = this.contactOptionMail;
+        this.contactOptionPhoneInitial = user?.contactOptionPhone || false;
+        this.contactOptionAppointmentInitial = user?.contactOptionAppointment || false;
+        this.contactOptionMailInitial = user?.contactOptionMail || false;
       }
     ))
   }

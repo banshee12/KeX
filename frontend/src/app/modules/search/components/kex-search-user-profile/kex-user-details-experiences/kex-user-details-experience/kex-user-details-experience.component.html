@@ -1,7 +1,7 @@
 <div *ngIf="experience" class="kex-user-details-experience-container p-2 my-2">
   <h5>{{experience.title}}</h5>
   <p>{{experience.description}}</p>
-  <div *ngIf="experience.skill">
+  <div *ngIf="experience.skill && experience.skill.length > 0">
     <p class="fw-bold">Fähigkeiten</p>
     <mat-chip-set aria-label="Fish selection">
       <!--<mat-chip *ngFor="let skill of experience.skill">{{skill.skill.title?}}</mat-chip>-->

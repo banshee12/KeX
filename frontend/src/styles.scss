@@ -47,3 +47,10 @@ mat-tab-body {
   width: 400px;
   max-width: 100%;
 }
+
+.kex-chip-primary{
+  background-color: #3F51B5 !important;
+  .mat-mdc-chip-action-label{
+    color: #EEEEEE !important;
+  }
+}

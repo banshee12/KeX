@@ -23,10 +23,10 @@ public class UserController {
 //        return userService.getUsers();
 //    }
 
-//    @GetMapping("")
-//    public ResponseEntity<User> getUser() {
-//        return userService.getUser();
-//    }
+   @GetMapping()
+    public ResponseEntity<User> getUser() {
+       return userService.getUser();
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable String userId) {
