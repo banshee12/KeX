@@ -13,4 +13,5 @@ public interface SkillsRepository
     Optional<Skills> findSkillsByTitleIgnoreCase(String skill);
     Skills findSkillByTitleIgnoreCase(String skill);
     List<Skills> findSkillsByTitleContainingIgnoreCase(String skill);
+    Skills findSkillTopByOrderByIdDesc();
 }

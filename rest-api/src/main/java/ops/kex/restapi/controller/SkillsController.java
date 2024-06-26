@@ -1,5 +1,6 @@
 package ops.kex.restapi.controller;
 
+import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.service.SkillsService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,14 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api")
 public class SkillsController {
 
     private final SkillsService skillsService;
-
-    public SkillsController(SkillsService skillsService) {
-        this.skillsService = skillsService;
-    }
 
 
     @GetMapping("/skill")
@@ -30,8 +28,8 @@ public class SkillsController {
     }
 
     @PostMapping("/skill")
-    public void registerNewSkill(@RequestBody Skills skills) {
-        skillsService.addNewSkill(skills);
+    public Skills addNewSkill(@RequestBody Skills skills) {
+        return skillsService.addNewSkill(skills);
     }
 
     @PreAuthorize("hasRole('client_admin')")
