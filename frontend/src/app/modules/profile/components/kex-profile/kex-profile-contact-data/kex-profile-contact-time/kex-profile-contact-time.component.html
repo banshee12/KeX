@@ -21,14 +21,30 @@
             <mat-option value="FRIDAY">Freitag</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="example-form-field">
+        <mat-form-field>
           <mat-label>Von</mat-label>
-          <input matInput type="time" [(ngModel)]="timeSlot.fromTimeDisplayed">
+          <input matInput
+                 [format]=24
+                 [ngxMatTimepicker]="pickerFrom"
+                 [(ngModel)]="timeSlot.fromTimeDisplayed">
+          <mat-icon matSuffix
+                    (click)="pickerFrom.open()">
+            watch_later
+          </mat-icon>
         </mat-form-field>
-        <mat-form-field class="example-form-field">
-          <mat-label>Bis</mat-label>
-          <input matInput type="time" [(ngModel)]="timeSlot.toTimeDisplayed">
+        <ngx-mat-timepicker color="primary" #pickerFrom></ngx-mat-timepicker>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput
+                 [format]=24
+                 [ngxMatTimepicker]="pickerTo"
+                 [(ngModel)]="timeSlot.toTimeDisplayed">
+          <mat-icon matSuffix
+                    (click)="pickerTo.open()">
+            watch_later
+          </mat-icon>
         </mat-form-field>
+        <ngx-mat-timepicker color="primary" #pickerTo></ngx-mat-timepicker>
         <kex-button class="mx-2" tooltip="Löschen" icon="delete" (click)="deleteTimeSlot(i)"></kex-button>
       </div>
 

@@ -1,3 +1,5 @@
+@import 'bootstrap/scss/bootstrap';
+
 .kex-skill-container {
   display: flex;
   background-color: #EEEEEE;
@@ -16,8 +18,9 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+
   mat-icon {
-    color : white;
+    color: white;
   }
 }
 
@@ -26,7 +29,7 @@
 }
 
 .kex-skill-visible-off {
-  background : #9e9e9e;
+  background: #9e9e9e;
 }
 
 .kex-skill-button-container {
@@ -38,3 +41,24 @@
   display: flex;
   flex-direction: column;
 }
+
+
+@include media-breakpoint-down(sm) {
+  #kex-skill-button-container-desktop {
+    display: none;
+  }
+  #kex-skill-button-container-mobile {
+    gap: 8px;
+  }
+  .kex-skill-content {
+    flex-direction: column;
+  }
+}
+
+
+@include media-breakpoint-up(sm) {
+  #kex-skill-button-container-mobile {
+    display: none;
+  }
+}
+

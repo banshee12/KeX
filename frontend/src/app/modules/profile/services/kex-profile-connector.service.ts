@@ -34,10 +34,6 @@ export class KexProfileConnectorService {
     //return of([proj1, proj2]);//testing
   }
 
-  getCurrentUser() : Observable<User> {
-    return this.http.get<User>(this.API_URL + '/user');
-  }
-
   addSkill(newSkill : KexUserSkill) : Observable<string> {
     return this.http.post<string>(this.API_URL + '/user/userSkill', newSkill, this.httpOptions);
   }

@@ -3,8 +3,9 @@ import {Subscription} from "rxjs";
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../../store/kex-profile.state";
 import {KexProfileSelector} from "../../../../store/selectors/kex-profile.selectors";
-import {GetCurrentUser, SetContactOptions} from "../../../../store/actions/kex-profile.actions";
+import {SetContactOptions} from "../../../../store/actions/kex-profile.actions";
 import {User} from "../../../../../../core/models/kex-core.models";
+import {KexCoreSelector} from "../../../../../../core/store/selectors/kex-core.selectors";
 
 @Component({
   selector: 'kex-profile-contact-option',
@@ -23,7 +24,7 @@ export class KexProfileContactOptionComponent implements OnInit, OnDestroy{
 
   constructor(private store : Store<KexProfileState>) { }
   ngOnInit(): void {
-    this.subscriptions.push(this.store.select(KexProfileSelector.getCurrentUser).pipe().subscribe(
+    this.subscriptions.push(this.store.select(KexCoreSelector.getCurrentUser).pipe().subscribe(
       user => {
         this.contactOptionPhone = user?.contactOptionPhone || false;
         this.contactOptionAppointment = user?.contactOptionAppointment || false;

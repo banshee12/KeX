@@ -115,15 +115,6 @@ export class KexProfileEffects {
       ))
   ));
 
-  getCurrentUser = createEffect(() => this.actions$.pipe(
-    ofType(KexProfileActions.GetCurrentUser.do),
-    switchMap(action =>
-      this.connector.getCurrentUser().pipe(
-        map((data) => KexProfileActions.GetCurrentUser.success({user: data})),
-        catchError(() => of(KexProfileActions.GetCurrentUser.fail()).pipe(tap(error => console.log(error))))
-      ))
-  ));
-
   constructor(
     private actions$: Actions,
     private connector : KexProfileConnectorService

@@ -341,33 +341,7 @@ const _kexProfileReducer = createReducer(
       ...state,
       setContactTimeLoadState: KexLoadState.NONE
     })
-  ),
-
-  //get current user
-  on(
-    KexProfileActions.GetCurrentUser.do,
-    (state, action) => ({
-      ...state,
-      currentUser: undefined,
-      currentUserLoadState: KexLoadState.LOADING
-    })
-  ),
-  on(
-    KexProfileActions.GetCurrentUser.success,
-    (state, action) => ({
-      ...state,
-      currentUser: action.user,
-      currentUserLoadState: KexLoadState.SUCCESS
-    })
-  ),
-  on(
-    KexProfileActions.GetCurrentUser.fail,
-    (state, action) => ({
-      ...state,
-      currentUser: undefined,
-      currentUserLoadState: KexLoadState.FAILURE
-    })
-  ),
+  )
 );
 
 export function kexProfileReducer(state: KexProfileState, action: Action) {

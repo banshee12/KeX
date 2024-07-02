@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {KexProfileSelector} from "../../../../profile/store/selectors/kex-profile.selectors";
 import {Store} from "@ngrx/store";
-import {KexProfileState} from "../../../../profile/store/kex-profile.state";
 import {KexLoadState, User} from "../../../../../core/models/kex-core.models";
 import {Observable} from "rxjs";
-import {GetCurrentUser} from "../../../../profile/store/actions/kex-profile.actions";
 import {Router} from "@angular/router";
+import {KexCoreState} from "../../../../../core/store/kex-core.state";
+import {GetCurrentUser} from "../../../../../core/store/actions/kex-core.actions";
+import {KexCoreSelector} from "../../../../../core/store/selectors/kex-core.selectors";
 
 @Component({
   selector: 'kex-widget-contact-data',
@@ -14,7 +14,7 @@ import {Router} from "@angular/router";
 })
 export class KexWidgetContactDataComponent implements OnInit{
 
-  constructor(private store : Store<KexProfileState>, private router : Router){
+  constructor(private store : Store<KexCoreState>, private router : Router){
 
   }
 
@@ -24,11 +24,11 @@ export class KexWidgetContactDataComponent implements OnInit{
 
 
   get currentUser$() : Observable<User | undefined>{
-    return this.store.select(KexProfileSelector.getCurrentUser);
+    return this.store.select(KexCoreSelector.getCurrentUser);
   }
 
   get currentUserLoadState$() : Observable<KexLoadState | undefined>{
-    return this.store.select(KexProfileSelector.getCurrentUserLoadState);
+    return this.store.select(KexCoreSelector.getCurrentUserLoadState);
   }
 
   ngOnInit(): void {

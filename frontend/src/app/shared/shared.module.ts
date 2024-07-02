@@ -16,6 +16,7 @@ import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from
 import { KexContactOptionsComponent } from './components/kex-contact-options/kex-contact-options.component';
 import {MatChip} from "@angular/material/chips";
 import { KexContactTimesComponent } from './components/kex-contact-times/kex-contact-times.component';
+import {MatOption, MatSelect} from "@angular/material/select";
 
 
 
@@ -57,7 +58,9 @@ import { KexContactTimesComponent } from './components/kex-contact-times/kex-con
     MatDialogClose,
     MatFormField,
     MatLabel,
-    MatChip
+    MatChip,
+    MatSelect,
+    MatOption
   ]
 })
 export class SharedModule { }

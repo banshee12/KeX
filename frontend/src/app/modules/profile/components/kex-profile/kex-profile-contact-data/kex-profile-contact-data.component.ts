@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../store/kex-profile.state";
-import {GetCurrentUser} from "../../../store/actions/kex-profile.actions";
 import {KexProfileSelector} from "../../../store/selectors/kex-profile.selectors";
 import {Observable} from "rxjs";
-import {ContactTimeSlot} from "../../../models/kex-profile.model";
 import {KexLoadState} from "../../../../../core/models/kex-core.models";
+import {KexCoreSelector} from "../../../../../core/store/selectors/kex-core.selectors";
 
 @Component({
   selector: 'kex-profile-contact-data',
@@ -17,7 +16,7 @@ export class KexProfileContactDataComponent implements OnInit{
   constructor(private store : Store<KexProfileState>) { }
 
   get $loadState() : Observable<KexLoadState> {
-    return this.store.select(KexProfileSelector.getCurrentUserLoadState);
+    return this.store.select(KexCoreSelector.getCurrentUserLoadState);
   }
 
   get $setContactOptionLoadState() : Observable<KexLoadState> {
@@ -25,7 +24,7 @@ export class KexProfileContactDataComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.store.dispatch(GetCurrentUser.do());
+
   }
 
   saveContactOptions() {

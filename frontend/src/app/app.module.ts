@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatButton, MatFabButton, MatIconButton} from "@angular/material/button";
 import {Action, ActionReducerMap, StoreModule} from '@ngrx/store';
 import {KexToolbarComponent} from './page-template/kex-toolbar/kex-toolbar.component';
 import {MatIcon} from "@angular/material/icon";
@@ -12,6 +12,7 @@ import {KEX_PROFILE_STORE_FEATURE_KEY} from "./modules/profile/store/reducers/ke
 import {KexProfileEffects} from "./modules/profile/store/effects/kex-profile.effects";
 import * as fromKexProfile from './modules/profile/store/reducers/kex-profile.reducers';
 import * as fromKexSearch from './modules/search/store/reducers/kex-search.reducers';
+import * as fromKexCore from './core/store/reducers/kex-core.reducers';
 import {EffectsModule} from "@ngrx/effects";
 import {ProfileModule} from "./modules/profile/profile.module";
 import {HomeModule} from "./modules/home/home.module";
@@ -28,16 +29,20 @@ import {environment} from "../environments/environment";
 import {registerLocaleData} from "@angular/common";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
+import {KexCoreEffects} from "./core/store/effects/kex-core.effects";
+import {KEX_CORE_STORE_FEATURE_KEY} from "./core/store/reducers/kex-core.reducers";
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 const reducers: ActionReducerMap<unknown, Action> = {
   [KEX_PROFILE_STORE_FEATURE_KEY]: fromKexProfile.kexProfileReducer,
   [KEX_SEARCH_STORE_FEATURE_KEY]: fromKexSearch.kexSearchReducer,
+  [KEX_CORE_STORE_FEATURE_KEY]: fromKexCore.kexCoreReducer
 };
 const effects = [
   KexProfileEffects,
-  KexSearchEffects
+  KexSearchEffects,
+  KexCoreEffects
 ];
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -85,7 +90,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatMenu,
     MatMenuTrigger,
     MatMenuItem,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatFabButton
   ],
   providers: [
     {
