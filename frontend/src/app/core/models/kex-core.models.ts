@@ -7,6 +7,11 @@ export enum KexLoadState {
   FAILURE = 'FAILURE'
 }
 
+export enum KexButtonType {
+  ICON_ONLY = 'ICON_ONLY',
+  RAISE_BUTTON = 'RAISE_BUTTON'
+}
+
 export enum KexNotificationType {
   INFO = 'INFO',
   WARNING = 'WARNING',

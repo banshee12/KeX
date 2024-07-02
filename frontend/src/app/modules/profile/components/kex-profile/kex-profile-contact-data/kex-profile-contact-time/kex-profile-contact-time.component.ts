@@ -5,9 +5,11 @@ import {KexProfileSelector} from "../../../../store/selectors/kex-profile.select
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../../store/kex-profile.state";
 import {KexLoadState} from "../../../../../../core/models/kex-core.models";
-import {EditSkillActions, GetCurrentUser, SetContactTimes} from "../../../../store/actions/kex-profile.actions";
+import {SetContactTimes} from "../../../../store/actions/kex-profile.actions";
 import {KexCoreService} from "../../../../../../core/services/kex-core.service";
-import {state} from "@angular/animations";
+import {KexCoreSelector} from "../../../../../../core/store/selectors/kex-core.selectors";
+import {KexCoreState} from "../../../../../../core/store/kex-core.state";
+import {GetCurrentUser} from "../../../../../../core/store/actions/kex-core.actions";
 
 @Component({
   selector: 'kex-profile-contact-time',
@@ -20,11 +22,12 @@ export class KexProfileContactTimeComponent implements OnInit, OnDestroy {
   subscriptions : Subscription[] = [];
 
   constructor(private store: Store<KexProfileState>,
+              private coreStore: Store<KexCoreState>,
               private coreService : KexCoreService) {
   }
 
   get $contactTime(): Observable<ContactTimeSlot[] | undefined> {
-    return this.store.select(KexProfileSelector.getContactTime);
+    return this.store.select(KexCoreSelector.getContactTime);
   }
 
   get $setContactTimeLoadState(): Observable<KexLoadState> {
@@ -140,7 +143,7 @@ export class KexProfileContactTimeComponent implements OnInit, OnDestroy {
 
   private leaveEditMode() {
     this.editMode = false;
-    this.store.dispatch(GetCurrentUser.do());
+    this.coreStore.dispatch(GetCurrentUser.do());
   }
 
   ngOnDestroy(): void {

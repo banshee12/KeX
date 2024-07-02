@@ -1,9 +1,9 @@
 <div class="kex-skill-container my-4">
   <div class="kex-skill-visible p-1" (click)="setVisibility()" *ngIf="visible">
-    <mat-icon>visibility</mat-icon>
+    <mat-icon matTooltip="Fähigkeit ist öffentlich">visibility</mat-icon>
   </div>
   <div class="kex-skill-visible-off p-1" (click)="setVisibility()" *ngIf="!visible">
-    <mat-icon>visibility_off</mat-icon>
+    <mat-icon matTooltip="Fähigkeit ist für andere nicht sichtbar">visibility_off</mat-icon>
   </div>
   <div class="kex-skill-content p-2">
     <div class="kex-skill-content-left">
@@ -27,14 +27,24 @@
         <input matInput [(ngModel)]="title">
       </mat-form-field> -->
     </div>
-    <div class="kex-skill-button-container">
+    <div class="kex-skill-button-container" id="kex-skill-button-container-desktop">
       <ng-container *ngIf="!editMode">
         <kex-button class="mx-2" tooltip="Löschen" icon="delete" [loadingState]="$deleteSkillLoadState | async" color="secondary" (click)="deleteSkill()"></kex-button>
         <kex-button tooltip="Bearbeiten" color="primary" icon="edit" (click)="goToEditMode()"></kex-button>
       </ng-container>
       <ng-container *ngIf="editMode">
         <kex-button class="mx-2" icon="close" tooltip="Abbrechen" color="secondary" (click)="leaveEditMode()"></kex-button>
-        <kex-button tooltip="Speichern" color="primary" icon="check" (click)="saveSkill()"></kex-button>
+        <kex-button tooltip="Speichern" color="primary" icon="check" (click)="saveSkill()" [disabled]="!isValid"></kex-button>
+      </ng-container>
+    </div>
+    <div class="kex-skill-button-container" id="kex-skill-button-container-mobile">
+      <ng-container *ngIf="!editMode">
+        <kex-button [type]="KexButtonType.RAISE_BUTTON" label="Löschen" icon="delete" [loadingState]="$deleteSkillLoadState | async" color="secondary" (click)="deleteSkill()"></kex-button>
+        <kex-button [type]="KexButtonType.RAISE_BUTTON" label="Bearbeiten" color="primary" icon="edit" (click)="goToEditMode()"></kex-button>
+      </ng-container>
+      <ng-container *ngIf="editMode">
+        <kex-button [type]="KexButtonType.RAISE_BUTTON"  icon="close" label="Abbrechen" color="secondary" (click)="leaveEditMode()"></kex-button>
+        <kex-button [type]="KexButtonType.RAISE_BUTTON" label="Speichern" color="primary" icon="check" (click)="saveSkill()" [disabled]="!isValid"></kex-button>
       </ng-container>
     </div>
   </div>

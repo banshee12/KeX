@@ -1,9 +1,17 @@
+@import 'bootstrap/scss/bootstrap';
+
 .kex-user-details-skill-list-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+  }
 
   kex-user-details-skill{
    width: 48%;
+    @include media-breakpoint-down(sm) {
+      width: 100%;
+    }
   }
 }

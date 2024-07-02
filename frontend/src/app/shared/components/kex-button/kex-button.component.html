@@ -1,4 +1,9 @@
-<button mat-mini-fab [matTooltip]="tooltip" [color]="color">
+<button mat-mini-fab [matTooltip]="tooltip" [color]="color" [disabled]="disabled" *ngIf="type === KexButtonType.ICON_ONLY">
+  <mat-icon *ngIf="loadingState !== KexLoadState.LOADING && icon">{{icon}}</mat-icon>
+  <mat-spinner *ngIf="loadingState === KexLoadState.LOADING" diameter="20" color="accent"></mat-spinner>
+</button>
+<button mat-raised-button [matTooltip]="tooltip" [color]="color" [disabled]="disabled" *ngIf="type === KexButtonType.RAISE_BUTTON">
+  {{label}}
   <mat-icon *ngIf="loadingState !== KexLoadState.LOADING && icon">{{icon}}</mat-icon>
   <mat-spinner *ngIf="loadingState === KexLoadState.LOADING" diameter="20" color="accent"></mat-spinner>
 </button>

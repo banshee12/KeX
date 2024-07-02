@@ -10,10 +10,10 @@
         <div *ngIf="skills.length > 0">
           <kex-profile-skill *ngFor="let skill of skills" [userSkill]="skill"/>
           <kex-profile-skill *ngIf="newSkill" (leaveNewSkillMode)="leaveAddSkillMode()"/>
-          <div class="kex-skills-button-container">
-            <button mat-raised-button (click)="openRatingInfo()">Erklärung Level-System</button>
-            <button id="kex-skills-button-add" mat-raised-button color="primary" (click)="onAddSkill()" [disabled]="newSkill">Fähigkeit hinzufügen</button>
-          </div>
+        </div>
+        <div class="kex-skills-button-container">
+          <button mat-raised-button (click)="openRatingInfo()">Erklärung Level-System</button>
+          <button id="kex-skills-button-add" mat-raised-button color="primary" (click)="onAddSkill()" [disabled]="newSkill">Fähigkeit hinzufügen</button>
         </div>
       </ng-container>
     </ng-container>
