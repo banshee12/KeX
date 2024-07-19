@@ -3,8 +3,9 @@
 
   <div class="kex-toolbar-right">
     <div class="kex-toolbar-user" *ngIf="currentUser$ | async as user">
+      <p>Angemeldeter Benutzer</p>
       <p >{{user.firstname}} {{user.lastname}}</p>
-      <p >Master Software Engineering (WS 2023)</p>
+     <!-- <p >Master Software Engineering (WS 2023)</p> -->
     </div>
     <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
       <mat-icon>account_box</mat-icon>
@@ -17,9 +18,10 @@
         <span>Ausloggen</span>
       </button>
       <div class="kex-user-info-mobile" *ngIf="currentUser$ | async as user">
+        <p>Angemeldeter Benutzer</p>
         <p>{{user.firstname}} {{user.lastname}}</p>
-        <p>Master Software Engineering</p>
-        <p>Wintersemester 2023</p>
+        <!-- <p>Master Software Engineering</p>
+        <p>Wintersemester 2023</p> -->
       </div>
     </mat-menu>
   </div>
