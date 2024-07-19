@@ -3,9 +3,14 @@ package ops.kex.restapi.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.*;
+import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
-import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,9 +18,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +27,8 @@ public class UserService {
 
 
     private final UserRepository userRepository;
-    private final SkillsRepository skillsRepository;
 
-    public void SyncUser() {
+    public ResponseEntity<String> SyncUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken))
         {
@@ -62,6 +64,10 @@ public class UserService {
             }
             userRepository.save(saveUser);
             log.info("user " + saveUser.getUsername() +" synchronized with database");
+            return new ResponseEntity<>("user " + saveUser.getUsername() +" synchronized with database", HttpStatus.OK);
+        } else{
+            log.info("no user logged in");
+            return new ResponseEntity<>("no user logged in", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,82 +77,99 @@ public class UserService {
     }
 
     //retrieve logged user
-    public User getUser() {
+    public ResponseEntity<User> getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken))
         {
             String username = authentication.getName();
-            return userRepository.findUserByUsernameIgnoreCase(username);
+            return new ResponseEntity<>(userRepository.findUserByUsernameIgnoreCase(username),HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 
-    public User getUserById(String userId) {
+    public ResponseEntity<User> getUserById(String userId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken))
         {
             User user = userRepository.getUserByUserSub(userId);
-            List<Experience> experienceList = user.getUserExperience();
-            List<UserSkills> userSkillsList = user.getUserSkills();
-            experienceList.removeIf(experience -> !experience.getVisible());
-            userSkillsList.removeIf(UserSkills -> !UserSkills.getVisible());
-            user.setUserExperience(experienceList);
-            user.setUserSkills(userSkillsList);
-            return user;
+            if(user != null){
+                List<Experience> experienceList = user.getUserExperience();
+                List<UserSkills> userSkillsList = user.getUserSkills();
+                experienceList.removeIf(experience -> !experience.getVisible());
+                userSkillsList.removeIf(UserSkills -> !UserSkills.getVisible());
+                user.setUserExperience(experienceList);
+                user.setUserSkills(userSkillsList);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } else{
+            log.info("no user logged in");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     //set contact Options
     @Transactional
-    public void updateUserContactOptions(User user) {
+    public ResponseEntity<String> updateUserContactOptions(User user) {
         if (user == null) {
             log.error("User does not exist");
+            return new ResponseEntity<>("User does not exist", HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 User savedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
                 if (savedUser == null) {
                     log.error("User " +authentication.getName() + " not found");
+                    return new ResponseEntity<>("User " +authentication.getName() + " not found", HttpStatus.NOT_FOUND);
                     } else {
                     savedUser.setContactOptionAppointment(user.getContactOptionAppointment());
                     savedUser.setContactOptionMail(user.getContactOptionMail());
                     savedUser.setContactOptionPhone(user.getContactOptionPhone());
+                    log.info("contact options updated");
+                    return new ResponseEntity<>("contact options updated", HttpStatus.OK);
                 }
+            } else{
+                log.info("no user logged in");
+                return new ResponseEntity<>("no user logged in", HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }
 
-    //Todo improve search (add possibility to search for experience title)
-    public List<UserView> findUser(UserSearch userSearch) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User loggedUser = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+    public ResponseEntity<List<UserView>> findUser(UserSearch userSearch) {
+        String sortDirectionStr = userSearch.getSortData() != null && !userSearch.getSortData().getAsc() ? "desc" : "asc";
+        Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
+
         Integer minLevel = 0;
-        List<Skills> skills = skillsRepository.findSkillsByTitleContainingIgnoreCase(userSearch.getSearchSkill());
-        List<UserView> users = new ArrayList<>();
-        if(userSearch.getMinLevel()!=null){
+        if(userSearch.getMinLevel() != null){
             minLevel = userSearch.getMinLevel();
         }
-        for (Skills skill : skills ){
-            List<UserView> usersTemp = userRepository.getUsersByUserSkillsSkillAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
-                    skillsRepository.findSkillByTitleIgnoreCase(skill.getTitle()),
-                    true,
-                    minLevel);
-            for(UserView user : usersTemp){
-                boolean exist = false;
-                for(UserView userView : users){
-                    if(userView.getUserSub().equals(user.getUserSub())){
-                        exist = true;
-                    }
-                }
-                if(!exist){
-                    if(!user.getUserSub().equals(loggedUser.getUserSub())){
-                        users.add(user);
-                    }
-                }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
+        List<UserView> foundUsers = new ArrayList<>();
+        if (user != null) {
+            //Pageable if sort size greater 0
+            if(userSearch.getSortData() != null && userSearch.getSortData().getSize() != null && userSearch.getSortData().getSize() > 0){
+                Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
+                foundUsers = userRepository.findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                        pageable,
+                        userSearch.getSearchSkill(),
+                        true,
+                        minLevel);
+            } else{
+                foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                        Sort.by(sortDirection, userSearch.getSortData().getSortBy()),
+                        userSearch.getSearchSkill(),
+                        true,
+                        minLevel);
             }
+            foundUsers.removeIf(userView -> userView.getUserSub().equals(user.getUserSub()));
+            return new ResponseEntity<>(foundUsers,HttpStatus.OK);
+        } else {
+            log.error("user " + authentication.getName() + " does not exist in database");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return users;
     }
 }

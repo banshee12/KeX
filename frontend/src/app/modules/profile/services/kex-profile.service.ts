@@ -5,7 +5,7 @@ import {KexProfileState} from "../store/kex-profile.state";
 import {KexUserSkill} from "../models/kex-profile.model";
 import {Experience} from "../models/kex-profile.model";
 import {KexProfileSelector} from "../store/selectors/kex-profile.selectors";
-import {KexLoadState} from "../../../core/models/kex-core.models";
+import {KexLoadState, KexSortData} from "../../../core/models/kex-core.models";
 import {
   AddSkillActions,
   DeleteSkillActions,
@@ -14,7 +14,9 @@ import {
   GetExperiencesActions,
   EditExperienceActions,
   DeleteExperienceActions,
-  AddExperienceActions, UpdateVisibilitySkillActions,UpdateVisibilityExperienceActions
+  AddExperienceActions,
+  UpdateVisibilitySkillActions,
+  UpdateVisibilityExperienceActions
 } from "../store/actions/kex-profile.actions";
 
 @Injectable({
@@ -84,8 +86,11 @@ export class KexProfileService {
     return this.store.select(KexProfileSelector.getUpdateVisibilityExperienceLoadState);
   }
 
-  loadSkills() {
-    this.store.dispatch(GetSkillsActions.do());
+  loadSkills(sortData? : KexSortData) {
+    if(!sortData) {
+      sortData = {sortBy : 'skill.title', asc : true};
+    }
+    this.store.dispatch(GetSkillsActions.do(sortData));
   }
 
   saveSkill(skill : KexUserSkill) {
@@ -105,8 +110,11 @@ export class KexProfileService {
   }
 
 
-  loadExperiences() {
-      this.store.dispatch(GetExperiencesActions.do());
+  loadExperiences(sortData? : KexSortData) {
+    if(!sortData) {
+      sortData = {sortBy : 'title', asc : true};
+    }
+      this.store.dispatch(GetExperiencesActions.do(sortData));
     }
 
     saveExperience(experience : Experience) {

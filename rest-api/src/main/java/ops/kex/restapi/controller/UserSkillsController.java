@@ -2,6 +2,7 @@ package ops.kex.restapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.UserSkills;
+import ops.kex.restapi.model.sorting.SortData;
 import ops.kex.restapi.service.UserSkillsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +16,23 @@ public class UserSkillsController {
 
     private final UserSkillsService userSkillsService;
 
-    @GetMapping("user/userSkill")
-    public List<UserSkills> getUserSkill(){
-        return userSkillsService.getUserSkills();
+    @PutMapping("user/userSkill/sorted")
+    public ResponseEntity<List<UserSkills>> getUserSkill(@RequestBody SortData sortData){
+        return userSkillsService.getUserSkills(sortData);
     }
 
     @PostMapping("/user/userSkill")
-    public void addUserSkillToUser(@RequestBody UserSkills userSkills) {
-        userSkillsService.addUserSkillToUser(userSkills);
+    public ResponseEntity<String> addUserSkillToUser(@RequestBody UserSkills userSkills) {
+        return userSkillsService.addUserSkillToUser(userSkills);
     }
 
     @PutMapping("/user/userSkill")
-    public ResponseEntity<String> updateUserSkill(@RequestBody UserSkills userSkills) {
-        return userSkillsService.updateUserSkill(userSkills);
+    public void updateUserSkill(@RequestBody UserSkills userSkills) {
+        userSkillsService.updateUserSkill(userSkills);
     }
 
     @DeleteMapping("/user/userSkill/{userSkillsId}")
-    public void deleteUserSkill(@PathVariable Integer userSkillsId) {
-        userSkillsService.deleteUserSkill(userSkillsId);
+    public ResponseEntity<String> deleteUserSkill(@PathVariable Integer userSkillsId) {
+        return userSkillsService.deleteUserSkill(userSkillsId);
     }
 }

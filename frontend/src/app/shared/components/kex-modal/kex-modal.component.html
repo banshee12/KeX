@@ -1,1 +1,5 @@
-<p>kex-modal works!</p>
+<h2 mat-dialog-title>{{data.labelHeadline}}</h2>
+<mat-dialog-content>{{data.labelDescription}}</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial [mat-dialog-close]="true">{{data.labelAction || 'Schliessen'}}</button>
+</mat-dialog-actions>

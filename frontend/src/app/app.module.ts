@@ -1,9 +1,9 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatButton, MatFabButton, MatIconButton} from "@angular/material/button";
 import {Action, ActionReducerMap, StoreModule} from '@ngrx/store';
 import {KexToolbarComponent} from './page-template/kex-toolbar/kex-toolbar.component';
 import {MatIcon} from "@angular/material/icon";
@@ -12,6 +12,7 @@ import {KEX_PROFILE_STORE_FEATURE_KEY} from "./modules/profile/store/reducers/ke
 import {KexProfileEffects} from "./modules/profile/store/effects/kex-profile.effects";
 import * as fromKexProfile from './modules/profile/store/reducers/kex-profile.reducers';
 import * as fromKexSearch from './modules/search/store/reducers/kex-search.reducers';
+import * as fromKexCore from './core/store/reducers/kex-core.reducers';
 import {EffectsModule} from "@ngrx/effects";
 import {ProfileModule} from "./modules/profile/profile.module";
 import {HomeModule} from "./modules/home/home.module";
@@ -24,23 +25,34 @@ import {KEX_SEARCH_STORE_FEATURE_KEY} from "./modules/search/store/reducers/kex-
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import { KexSearchEffects } from './modules/search/store/effects/kex-search.effects';
+import {environment} from "../environments/environment";
+import {registerLocaleData} from "@angular/common";
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
+import {KexCoreEffects} from "./core/store/effects/kex-core.effects";
+import {KEX_CORE_STORE_FEATURE_KEY} from "./core/store/reducers/kex-core.reducers";
+
+registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 const reducers: ActionReducerMap<unknown, Action> = {
   [KEX_PROFILE_STORE_FEATURE_KEY]: fromKexProfile.kexProfileReducer,
   [KEX_SEARCH_STORE_FEATURE_KEY]: fromKexSearch.kexSearchReducer,
+  [KEX_CORE_STORE_FEATURE_KEY]: fromKexCore.kexCoreReducer
 };
 const effects = [
   KexProfileEffects,
-  KexSearchEffects
+  KexSearchEffects,
+  KexCoreEffects
 ];
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'https://kex-kc.kexserver.de/',
-        realm: 'kex-application',
-        clientId: 'kex-client-alpha'
+        url: environment.KEYCLOAK_URL,
+        realm: environment.KEYCLOAK_REALM,
+
+        clientId: environment.KEYCLOAK_CLIENT_ID
       },
       initOptions: {
         onLoad: 'check-sso',
@@ -78,7 +90,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatMenu,
     MatMenuTrigger,
     MatMenuItem,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatFabButton
   ],
   providers: [
     {
@@ -86,7 +99,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'de-DE' }
   ],
   bootstrap: [AppComponent]
 })

@@ -4,8 +4,8 @@ import {KexCoreService} from "../../../../../../core/services/kex-core.service";
 import {KexProfileService} from "../../../../services/kex-profile.service";
 import {debounceTime, distinctUntilChanged, filter, Observable, of, Subscription, switchMap} from "rxjs";
 import {state} from "@angular/animations";
-import {KexLoadState} from "../../../../../../core/models/kex-core.models";
-import {FormControl} from "@angular/forms";
+import {KexButtonType, KexLoadState} from "../../../../../../core/models/kex-core.models";
+import {FormControl, Validators} from "@angular/forms";
 import {KexProfileConnectorService} from "../../../../services/kex-profile-connector.service";
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../../store/kex-profile.state";
@@ -19,6 +19,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   KexModalConfirmationComponent
 } from "../../../../../../shared/components/kex-modal/kex-modal-confirmation/kex-modal-confirmation.component";
+import {KexModalComponent} from "../../../../../../shared/components/kex-modal/kex-modal.component";
 
 @Component({
   selector: 'kex-profile-skill',
@@ -28,12 +29,13 @@ import {
 export class KexProfileSkillComponent implements OnInit, OnDestroy {
   @Input() userSkill: KexUserSkill | undefined;
   @Output() leaveNewSkillMode = new EventEmitter<boolean>();
+  public KexButtonType = KexButtonType;
 
   private subscriptions: Subscription[] = [];
   level = 1;
-  visible = false;
+  visible = true;
   editMode = false;
-  controlTitle = new FormControl('');
+  controlTitle = new FormControl('', [Validators.minLength(3), Validators.required]);
   suggestionSkillList: KexSkill[] = [];
   addNewSkill = false;
 
@@ -50,6 +52,10 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
 
   get title(): string {
     return this.userSkill?.skill.title || '';
+  }
+
+  get isValid() : boolean {
+    return this.controlTitle.valid;
   }
 
   observeSuggestionForTitle() {
@@ -73,7 +79,6 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
   }
 
   deleteSkill() {
-
         const dialogRef = this.dialog.open(KexModalConfirmationComponent, {
           data: {labelAction: 'Löschen',
             labelHeadline: 'Fähigkeit löschen',
@@ -105,9 +110,9 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
 
   saveSkill(): void {
     let titleNew: string | null = this.controlTitle.value;
-    if (titleNew != null) {
+    if (titleNew != null && this.isValid) {
       let skillId: number = this.userSkill && this.userSkill.skill.title == titleNew ? this.userSkill.skill.id || 0 : 0;
-      if (this.userSkill) {
+      if (this.userSkill && !this.addNewSkill) {
         const skill: KexUserSkill = {
           ...this.userSkill,
           skill: {id: skillId, title: titleNew},

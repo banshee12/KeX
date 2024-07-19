@@ -7,6 +7,11 @@ export enum KexLoadState {
   FAILURE = 'FAILURE'
 }
 
+export enum KexButtonType {
+  ICON_ONLY = 'ICON_ONLY',
+  RAISE_BUTTON = 'RAISE_BUTTON'
+}
+
 export enum KexNotificationType {
   INFO = 'INFO',
   WARNING = 'WARNING',
@@ -38,4 +43,10 @@ export interface KexDialogData {
   labelAction?: string,
   labelHeadline: string,
   labelDescription: string,
+}
+
+export interface KexSortData {
+  sortBy? : string,
+  asc? : boolean,
+  size? : number
 }

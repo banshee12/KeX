@@ -1,1 +1,64 @@
+@import 'bootstrap/scss/bootstrap';
 
+:host{
+  ::ng-deep mat-icon-button{
+    display: flex;
+    justify-items: center;
+  }
+
+  ::ng-deep .mat-icon {
+    height: auto;
+    width: auto;
+  }
+
+  ::ng-deep .material-icons {
+    font-size: 36px;
+  }
+
+  ::ng-deep .mat-mdc-icon-button.mat-mdc-button-base {
+    --mdc-icon-button-state-layer-size: auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  ::ng-deep .mat-mdc-button-ripple, ::ng-deep .mat-mdc-focus-indicator, ::ng-deep .mat-mdc-button-persistent-ripple {
+    position: absolute;
+    top: 50% !important;
+    height: 48px;
+    left: 50% !important;
+    width: 48px;
+    transform: translate(-50%, -50%);
+  }
+
+
+}
+.kex-toolbar-right {
+  display: flex;
+}
+
+.kex-toolbar-user {
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
+  padding-right: 16px;
+  p {
+    text-align: right;
+  }
+}
+
+.kex-toolbar-user, .kex-user-info-mobile {
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.kex-user-info-mobile {
+  @include media-breakpoint-up(sm) {
+    display: none;
+  }
+  border-top: black 1px solid;
+  padding-left: 4px;
+  padding-right: 4px;
+}

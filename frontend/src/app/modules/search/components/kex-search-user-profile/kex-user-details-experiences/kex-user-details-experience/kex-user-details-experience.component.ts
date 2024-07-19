@@ -11,6 +11,6 @@ export class KexUserDetailsExperienceComponent implements OnInit{
   @Input() experience : Experience | undefined;
 
   ngOnInit(): void {
-    console.log(this.experience);
+
   }
 }

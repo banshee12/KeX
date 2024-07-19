@@ -1,5 +1,4 @@
-<span *ngFor="let ratingId of ratingArr;index as i" [id]="'star_'+i" (click)="onClick(i+1)"
-      [matTooltip]="getTooltipText(ratingId)" matTooltipPosition="above">
+<span *ngFor="let ratingId of ratingArr;index as i" [id]="'star_'+i" (click)="onClick(i+1)">
   <mat-icon [color]="color">
     {{ showIcon(i) }}
   </mat-icon>

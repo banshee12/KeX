@@ -1,6 +1,8 @@
 .kex-experience-container {
   display: flex;
   background-color: #EEEEEE;
+  border-radius: 4px;
+  max-width: 800px;
 }
 
 .kex-experience-content {
@@ -10,6 +12,7 @@
 }
 
 .kex-experience-visible, .kex-experience-visible-off {
+  border-radius: 4px 0 0 4px;
   display: flex;
   align-items: center;
   cursor: pointer;

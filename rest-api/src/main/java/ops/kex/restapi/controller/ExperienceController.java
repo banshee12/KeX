@@ -2,42 +2,40 @@ package ops.kex.restapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import ops.kex.restapi.model.Experience;
+import ops.kex.restapi.model.sorting.SortData;
 import ops.kex.restapi.service.ExperienceService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("api/user")
 public class ExperienceController {
 
     private final ExperienceService experienceService;
 
-    @GetMapping("/experience")
-    public List<Experience> getExperience() {
-        return experienceService.getExperience();
-    }
 
-    @GetMapping("/user/experience")
-    public List<Experience> getUserExperience(){
-         return experienceService.getUserExperience();
+    @PutMapping("/experience/sorted")
+    public ResponseEntity<List<Experience>> getUserExperience(@RequestBody SortData sortData){
+         return experienceService.getUserExperience(sortData);
     }
 
 
-    @PostMapping("/user/experience")
-    public void addExperienceToUser(@RequestBody Experience experience){
-        experienceService.addExperienceToUser(experience);
+    @PostMapping("/experience")
+    public ResponseEntity<String> addExperienceToUser(@RequestBody Experience experience){
+        return experienceService.addExperienceToUser(experience);
     }
 
-    @DeleteMapping("/user/experience/{experienceId}")
-    public void deleteExperience(@PathVariable Integer experienceId){
-        experienceService.deleteExperience(experienceId);
+    @DeleteMapping("/experience/{experienceId}")
+    public ResponseEntity<String> deleteExperience(@PathVariable Integer experienceId){
+        return experienceService.deleteExperience(experienceId);
     }
 
-    @PutMapping("/user/experience")
-    public void updateExperience(
+    @PutMapping("/experience")
+    public ResponseEntity<String> updateExperience(
             @RequestBody Experience experience){
-        experienceService.updateExperience(experience);
+        return experienceService.updateExperience(experience);
     }
 }

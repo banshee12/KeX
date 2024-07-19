@@ -1,3 +1,5 @@
+@import 'bootstrap/scss/bootstrap';
+
 :host{
 
 
@@ -5,12 +7,18 @@
     display: flex;
     justify-content: space-between;
 
+    @include media-breakpoint-down(sm) {
+      flex-direction: column;
+    }
   }
 
   .kex-profile-contact-container {
     background:  #EEEEEE;
     border-radius: 4px;
     width: 48%;
+    @include media-breakpoint-down(sm) {
+      width: 100%;
+    }
   }
 
   .kex-profile-contact-time-line{
@@ -29,7 +37,6 @@
   .kex-profile-contact-time-time{
     flex: 2;
   }
-
 
 }
 

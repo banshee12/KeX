@@ -313,7 +313,7 @@ const _kexProfileReducer = createReducer(
     })
   ),
 
-  // set contact options
+  // set contact times
   on(
     KexProfileActions.SetContactTimes.do,
     (state, action) => ({
@@ -335,6 +335,13 @@ const _kexProfileReducer = createReducer(
       setContactTimeLoadState: KexLoadState.FAILURE
     })
   ),
+  on(
+    KexProfileActions.SetContactTimes.reset,
+    (state, action) => ({
+      ...state,
+      setContactTimeLoadState: KexLoadState.NONE
+    })
+  )
 );
 
 export function kexProfileReducer(state: KexProfileState, action: Action) {

@@ -44,6 +44,17 @@ mat-tab-body {
 }
 
 .kex-form-field {
-  width: 400px;
-  max-width: 100%;
+  @include media-breakpoint-up(md) {
+    width: 400px;
+  }
+  @include media-breakpoint-up(sm) {
+    width: 300px;
+  }
+}
+
+.kex-chip-primary{
+  background-color: #3F51B5 !important;
+  .mat-mdc-chip-action-label{
+    color: #EEEEEE !important;
+  }
 }

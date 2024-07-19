@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {KexLoadState} from "../../../core/models/kex-core.models";
+import {KexButtonType, KexLoadState} from "../../../core/models/kex-core.models";
 
 @Component({
   selector: 'kex-button',
@@ -12,5 +12,9 @@ export class KexButtonComponent {
   @Input() color = 'primary';
   @Input() icon : string | undefined;
   @Input() tooltip = '';
+  @Input() label = '';
+  @Input() disabled = false;
+  @Input() type = KexButtonType.ICON_ONLY
 
+  protected readonly KexButtonType = KexButtonType;
 }

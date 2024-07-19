@@ -2,6 +2,7 @@ package ops.kex.restapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ops.kex.restapi.controller.SkillsController;
 import ops.kex.restapi.model.Experience;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
@@ -31,14 +32,26 @@ public class SkillsService {
     }
 
 
-    public void addNewSkill(Skills skills){
-        Optional<Skills> skillsOptional = skillsRepository
-                .findSkillsByTitleIgnoreCase(skills.getTitle());
-        if(skillsOptional.isPresent()){
-            log.warn("Skill " + skills.getTitle() + " already exists in database");
-        } else{
-            skillsRepository.save(skills);
-            log.info("Skill " + skills.getTitle() + " has been added to database");
+    public Skills addNewSkill(Skills skills){
+        if(skills.getTitle() != null){
+            if(!skills.getTitle().isBlank()){
+                Optional<Skills> skillsOptional = skillsRepository
+                        .findSkillsByTitleIgnoreCase(skills.getTitle());
+                if(skillsOptional.isPresent()){
+                    log.warn("Skill " + skills.getTitle() + " already exists in database");
+                    return null;
+                } else{
+                    skillsRepository.save(skills);
+                    log.info("Skill " + skills.getTitle() + " has been added to database");
+                    return skillsRepository.findSkillTopByOrderByIdDesc();
+                }
+            } else {
+                log.error("Skill is blank");
+                return null;
+            }
+        } else {
+            log.error("skill is null");
+            return null;
         }
     }
 

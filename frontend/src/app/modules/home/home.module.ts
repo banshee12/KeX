@@ -23,6 +23,7 @@ import {
 import {MatDivider} from "@angular/material/divider";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatList, MatListItem} from "@angular/material/list";
+import { KexWidgetFeedbackComponent } from './components/widgets/kex-widget-feedback/kex-widget-feedback.component';
 
 
 
@@ -32,7 +33,8 @@ import {MatList, MatListItem} from "@angular/material/list";
         KexWidgetSkillsComponent,
         KexWidgetExperienceComponent,
         KexWidgetContactDataComponent,
-        KexWidgetBaseComponent
+        KexWidgetBaseComponent,
+        KexWidgetFeedbackComponent
     ],
   imports: [
     CommonModule,

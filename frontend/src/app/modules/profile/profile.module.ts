@@ -23,6 +23,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { KexProfileContactOptionComponent } from './components/kex-profile/kex-profile-contact-data/kex-profile-contact-option/kex-profile-contact-option.component';
 import {MatCheckbox} from "@angular/material/checkbox";
 import { KexProfileContactTimeComponent } from './components/kex-profile/kex-profile-contact-data/kex-profile-contact-time/kex-profile-contact-time.component';
+import {MatSelectModule} from "@angular/material/select";
+import {NgxMatTimepickerComponent, NgxMatTimepickerDirective} from "ngx-mat-timepicker";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,10 @@ import { KexProfileContactTimeComponent } from './components/kex-profile/kex-pro
     AsyncPipe,
     FormsModule,
     MatCheckbox,
-    MatIconButton
+    MatIconButton,
+    MatSelectModule,
+    NgxMatTimepickerDirective,
+    NgxMatTimepickerComponent
   ]
 })
 export class ProfileModule { }
