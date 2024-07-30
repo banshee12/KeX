@@ -78,13 +78,21 @@ public class UserService {
 
     //retrieve logged user
     public ResponseEntity<User> getUser() {
+        if(getLoggedUser() != null){
+            return new ResponseEntity<>(getLoggedUser(),HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    public User getLoggedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken))
         {
             String username = authentication.getName();
-            return new ResponseEntity<>(userRepository.findUserByUsernameIgnoreCase(username),HttpStatus.OK);
+            return userRepository.findUserByUsernameIgnoreCase(username);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return null;
     }
 
 
@@ -138,38 +146,65 @@ public class UserService {
     }
 
     public ResponseEntity<List<UserView>> findUser(UserSearch userSearch) {
-        String sortDirectionStr = userSearch.getSortData() != null && !userSearch.getSortData().getAsc() ? "desc" : "asc";
-        Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
+        User loggedUser = getLoggedUser();
+        if(loggedUser != null){
+            String sortDirectionStr = userSearch.getSortData() != null && !userSearch.getSortData().getAsc() ? "desc" : "asc";
+            Sort.Direction sortDirection = Sort.Direction.fromString(sortDirectionStr);
 
-        Integer minLevel = 0;
-        if(userSearch.getMinLevel() != null){
-            minLevel = userSearch.getMinLevel();
-        }
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
-        List<UserView> foundUsers = new ArrayList<>();
-        if (user != null) {
-            //Pageable if sort size greater 0
-            if(userSearch.getSortData() != null && userSearch.getSortData().getSize() != null && userSearch.getSortData().getSize() > 0){
-                Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
-                foundUsers = userRepository.findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
-                        pageable,
-                        userSearch.getSearchSkill(),
-                        true,
-                        minLevel);
-            } else{
-                foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
-                        Sort.by(sortDirection, userSearch.getSortData().getSortBy()),
-                        userSearch.getSearchSkill(),
-                        true,
-                        minLevel);
+            int minLevel = 0;
+            int year = 0;
+            if(userSearch.getMinLevel() != null){
+                minLevel = userSearch.getMinLevel();
             }
-            foundUsers.removeIf(userView -> userView.getUserSub().equals(user.getUserSub()));
-            return new ResponseEntity<>(foundUsers,HttpStatus.OK);
-        } else {
-            log.error("user " + authentication.getName() + " does not exist in database");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            if(loggedUser.getYear() != null){
+                if(loggedUser.getYear() != 0){
+                    year = loggedUser.getYear();
+                }
+            }
+
+            List<UserView> foundUsers = new ArrayList<>();
+            if(year == 0){
+                //Pageable if sort size greater 0
+                if(userSearch.getSortData() != null && userSearch.getSortData().getSize() != null && userSearch.getSortData().getSize() > 0){
+                    Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
+                    foundUsers = userRepository.findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                            pageable,
+                            userSearch.getSearchSkill(),
+                            true,
+                            minLevel);
+                } else{
+                    foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(
+                            Sort.by(sortDirection, userSearch.getSortData().getSortBy()),
+                            userSearch.getSearchSkill(),
+                            true,
+                            minLevel);
+                }
+                foundUsers.removeIf(userView -> userView.getUserSub().equals(loggedUser.getUserSub()));
+                return new ResponseEntity<>(foundUsers,HttpStatus.OK);
+            }else {
+                //Pageable if sort size greater 0
+                if(userSearch.getSortData() != null && userSearch.getSortData().getSize() != null && userSearch.getSortData().getSize() > 0){
+                    Pageable pageable = PageRequest.of(0,userSearch.getSortData().getSize(), Sort.by(sortDirection, userSearch.getSortData().getSortBy()));
+                    foundUsers = userRepository.findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqualAndYear(
+                            pageable,
+                            userSearch.getSearchSkill(),
+                            true,
+                            minLevel,
+                            year);
+                } else{
+                    foundUsers = userRepository.getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqualAndYear(
+                            Sort.by(sortDirection, userSearch.getSortData().getSortBy()),
+                            userSearch.getSearchSkill(),
+                            true,
+                            minLevel,
+                            year);
+                }
+                foundUsers.removeIf(userView -> userView.getUserSub().equals(loggedUser.getUserSub()));
+                return new ResponseEntity<>(foundUsers,HttpStatus.OK);
+            }
         }
+        log.error("user does not exist in database");
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

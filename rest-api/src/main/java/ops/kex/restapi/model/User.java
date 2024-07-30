@@ -35,6 +35,7 @@ public class User {
     private List<Experience> userExperience;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ContactTime> userContactTimes;
+    private Integer year;
 
 
 
