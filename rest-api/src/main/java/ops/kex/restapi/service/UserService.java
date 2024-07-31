@@ -27,6 +27,7 @@ public class UserService {
 
 
     private final UserRepository userRepository;
+    private final KeycloakService keycloakService;
 
     public ResponseEntity<String> SyncUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -205,6 +206,17 @@ public class UserService {
             }
         }
         log.error("user does not exist in database");
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<String> deleteUser() {
+        User deleteUser = getLoggedUser();
+        if(deleteUser != null){
+            if(keycloakService.deleteUser(deleteUser.getUserSub()) > 0){
+                userRepository.delete(deleteUser);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

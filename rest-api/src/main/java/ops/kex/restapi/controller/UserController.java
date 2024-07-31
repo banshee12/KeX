@@ -48,4 +48,9 @@ public class UserController {
     public ResponseEntity<String> syncUser(){
         return userService.SyncUser();
     }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(){
+       return userService.deleteUser();
+    }
 }
