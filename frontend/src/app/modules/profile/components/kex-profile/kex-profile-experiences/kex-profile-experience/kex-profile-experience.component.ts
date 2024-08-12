@@ -210,8 +210,8 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             this.linkedSkills = [...this.linkedSkills];
             this.linkedSkills.push(skill);
           }
-
           this.skillCtrl.setValue(null);
+          this.saveExperience();
         }
 
       // Methode zum Entfernen einer Fähigkeit
