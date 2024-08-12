@@ -20,29 +20,36 @@
 
      <!-- <p style="font-weight:bold">Fähigkeiten</p> -->
       <!-- Integration des Fähigkeiten Auto Complete Chip Lets -->
-      <!--<form>
-        <mat-form-field  class="kex-chip-list">
+      <form>
+        <mat-form-field class="kex-chip-list">
           <mat-chip-grid #chipGrid aria-label="Skill selection">
+            <!-- Immer die Chips anzeigen -->
             @for (skill of linkedSkills; track skill) {
             <mat-chip-row (removed)="removeSkill(skill)">
               {{skill}}
+              <!-- Zeige den Entfernen-Button nur, wenn editMode true ist -->
               <button matChipRemove [attr.aria-label]="'remove ' + skill">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip-row>
             }
           </mat-chip-grid>
-          <input #skillInput matInput placeholder="New Skill..." [formControl]="skillCtrl"
-                 [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+
+          <!-- Zeige das Eingabefeld nur, wenn editMode true ist -->
+          <input #skillInput matInput placeholder="New Skill..."
+                 [formControl]="skillCtrl" [matChipInputFor]="chipGrid"
+                 [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  (matChipInputTokenEnd)="addNewSkill($event)">
+
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectExistingSkill($event)">
+            <!-- Autocomplete-Optionen -->
             @for (skill of allProfileSkills | async; track skill) {
             <mat-option [value]="skill">{{skill.skill.title}}</mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
-      </form>-->
+      </form>
+
       <!-- Ende der Integration des Fähigkeiten Auto Complete Chip Lets -->
     </div>
     <div class="kex-experience-button-container">

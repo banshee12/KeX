@@ -207,7 +207,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
                       visible: false
                     };
             this.profileService.addSkill(skill);
-            //Problem: linkedSkills is not extendable
+            this.linkedSkills = [...this.linkedSkills];
             this.linkedSkills.push(skill);
           }
 
@@ -219,6 +219,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
           const index = this.linkedSkills.indexOf(skill);
           if (index >= 0) {
           //Problem: Kann objekt nicht aus dem Array Löschen
+            this.linkedSkills = [...this.linkedSkills];
             this.linkedSkills.splice(index, 1);
             this.saveExperience();
           }
@@ -228,7 +229,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
        selectExistingSkill(event: MatAutocompleteSelectedEvent): void {
           //TODO
           //this.linkedSkills.push({ title: event.option.viewValue });
-          console.log(Array.isArray(this.linkedSkills));
+          console.log('Is Collection Array ' + Array.isArray(this.linkedSkills));
+          this.linkedSkills = [...this.linkedSkills];
+          console.log('Is Array extentible ' + Object.isExtensible(this.linkedSkills));
           var selectedSkill = event.option.value; //KexUserSkill
           //Umwandlung in KexSkill
           const skillClone = { ...selectedSkill }; // Flache Kopie von selectedSkill
@@ -238,10 +241,21 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
               level: skillClone.level,
               visible: skillClone.visible
           };
-          //Problem: linkedSkills is not extendable
-          this.linkedSkills.push(skill);
+          if(!this.checkIfSkillIsAlreadyAdded(skill))
+          {
+             this.linkedSkills.push(skill);
+          }
           this.skillInput.nativeElement.value = '';
           this.skillCtrl.setValue(null);
           this.saveExperience();
        }
+
+        private checkIfSkillIsAlreadyAdded(skillInput: KexUserSkill): boolean {
+           for (const skill of this.linkedSkills) {
+             if (skillInput.id === skill.id) {
+               return true;
+             }
+           }
+           return false;
+         }
 }

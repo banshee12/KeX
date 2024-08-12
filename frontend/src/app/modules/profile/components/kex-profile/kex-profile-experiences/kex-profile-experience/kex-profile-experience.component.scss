@@ -42,3 +42,15 @@
 .kex-chip-list {
   width: 100%;
 }
+
+.kex-chip-list .chips-container {
+  display: flex;
+  flex-wrap: nowrap; /* Verhindert das Umbruch der Chips */
+  gap: 8px; /* Abstand zwischen den Chips */
+  overflow-x: auto; /* Ermöglicht horizontales Scrollen, falls erforderlich */
+}
+
+.kex-chip-list mat-chip-row {
+  display: inline-flex;
+  align-items: center;
+}
