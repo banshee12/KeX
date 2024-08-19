@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.*;
 import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
+import ops.kex.restapi.repository.UserFavoriteRepository;
 import ops.kex.restapi.repository.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final KeycloakService keycloakService;
+    private final UserFavoriteRepository userFavoriteRepository;
 
     public ResponseEntity<String> SyncUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,11 +74,6 @@ public class UserService {
         }
     }
 
-    //retrieve all users
-    public List<User> getUsers() {
-        return userRepository.findAll();
-    }
-
     //retrieve logged user
     public ResponseEntity<User> getUser() {
         if(getLoggedUser() != null){
@@ -97,11 +94,10 @@ public class UserService {
     }
 
 
-    public ResponseEntity<User> getUserById(String userId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(!(authentication instanceof AnonymousAuthenticationToken))
-        {
-            User user = userRepository.getUserByUserSub(userId);
+    public ResponseEntity<UserPage> getUserById(String userSub) {
+        User loggedUser = getLoggedUser();
+        if(loggedUser != null){
+            User user = userRepository.getUserByUserSub(userSub);
             if(user != null){
                 List<Experience> experienceList = user.getUserExperience();
                 List<UserSkills> userSkillsList = user.getUserSkills();
@@ -109,11 +105,23 @@ public class UserService {
                 userSkillsList.removeIf(UserSkills -> !UserSkills.getVisible());
                 user.setUserExperience(experienceList);
                 user.setUserSkills(userSkillsList);
-                return new ResponseEntity<>(user, HttpStatus.OK);
+
+                //Check if favorite
+                UserFavorite userFavorite = userFavoriteRepository.findByUserSubAndFavoriteUserSub(loggedUser.getUserSub(), userSub);
+                Boolean favorite = false;
+                if(userFavorite != null){
+                    favorite = true;
+                }
+
+                UserPage userPage = UserPage.builder()
+                        .user(user)
+                        .isFavorite(favorite)
+                        .build();
+                return new ResponseEntity<>(userPage, HttpStatus.OK);
             } else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-        } else{
+        }else{
             log.info("no user logged in");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -216,6 +224,62 @@ public class UserService {
                 userRepository.delete(deleteUser);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<String> editFavorite(String favoriteUserSub, Boolean remove) {
+        User loggedUser = getLoggedUser();
+        if(loggedUser != null){
+            if(!Objects.equals(loggedUser.getUserSub(), favoriteUserSub)){
+                if(remove){
+                    UserFavorite userFavorite = userFavoriteRepository.findByUserSubAndFavoriteUserSub(loggedUser.getUserSub(), favoriteUserSub);
+                    if(userFavorite != null){
+                        loggedUser.removeFavorite(userFavorite.getId());
+                        userFavoriteRepository.delete(userFavorite);
+                        log.info("{} favorite removed from {}", favoriteUserSub, loggedUser.getUsername());
+                        return new ResponseEntity<>("favorite removed", HttpStatus.OK);
+                    } else{
+                        log.info("{} ist not favored by {}", favoriteUserSub, loggedUser.getUsername());
+                        return new ResponseEntity<>("is no favorite",HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                } else{
+                    if(userRepository.findUserByUserSub(favoriteUserSub).isPresent()){
+                        UserFavorite userFavorite = UserFavorite.builder()
+                                .userSub(loggedUser.getUserSub())
+                                .favoriteUserSub(favoriteUserSub)
+                                .build();
+                        loggedUser.addFavorite(userFavorite);
+                        userRepository.save(loggedUser);
+                        log.info("{} favorite added to {}", favoriteUserSub, loggedUser.getUsername());
+                        return new ResponseEntity<>("favorite added", HttpStatus.OK);
+                    } else{
+                        log.info("{} does not exist", favoriteUserSub);
+                        return new ResponseEntity<>(favoriteUserSub + " does not exist", HttpStatus.OK);
+                    }
+                }
+            } else {
+                log.warn("can´t favorite yourself");
+                return new ResponseEntity<>("can´t favorite yourself",HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<List<UserView>> getFavorites() {
+        User loggedUser = getLoggedUser();
+        if(loggedUser != null){
+            List<UserFavorite> userFavorite = loggedUser.getFavorites();
+            List<UserView> userViews = new ArrayList<>();
+            if(userFavorite != null && !userFavorite.isEmpty()){
+                for(UserFavorite userFavoriteItem : userFavorite){
+                    UserView userView = userRepository.findUsersByUserSub(userFavoriteItem.getFavoriteUserSub());
+                    if(userView != null){
+                        userViews.add(userView);
+                    }
+                }
+            }
+            return new ResponseEntity<>(userViews,HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
