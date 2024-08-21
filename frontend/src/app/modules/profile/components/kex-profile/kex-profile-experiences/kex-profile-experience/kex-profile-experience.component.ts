@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import {Experience, KexSkill, KexUserSkill} from "../../../../models/kex-profile.model";
 import { KexCoreService } from "../../../../../../core/services/kex-core.service";
 import { KexProfileService } from "../../../../services/kex-profile.service";
@@ -66,7 +66,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
    title = '';
    visible = false;
    description = '';
-   linkedSkills: KexUserSkill[] = []; // Array für ausgewählte Fähigkeiten
+   linkedSkills: KexSkill[] = []; // Array für ausgewählte Fähigkeiten
    editMode = false;
    addNewExperience=false;
 
@@ -126,6 +126,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
 
   saveExperience(): void {
+  if(this.title.trim()==""){
+    return;
+  }
   if (this.experience) {
         const experience: Experience = {...this.experience, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
         this.profileService.saveExperience(experience);
@@ -184,9 +187,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
-      private _filterSkills(value: string): KexUserSkill[] {
+      private _filterSkills(value: string): KexSkill[] {
         const filterValue = value.toLowerCase();
-        return this.linkedSkills.filter(skill => skill.skill.title.toLowerCase().includes(filterValue));
+        return this.linkedSkills.filter(skill => skill.title.toLowerCase().includes(filterValue));
       }
 
       // Methode zum Hinzufügen einer Fähigkeit
@@ -200,22 +203,34 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             let skillTitle = value.trim();
             //Skill ID :0
             //this.linkedSkills.push({title:value.trim() });
+            const skillSkill : KexSkill ={id:0,title:skillTitle};
             const skill: KexUserSkill = {
-                      id: 0,
-                      skill: {id: 0, title: skillTitle},
-                      level: 0,
-                      visible: false
-                    };
-            this.profileService.addSkill(skill);
-            this.linkedSkills = [...this.linkedSkills];
-            this.linkedSkills.push(skill);
+                                  id: 0,
+                                  skill: {id: 0, title: skillTitle},
+                                  level: 0,
+                                  visible: false
+                                };
+            this.checkIfSkillExistsInUser(skillTitle).then(skillExists => {
+                if (skillExists) {
+                        console.log('Skill exists in user profile');
+                    } else {
+                        console.log('Skill does not exist in user profile');
+                       this.profileService.addSkill(skill);
+                    }
+                }).catch(error => {
+                    console.error('Error checking skill:', error);
+                });
+            if(!this.checkIfSkillIsPresent(skillTitle)){
+                 this.linkedSkills = [...this.linkedSkills];
+                 this.linkedSkills.push(skillSkill);
+            }
           }
           this.skillCtrl.setValue(null);
           this.saveExperience();
         }
 
       // Methode zum Entfernen einer Fähigkeit
-       removeSkill(skill: KexUserSkill): void {
+       removeSkill(skill: KexSkill): void {
           const index = this.linkedSkills.indexOf(skill);
           if (index >= 0) {
           //Problem: Kann objekt nicht aus dem Array Löschen
@@ -235,15 +250,14 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
           var selectedSkill = event.option.value; //KexUserSkill
           //Umwandlung in KexSkill
           const skillClone = { ...selectedSkill }; // Flache Kopie von selectedSkill
-          const skill: KexUserSkill = {
-              id: skillClone.skill.id,
-              skill: { id: skillClone.id, title: skillClone.skill.title },
-              level: skillClone.level,
-              visible: skillClone.visible
-          };
-          if(!this.checkIfSkillIsAlreadyAdded(skill))
+
+          if(!this.checkIfSkillIsAlreadyAdded(skillClone))
           {
-             this.linkedSkills.push(skill);
+              const skillSkill : KexSkill = {
+                      id: skillClone.id,
+                      title: skillClone.skill.title
+                    };
+             this.linkedSkills.push(skillSkill);
           }
           this.skillInput.nativeElement.value = '';
           this.skillCtrl.setValue(null);
@@ -252,10 +266,31 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
         private checkIfSkillIsAlreadyAdded(skillInput: KexUserSkill): boolean {
            for (const skill of this.linkedSkills) {
-             if (skillInput.id === skill.id) {
+             if (skillInput.skill.title === skill.title) {
                return true;
              }
            }
            return false;
          }
+
+        private checkIfSkillIsPresent(Skilltitle : string){
+            for (const skill of this.linkedSkills) {
+              if(skill.title == Skilltitle){
+                    return true;
+              }
+            }
+            return false;
+        }
+
+        private checkIfSkillExistsInUser(Skilltitle: string): Promise<boolean> {
+            return new Promise((resolve, reject) => {
+                this.allProfileSkills.subscribe({
+                    next: (skills: any[]) => {  // Typ von `skills` anpassen
+                        const skillExists = skills.some(userSkill => userSkill.skill.title === Skilltitle);
+                        resolve(skillExists);
+                    },
+                    error: (err) => reject(err)
+                });
+            });
+        }
 }

@@ -26,7 +26,7 @@
             <!-- Immer die Chips anzeigen -->
             @for (skill of linkedSkills; track skill) {
             <mat-chip-row (removed)="removeSkill(skill)">
-              {{skill}}
+              {{skill.title}}
               <!-- Zeige den Entfernen-Button nur, wenn editMode true ist -->
               <button matChipRemove [attr.aria-label]="'remove ' + skill">
                 <mat-icon>cancel</mat-icon>
