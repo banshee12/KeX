@@ -18,15 +18,19 @@ public class UserController {
 
     private final UserService userService;
 
+//    @GetMapping("/all")
+//    public List<User> getUsers() {
+//        return userService.getUsers();
+//    }
 
    @GetMapping()
     public ResponseEntity<User> getUser() {
        return userService.getUser();
     }
 
-    @GetMapping("/{userSub}")
-    public ResponseEntity<UserPage> getUserById(@PathVariable String userSub) {
-        return userService.getUserById(userSub);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable String userId) {
+        return userService.getUserById(userId);
     }
 
     @PostMapping("/search")
@@ -43,22 +47,5 @@ public class UserController {
     @GetMapping("/sync")
     public ResponseEntity<String> syncUser(){
         return userService.SyncUser();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<String> deleteUser(){
-       return userService.deleteUser();
-    }
-
-    @PutMapping("/favorite/{userSub}/{remove}")
-    public ResponseEntity<String> editFavorite(
-            @PathVariable String userSub,
-            @PathVariable Boolean remove){
-       return userService.editFavorite(userSub, remove);
-    }
-
-    @GetMapping("/favorite")
-    public ResponseEntity<List<UserView>> getFavorites(){
-       return userService.getFavorites();
     }
 }

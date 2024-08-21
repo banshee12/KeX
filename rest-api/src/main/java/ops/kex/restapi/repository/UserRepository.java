@@ -24,6 +24,5 @@ public interface UserRepository
     List<User> findUsersByUserSkillsSkill(Skills skill);
     List<UserView> findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Pageable pageable, String searchSkill, Boolean visible, Integer level);
     List<UserView> getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqual(Sort sort, String searchSkill, Boolean visible, Integer level);
-    List<UserView> findDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqualAndYear(Pageable pageable, String searchSkill, Boolean visible, Integer level, Integer Year);
-    List<UserView> getDistinctUsersByUserSkillsSkillTitleContainingIgnoreCaseAndUserSkillsVisibleAndUserSkillsLevelGreaterThanEqualAndYear(Sort sort, String searchSkill, Boolean visible, Integer level, Integer Year);
 }
+
