@@ -67,6 +67,7 @@ public class ExperienceService {
 
     public ResponseEntity<String> addExperienceToUser(Experience experience) {
         if(experience.getTitle() != null){
+            log.info(experience.toString());
             if(!experience.getTitle().isBlank()){
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 if (authentication instanceof AnonymousAuthenticationToken) {
