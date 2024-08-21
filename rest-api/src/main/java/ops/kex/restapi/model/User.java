@@ -1,6 +1,5 @@
 package ops.kex.restapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.persistence.metamodel.StaticMetamodel;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "users")
 @StaticMetamodel(User.class)
-//@JsonIgnoreProperties({"favorites"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_GEN")
@@ -37,9 +35,7 @@ public class User {
     private List<Experience> userExperience;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ContactTime> userContactTimes;
-    private Integer year;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<UserFavorite> favorites;
+
 
 
     public void addUserSkill(UserSkills userSkills){
@@ -61,17 +57,6 @@ public class User {
         Experience experience = this.userExperience.stream().filter(t -> t.getId() == experienceId).findFirst().orElse(null);
         if (experience != null) {
             this.userExperience.remove(experience);
-        }
-    }
-
-    public void addFavorite(UserFavorite userFavorite){
-        this.favorites.add(userFavorite);
-    }
-
-    public void removeFavorite(Integer favoriteId) {
-        UserFavorite userFavorite = this.favorites.stream().filter(t -> t.getId() == favoriteId).findFirst().orElse(null);
-        if (userFavorite != null) {
-            this.favorites.remove(userFavorite);
         }
     }
 }

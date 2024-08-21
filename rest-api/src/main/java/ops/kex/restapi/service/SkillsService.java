@@ -43,14 +43,7 @@ public class SkillsService {
                 } else{
                     skillsRepository.save(skills);
                     log.info("Skill " + skills.getTitle() + " has been added to database");
-                    Optional<Skills> optionalSkills = skillsRepository.findTopByOrderByIdDesc();
-                    if(optionalSkills.isPresent()){
-                        log.info("Skill Database IO");
-                        return optionalSkills.get();
-                    } else {
-                        log.info("Skill Database NIO");
-                        return null;
-                    }
+                    return skillsRepository.findSkillTopByOrderByIdDesc();
                 }
             } else {
                 log.error("Skill is blank");
