@@ -28,7 +28,7 @@
             <mat-chip-row (removed)="removeSkill(skill)">
               {{skill.title}}
               <!-- Zeige den Entfernen-Button nur, wenn editMode true ist -->
-              <button matChipRemove [attr.aria-label]="'remove ' + skill">
+              <button *ngIf="editMode" matChipRemove [attr.aria-label]="'remove ' + skill">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip-row>

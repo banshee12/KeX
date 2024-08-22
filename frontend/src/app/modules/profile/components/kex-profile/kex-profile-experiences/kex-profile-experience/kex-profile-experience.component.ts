@@ -136,6 +136,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         const experience: Experience = {id: 1, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
         this.profileService.addExperience(experience);
       }
+          this.editMode = false;
   }
 
   observeEditExperience() {
@@ -226,7 +227,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             }
           }
           this.skillCtrl.setValue(null);
-          this.saveExperience();
         }
 
       // Methode zum Entfernen einer Fähigkeit
@@ -236,7 +236,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
           //Problem: Kann objekt nicht aus dem Array Löschen
             this.linkedSkills = [...this.linkedSkills];
             this.linkedSkills.splice(index, 1);
-            this.saveExperience();
           }
        }
 
@@ -261,7 +260,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
           }
           this.skillInput.nativeElement.value = '';
           this.skillCtrl.setValue(null);
+          if(!this.editMode){
           this.saveExperience();
+          }
        }
 
         private checkIfSkillIsAlreadyAdded(skillInput: KexUserSkill): boolean {
