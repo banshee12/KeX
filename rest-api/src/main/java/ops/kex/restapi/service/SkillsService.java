@@ -39,7 +39,7 @@ public class SkillsService {
                         .findSkillsByTitleIgnoreCase(skills.getTitle());
                 if(skillsOptional.isPresent()){
                     log.warn("Skill " + skills.getTitle() + " already exists in database");
-                    return null;
+                    return skillsOptional.get();
                 } else{
                     skillsRepository.save(skills);
                     log.info("Skill " + skills.getTitle() + " has been added to database");
