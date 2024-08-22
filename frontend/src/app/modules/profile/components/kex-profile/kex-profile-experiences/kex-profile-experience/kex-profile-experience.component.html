@@ -36,7 +36,7 @@
           </mat-chip-grid>
 
           <!-- Zeige das Eingabefeld nur, wenn editMode true ist -->
-          <input *ngIf="editMode" #skillInput matInput placeholder="New Skill..."
+          <input #skillInput matInput placeholder="New Skill..."
                  [formControl]="skillCtrl" [matChipInputFor]="chipGrid"
                  [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                  (matChipInputTokenEnd)="addNewSkill($event)">
