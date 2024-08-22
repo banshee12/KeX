@@ -2,10 +2,12 @@ package ops.kex.restapi.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ops.kex.restapi.model.Experience;
 import ops.kex.restapi.model.Skills;
 import ops.kex.restapi.model.User;
 import ops.kex.restapi.model.UserSkills;
 import ops.kex.restapi.model.sorting.SortData;
+import ops.kex.restapi.repository.ExperienceRepository;
 import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserRepository;
 import ops.kex.restapi.repository.UserSkillsRepository;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class UserSkillsService {
     private final UserSkillsRepository userSkillsRepository;
     private final UserRepository userRepository;
     private final SkillsRepository skillsRepository;
+    private final ExperienceRepository experienceRepository;
 
 
     public ResponseEntity<List<UserSkills>> getUserSkills(SortData sortData) {
@@ -168,8 +172,9 @@ public class UserSkillsService {
 
 
     public ResponseEntity<String> deleteUserSkill(Integer userSkillsId) {
+        Optional<UserSkills> optionalUserSkill = userSkillsRepository.findUserSkillsById(userSkillsId);
         boolean exist = userSkillsRepository.existsById(userSkillsId);
-        if (!exist) {
+        if (optionalUserSkill.isEmpty()) {
             log.error("UserSkill with id " + userSkillsId + " can not be deleted cause it does not exists");
             return new ResponseEntity<>(
                     "UserSkill with id " + userSkillsId + " can not be deleted cause it does not exists",
@@ -182,9 +187,26 @@ public class UserSkillsService {
                         "no user logged in",
                         HttpStatus.UNAUTHORIZED);
             } else {
+                //Remove Skills from experience
+                Optional<Skills> optionalSkills = skillsRepository.findSkillsByTitleIgnoreCase(optionalUserSkill.get().getSkill().getTitle());
+                if(optionalSkills.isEmpty()){
+                    log.error("skill " + optionalUserSkill.get().getSkill().getTitle() + " does not exist in database");
+                    return new ResponseEntity<>(
+                            "skill " + optionalUserSkill.get().getSkill().getTitle() + " does not exist in database",
+                            HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                List<Experience> experienceList = experienceRepository.findExperiencesBySkillTitle(optionalSkills.get().getTitle());
+                for(Experience experience : experienceList){
+                    experience.removeSkill(optionalSkills.get().getId());
+                    experienceRepository.save(experience);
+                    log.info("'{}' removed from experience '{}'", optionalSkills.get().getTitle(), experience.getTitle());
+                }
+
+                //Remove UserSkill from User
                 User user = userRepository.findUserByUsernameIgnoreCase(authentication.getName());
                 user.removeUserSkill(userSkillsId);
                 userSkillsRepository.deleteById(userSkillsId);
+
                 log.info("UserSkill deleted");
                 return new ResponseEntity<>(
                         "UserSKill successfully deleted for " + user.getUsername(),
