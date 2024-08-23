@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -17,4 +18,8 @@ public interface ExperienceRepository
     List<Experience> findExperiencesBySkillTitle(String title);
     List<Experience> findExperiencesByUserUserId(Sort sort, Integer userId);
     List<Experience> getExperiencesByUserUserId(Pageable pageable, Integer userId);
+
+    Optional<List<Experience>> getExperiencesBySkillTitleAndUserUserId(String SkillTitle, Integer userId);
+
+    Optional<Experience> findExperienceById(Integer experienceId);
 }
