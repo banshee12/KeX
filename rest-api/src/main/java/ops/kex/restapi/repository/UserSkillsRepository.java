@@ -15,7 +15,11 @@ public interface UserSkillsRepository
         extends JpaRepository<UserSkills, Integer> {
 
     UserSkills getUserSkillsById(Integer SkillId);
+
+    Optional<UserSkills> findUserSkillsByUserUserIdAndSkillTitleIgnoringCase(Integer userId, String skillTitle);
     Optional<UserSkills> findUserSkillsById(Integer SkillId);
+
     List<UserSkills> findUserSkillsByUserUserId(Sort sort, Integer userId);
     List<UserSkills> getUserSkillsByUserUserId(Pageable pageable, Integer userId);
+
 }

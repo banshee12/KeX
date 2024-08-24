@@ -27,8 +27,8 @@ public class UserSkillsController {
     }
 
     @PutMapping("/user/userSkill")
-    public void updateUserSkill(@RequestBody UserSkills userSkills) {
-        userSkillsService.updateUserSkill(userSkills);
+    public ResponseEntity<String> updateUserSkill(@RequestBody UserSkills userSkills) {
+        return userSkillsService.updateUserSkill(userSkills);
     }
 
     @DeleteMapping("/user/userSkill/{userSkillsId}")

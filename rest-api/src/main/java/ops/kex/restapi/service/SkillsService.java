@@ -39,11 +39,18 @@ public class SkillsService {
                         .findSkillsByTitleIgnoreCase(skills.getTitle());
                 if(skillsOptional.isPresent()){
                     log.warn("Skill " + skills.getTitle() + " already exists in database");
-                    return null;
+                    return skillsOptional.get();
                 } else{
                     skillsRepository.save(skills);
                     log.info("Skill " + skills.getTitle() + " has been added to database");
-                    return skillsRepository.findSkillTopByOrderByIdDesc();
+                    Optional<Skills> optionalSkills = skillsRepository.findTopByOrderByIdDesc();
+                    if(optionalSkills.isPresent()){
+                        log.info("Skill Database IO");
+                        return optionalSkills.get();
+                    } else {
+                        log.info("Skill Database NIO");
+                        return null;
+                    }
                 }
             } else {
                 log.error("Skill is blank");
