@@ -1,0 +1,20 @@
+<div class="kex-favorite-user-item">
+  <h5>{{user?.firstname}} {{user?.lastname}}</h5>
+  <div class="kex-favorite-user-item-buttons">
+    <kex-button
+    [loadingState]="removeLoading"
+    [color]="'secondary'"
+    [icon]="'delete'"
+    [tooltip]="'Von Merkliste entfernen'"
+    (click)="removeUser()"
+    >
+    </kex-button>
+    <kex-button
+      [color]="'primary'"
+      (click)="openUserPage()"
+      label="Benutzer anzeigen"
+      [type]="KexButtonType.RAISE_BUTTON"
+    >
+    </kex-button>
+  </div>
+</div>

@@ -6,7 +6,7 @@ import {Experience, KexUserSkill} from "../../profile/models/kex-profile.model";
 import {kexUserSkill1, kexUserSkill2} from "../../profile/dummy-data";
 import {searchResult} from "../dummy-data";
 import {KexSearchRequest, KexSearchResult} from "../models/kex-search.model";
-import {User} from "../../../core/models/kex-core.models";
+import {KexUserDetails, User} from "../../../core/models/kex-core.models";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class KexSearchConnectorService {
     //return of(searchResult); //testing
   }
 
-  getDetailsOfUser(userId: string): Observable<User> {
-    return this.http.get<User>(this.API_URL + '/user/' + userId);
+  getDetailsOfUser(userId: string): Observable<KexUserDetails> {
+    return this.http.get<KexUserDetails>(this.API_URL + '/user/' + userId);
   }
 }
