@@ -20,5 +20,6 @@ export interface KexProfileState {
   currentUser : User | undefined,
   currentUserLoadState : KexLoadState,
   setContactTimeLoadState: KexLoadState,
-  setContactOptionLoadState: KexLoadState
+  setContactOptionLoadState: KexLoadState,
+  deleteUser : KexLoadState
 }

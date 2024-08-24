@@ -14,11 +14,14 @@
     ERROR
   </ng-container>
   <ng-container *ngSwitchDefault>
-    <ng-container *ngIf="userProfile$ | async as user">
-      <h1>{{user.firstname + ' ' + user.lastname}}</h1>
-      <kex-search-user-profile-contact-data [user]="user" class="kex-user-profile-section"></kex-search-user-profile-contact-data>
-      <kex-user-details-skills [skillList]="user.userSkills || []" class="kex-user-profile-section"></kex-user-details-skills>
-      <kex-user-details-experiences [experienceList]="user.userExperience || []" class="kex-user-profile-section"></kex-user-details-experiences>
+    <ng-container *ngIf="userProfile$ | async as userProfile">
+      <div class="kex-user-header">
+        <h1>{{userProfile.user.firstname + ' ' + userProfile.user.lastname}}</h1>
+        <kex-search-user-profile-favorite-button [userSub]="userProfile.user.userSub" [isFavorite]="userProfile.isFavorite"/>
+      </div>
+      <kex-search-user-profile-contact-data [user]="userProfile.user" class="kex-user-profile-section"></kex-search-user-profile-contact-data>
+      <kex-user-details-skills [skillList]="userProfile.user.userSkills || []" class="kex-user-profile-section"></kex-user-details-skills>
+      <kex-user-details-experiences [experienceList]="userProfile.user.userExperience || []" class="kex-user-profile-section"></kex-user-details-experiences>
     </ng-container>
   </ng-container>
 </ng-container>

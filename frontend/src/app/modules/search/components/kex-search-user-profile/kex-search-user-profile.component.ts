@@ -1,24 +1,27 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
-import {KexLoadState, User} from "../../../../core/models/kex-core.models";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from "rxjs";
+import {KexButtonType, KexLoadState, KexUserDetails, User} from "../../../../core/models/kex-core.models";
 import {Store} from "@ngrx/store";
 import {KexSearchState} from "../../store/kex-search.state";
 import {KexSearchSelector} from "../../store/selectors/kex-search.selectors";
 import {GetUserProfileActions} from "../../store/actions/kex-search.actions";
+
 
 @Component({
   selector: 'kex-search-user-profile',
   templateUrl: './kex-search-user-profile.component.html',
   styleUrl: './kex-search-user-profile.component.scss'
 })
-export class KexSearchUserProfileComponent implements OnInit {
+export class KexSearchUserProfileComponent implements OnInit{
   @Input() userId: string | undefined;
 
 
   constructor(private store: Store<KexSearchState>) {
   }
 
-  get userProfile$(): Observable<User | undefined> {
+
+
+  get userProfile$(): Observable<KexUserDetails  | undefined> {
     return this.store.select(KexSearchSelector.getUserProfile);
   }
 
@@ -37,4 +40,10 @@ export class KexSearchUserProfileComponent implements OnInit {
       this.store.dispatch(GetUserProfileActions.do({userId: this.userId}));
     }
   }
+
+
+
+
+
+
 }

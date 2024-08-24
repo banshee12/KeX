@@ -1,5 +1,10 @@
 <div class="kex-profile-container">
-  <h1>Profil bearbeiten</h1>
+  <div class="kex-profile-headline">
+    <h1>Profil bearbeiten</h1>
+    <kex-button [type]="KexButtonType.RAISE_BUTTON" (click)="deleteProfile()"
+                label="Profile löschen" [loadingState]="$deleteLoadState | async" color="secondary"></kex-button>
+  </div>
+
   <mat-tab-group  mat-align-tabs="start"
                   [selectedIndex]="selectedTab"
                   (selectedIndexChange)="changeTab($event)"

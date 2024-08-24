@@ -1,0 +1,14 @@
+<kex-widget-base [title]="'Gemerkte Benutzer'" [loadState]="favoriteUsersLoadState$ | async">
+  <ng-container *ngIf="favoriteUsers$ | async as favorites">
+    <div *ngIf="favorites.length >= 1">
+      <ng-container>
+        @for (user of favorites; track user) {
+          <kex-favorite-user-item [user]="user"></kex-favorite-user-item>
+        }
+      </ng-container>
+    </div>
+    <div *ngIf="favorites.length === 0">
+        <p>Es gibt noch keine Benutzer, die Du dir gemerkt hast.</p>
+    </div>
+  </ng-container>
+</kex-widget-base>

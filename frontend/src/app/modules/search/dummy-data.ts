@@ -5,6 +5,7 @@ import {kexUserSkill1, kexUserSkill2} from "../profile/dummy-data";
 
 export const user1 : User = {
   userId : 123,
+  userSub : '123',
   username : 'username',
   email : 'test@test.com',
   firstname : 'Max',
