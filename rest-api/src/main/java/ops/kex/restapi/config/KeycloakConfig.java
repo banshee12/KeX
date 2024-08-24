@@ -12,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 public class KeycloakConfig {
 
     private String authServerUrl = "https://kex-kc.kexserver.eu/";
-    //Arbeits Laptop
-//    private String adminClientSecret = "dZwaCJrCVnaEpV3LmIAQD0ts3DoSItu5";
-    //Home
     private String adminClientSecret = "66kM3Rz4J0W1OA0r1T3niLhicyP5KbBL";
     private String realm = "kex-application";
     private String clientId = "admin-cli";
