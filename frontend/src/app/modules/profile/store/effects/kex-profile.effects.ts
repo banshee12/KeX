@@ -115,6 +115,15 @@ export class KexProfileEffects {
       ))
   ));
 
+  deleteUser = createEffect(() => this.actions$.pipe(
+    ofType(KexProfileActions.deleteProfile.do),
+    switchMap(action =>
+      this.connector.deleteUser().pipe(
+        map((data) => KexProfileActions.deleteProfile.success()),
+        catchError(() => of(KexProfileActions.deleteProfile.fail()).pipe(tap(error => console.log(error))))
+      ))
+  ));
+
   constructor(
     private actions$: Actions,
     private connector : KexProfileConnectorService

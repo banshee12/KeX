@@ -18,6 +18,7 @@ const updateVisibilitySkillLoadState = createSelector(getKexProfileState, (state
 const updateExperienceVisibilityLoadState = createSelector(getKexProfileState,(state:KexProfileState) => state.updateVisibilityExperienceLoadState);
 const setContactTimeLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.setContactTimeLoadState);
 const setContactOptionLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.setContactOptionLoadState);
+const deleteProfileLoadState = createSelector(getKexProfileState, (state: KexProfileState) => state.deleteUser);
 
 
 export const KexProfileSelector = {
@@ -35,4 +36,5 @@ export const KexProfileSelector = {
   getUpdateVisibilityExperienceLoadState : updateExperienceVisibilityLoadState,
   setContactOptionLoadState : setContactOptionLoadState,
   setContactTimeLoadState : setContactTimeLoadState,
+  deleteProfileLoadState : deleteProfileLoadState
 };

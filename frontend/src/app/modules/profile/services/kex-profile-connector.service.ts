@@ -71,4 +71,8 @@ export class KexProfileConnectorService {
     return this.http.get<KexSkill[]>(this.API_URL + '/user/skill/suggestion', {params});
   }
 
+  deleteUser() : Observable<string> {
+    return this.http.delete<string>(this.API_URL + '/user', this.httpOptions);
+  }
+
 }
