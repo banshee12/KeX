@@ -188,7 +188,6 @@ public class UserSkillsService {
 
     public ResponseEntity<String> deleteUserSkill(Integer userSkillsId) {
         Optional<UserSkills> optionalUserSkill = userSkillsRepository.findUserSkillsById(userSkillsId);
-        boolean exist = userSkillsRepository.existsById(userSkillsId);
         if (optionalUserSkill.isEmpty()) {
             log.error("UserSkill with id " + userSkillsId + " can not be deleted cause it does not exists");
             return new ResponseEntity<>(
