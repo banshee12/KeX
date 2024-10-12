@@ -19,6 +19,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import { KexUserProfileComponent } from './components/kex-user-profile/kex-user-profile.component';
 import {MatButton} from "@angular/material/button";
 import {MatDivider} from "@angular/material/divider";
+import { KexSearchUserProfileFavoriteButtonComponent } from './components/kex-search-user-profile/kex-search-user-profile-favorite-button/kex-search-user-profile-favorite-button.component';
 
 
 
@@ -33,7 +34,8 @@ import {MatDivider} from "@angular/material/divider";
     KexUserDetailsSkillComponent,
     KexUserDetailsExperienceComponent,
     KexSearchUserProfileContactDataComponent,
-    KexUserProfileComponent
+    KexUserProfileComponent,
+    KexSearchUserProfileFavoriteButtonComponent
   ],
   imports: [
     CommonModule,

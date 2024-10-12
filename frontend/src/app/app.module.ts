@@ -31,6 +31,8 @@ import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {KexCoreEffects} from "./core/store/effects/kex-core.effects";
 import {KEX_CORE_STORE_FEATURE_KEY} from "./core/store/reducers/kex-core.reducers";
+import { DarkModeToggleComponent } from './page-template/dark-mode-toggle/dark-mode-toggle.component';
+import {MatDivider} from "@angular/material/divider";
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
@@ -66,7 +68,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
 @NgModule({
   declarations: [
     AppComponent,
-    KexToolbarComponent
+    KexToolbarComponent,
+    DarkModeToggleComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +94,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatMenuTrigger,
     MatMenuItem,
     MatProgressSpinner,
-    MatFabButton
+    MatFabButton,
+    MatDivider
   ],
   providers: [
     {

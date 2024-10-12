@@ -24,6 +24,8 @@ import {MatDivider} from "@angular/material/divider";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatList, MatListItem} from "@angular/material/list";
 import { KexWidgetFeedbackComponent } from './components/widgets/kex-widget-feedback/kex-widget-feedback.component';
+import { KexWidgetFavoriteUserComponent } from './components/widgets/kex-widget-favorite-user/kex-widget-favorite-user.component';
+import { KexFavoriteUserItemComponent } from './components/widgets/kex-widget-favorite-user/kex-favorite-user-item/kex-favorite-user-item.component';
 
 
 
@@ -34,7 +36,9 @@ import { KexWidgetFeedbackComponent } from './components/widgets/kex-widget-feed
         KexWidgetExperienceComponent,
         KexWidgetContactDataComponent,
         KexWidgetBaseComponent,
-        KexWidgetFeedbackComponent
+        KexWidgetFeedbackComponent,
+        KexWidgetFavoriteUserComponent,
+        KexFavoriteUserItemComponent
     ],
   imports: [
     CommonModule,

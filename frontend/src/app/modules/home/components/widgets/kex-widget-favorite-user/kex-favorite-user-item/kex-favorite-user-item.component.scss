@@ -1,0 +1,13 @@
+.kex-favorite-user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.kex-favorite-user-item-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

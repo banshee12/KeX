@@ -2,7 +2,7 @@
 
 .kex-skill-container {
   display: flex;
-  background-color: #EEEEEE;
+  background-color: var(--frontend-container-background);
   border-radius: 4px;
   max-width: 800px;
 }
@@ -25,7 +25,7 @@
 }
 
 .kex-skill-visible {
-  background: #3F51B5;
+  background: var(--frontend-primary);
 }
 
 .kex-skill-visible-off {

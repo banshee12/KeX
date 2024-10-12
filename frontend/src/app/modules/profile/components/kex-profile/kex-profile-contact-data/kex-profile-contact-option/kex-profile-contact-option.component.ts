@@ -21,11 +21,13 @@ export class KexProfileContactOptionComponent implements OnInit, OnDestroy{
   contactOptionPhoneInitial : boolean = false;
   contactOptionMailInitial : boolean = false;
   contactOptionAppointmentInitial : boolean = false;
+  userSub = '';
 
   constructor(private store : Store<KexProfileState>) { }
   ngOnInit(): void {
     this.subscriptions.push(this.store.select(KexCoreSelector.getCurrentUser).pipe().subscribe(
       user => {
+        this.userSub = user?.userSub || '';
         this.contactOptionPhone = user?.contactOptionPhone || false;
         this.contactOptionAppointment = user?.contactOptionAppointment || false;
         this.contactOptionMail = user?.contactOptionMail || false;
@@ -42,6 +44,7 @@ export class KexProfileContactOptionComponent implements OnInit, OnDestroy{
 
   saveContactOption() : void {
     let data : User = {
+      userSub : this.userSub,
       contactOptionPhone : this.contactOptionPhone,
       contactOptionMail : this.contactOptionMail,
       contactOptionAppointment : this.contactOptionAppointment,

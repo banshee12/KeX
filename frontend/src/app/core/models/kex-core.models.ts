@@ -26,7 +26,7 @@ export interface KexNotificationData {
 
 export type User = {
   userId? : number,
-  userSub? : string,
+  userSub : string,
   username? : string,
   email? : string,
   firstname? : string,
@@ -36,7 +36,12 @@ export type User = {
   contactOptionAppointment? : boolean,
   userSkills? : KexUserSkill[],
   userExperience? : Experience[],
-  userContactTimes? : ContactTimeSlot[]
+  userContactTimes? : ContactTimeSlot[],
+}
+
+export type KexUserDetails = {
+  user : User,
+  isFavorite : boolean
 }
 
 export interface KexDialogData {

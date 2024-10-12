@@ -1,4 +1,4 @@
-import {KexLoadState, User} from "../../../core/models/kex-core.models";
+import {KexLoadState, KexUserDetails, User} from "../../../core/models/kex-core.models";
 import {KexSearchResult} from "../models/kex-search.model";
 
 export interface KexSearchState {
@@ -7,7 +7,7 @@ export interface KexSearchState {
 }
 
 interface KexUserProfileState {
-  data : User | undefined,
+  data : KexUserDetails | undefined,
   loadState : KexLoadState
 }
 

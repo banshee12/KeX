@@ -122,3 +122,13 @@ export const SetContactTimes = createActionGroup({
     reset : emptyProps,
   }
 });
+
+export const deleteProfile = createActionGroup({
+  source : '[PROFILE] delete user',
+  events : {
+    do : emptyProps,
+    success : emptyProps,
+    fail : emptyProps,
+    reset : emptyProps,
+  }
+});

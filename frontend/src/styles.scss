@@ -32,12 +32,35 @@ $frontend-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($frontend-theme);
 
+// Dark mode theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  )
+));
+
+.dark-theme {
+  @include mat.core-color($dark-theme);
+  @include mat.button-color($dark-theme);
+  @include mat.all-component-colors($dark-theme);
+  background-color: #202124;
+  color: #ffffff;
+  --frontend-primary: #3F51B5;
+  --frontend-container-background: #424242;
+}
+
 /* You can add global styles to this file, and also import other style files */
 @import 'bootstrap/scss/bootstrap';
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  --frontend-primary: #3F51B5;
+  --frontend-container-background: #EEEEEE;
+}
 
 mat-tab-body {
   margin-top: 12px;
