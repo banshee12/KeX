@@ -12,6 +12,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatDialog} from "@angular/material/dialog";
+import {MatListModule} from '@angular/material/list';
 import {KexProfileConnectorService} from "../../../../services/kex-profile-connector.service";
 import {KexProfileState} from "../../../../store/kex-profile.state";
 import {Store} from "@ngrx/store";
@@ -42,7 +43,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     separatorKeysCodes: number[] = [ENTER, COMMA];
     skillCtrl = new FormControl();
     allProfileSkills: Observable<KexUserSkill[]> = new Observable<KexUserSkill[]>();
-
+    allProfileExperiences : Observable<Experience[]> = new Observable<Experience[]>();
 
 
   constructor(private coreService: KexCoreService,
@@ -51,7 +52,8 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
                             private store : Store<KexProfileState>,
                             public dialog: MatDialog) {
 
-  this.allProfileSkills = this.profileService.$skills
+  this.allProfileSkills = this.profileService.$skills;
+  this.allProfileExperiences = this.profileService.$experiences;
   }
 
   get color() {
@@ -64,6 +66,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
    // Weitere vorhandene Variablen und Methoden
    title = '';
+   id =-1;
    visible = false;
    description = '';
    linkedSkills: KexSkill[] = []; // Array für ausgewählte Fähigkeiten
@@ -75,6 +78,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
       if (this.experience) {
         this.title = this.experience.title;
+        this.id = this.experience.id;
         this.visible = this.experience.visible;
         this.description = this.experience.description;
         this.linkedSkills= this.experience.skill || [];
@@ -85,6 +89,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.observeEditExperience();
       this.observeDeleteExperience();
       this.observeAddExperience();
+      this.observeUpdateExperience();
     }
  ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -126,17 +131,43 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
 
   saveExperience(): void {
+  this.title = this.title.trim();
   if(this.title.trim()==""){
     return;
   }
   if (this.experience) {
-        const experience: Experience = {...this.experience, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
-        this.profileService.saveExperience(experience);
-      } else {
-        const experience: Experience = {id: 1, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
-        this.profileService.addExperience(experience);
-      }
+  let experienceID = this.experience.id;
+        this.checkIfExperienceExistsInUser(this.title, this.id).then(experienceExists=>{
+        if(experienceExists){
+            console.log('Experience exists in user profile');
+        }
+        else{
+          console.log("Test");
+          const experience: Experience = {id: experienceID, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
+          this.profileService.saveExperience(experience);
           this.editMode = false;
+        }}).catch(error=>{ console.error('Error checking experience:', error);
+       });
+      }
+  else{
+    this.checkIfExperienceExistsInUser(this.title, this.id).then(experienceExists=>{
+      if(experienceExists){
+          console.log('Experience exists in user profile');
+      }
+      else {
+      console.log('Experience does not exist in user profile');
+      const experience: Experience = {id: 1, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
+      this.profileService.addExperience(experience);
+      this.editMode = false;
+      }
+    }).catch(error=> {
+         console.error('Error checking experience:', error);
+   });
+    //else {
+    //    const experience: Experience = {id: 1, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
+    //    this.profileService.addExperience(experience);
+    //  }
+    }
   }
 
   observeEditExperience() {
@@ -281,6 +312,18 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
               }
             }
             return false;
+        }
+
+        private checkIfExperienceExistsInUser(Experiencetitle : string, ExperienceId : number){
+              return new Promise((resolve,reject)=>{
+              this.allProfileExperiences.subscribe({
+              next:(experiences:any[])=>{
+                const experienceExists = experiences.some(userExperience => userExperience.title ===Experiencetitle && userExperience.id != ExperienceId);
+                resolve (experienceExists);
+              },
+              error: (err) => reject(err)
+              });
+              });
         }
 
         private checkIfSkillExistsInUser(Skilltitle: string): Promise<boolean> {
