@@ -37,10 +37,15 @@
 .kex-experience-content-left {
   display: flex;
   flex-direction: column;
+  width:95%;
+}
+.kex-form-field-ex-disc{
+ display: flex;
+ width:95%;
 }
 
 .kex-chip-list {
-  width: 100%;
+  width: 95%;
 }
 
 .kex-chip-list .chips-container {
