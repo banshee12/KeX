@@ -260,6 +260,36 @@ const _kexProfileReducer = createReducer(
     })
   ),
 
+  //edit experience
+  on(
+      KexProfileActions.EditExperienceActions.do,
+      (state, action) => ({
+        ...state,
+        editExperienceLoadState: KexLoadState.LOADING,
+      })
+    ),
+    on(
+      KexProfileActions.EditExperienceActions.success,
+      (state, action) => ({
+        ...state,
+        editExperienceLoadState: KexLoadState.SUCCESS
+      })
+    ),
+    on(
+      KexProfileActions.EditExperienceActions.fail,
+      (state, action) => ({
+        ...state,
+        editExperienceLoadState: KexLoadState.FAILURE
+      })
+    ),
+    on(
+      KexProfileActions.EditExperienceActions.reset,
+      (state, action) => ({
+        ...state,
+        editExperienceLoadState: KexLoadState.NONE
+      })
+    ),
+
   // update visibility experience
   on(
     KexProfileActions.UpdateVisibilityExperienceActions.do,

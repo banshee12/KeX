@@ -89,7 +89,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.observeEditExperience();
       this.observeDeleteExperience();
       this.observeAddExperience();
-      this.observeUpdateExperience();
+      this.observeUpdateVisibilityExperience();
     }
  ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -173,7 +173,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   observeEditExperience() {
       this.subscriptions.push(
         this.profileService.$editExperienceLoadState.pipe(
-        ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit erfolgreich gespeichert', 'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert',
+        ).subscribe(state => this.coreService.handleRequestState(state, 'Erfahrung erfolgreich gespeichert', 'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert',
         ()=> this.leaveEditMode(),
         ()=>{},
         ()=>this.store.dispatch(EditExperienceActions.reset())
@@ -184,7 +184,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     observeDeleteExperience() {
       this.subscriptions.push(
         this.profileService.$deleteExperienceLoadState.pipe(
-        ).subscribe(state => this.coreService.handleRequestState(state, 'Fähigkeit wurde gelöscht', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.',
+        ).subscribe(state => this.coreService.handleRequestState(state, 'Erfahrung wurde gelöscht', 'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.',
         ()=>this.profileService.loadExperiences(),
         ()=>{},
         ()=>this.store.dispatch(DeleteExperienceActions.reset())
@@ -195,7 +195,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
     observeAddExperience() {
     this.subscriptions.push(this.profileService.$addExperienceLoadState.pipe(
-    ).subscribe(state=>this.coreService.handleRequestState(state,'Fähigkeit wurde hinzugefügt', 'Es ist ein Fehler aufgetreten',
+    ).subscribe(state=>this.coreService.handleRequestState(state,'Erfahrung wurde hinzugefügt', 'Es ist ein Fehler aufgetreten',
     () => {
                 this.leaveEditMode();
                 this.profileService.loadExperiences();
@@ -205,11 +205,11 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     )));
     }
 
-    observeUpdateExperience(){
+    observeUpdateVisibilityExperience(){
     this.subscriptions.push(
           this.profileService.$updateVisibilityExperienceLoadState.pipe(
           ).subscribe(state => this.coreService.handleRequestState(state,
-            '',
+            'Sichtbarkeit wurde aktualisiert',
             'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert',
             () => {},
             () => {},
