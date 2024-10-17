@@ -124,6 +124,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
   leaveEditMode(){
   if (!this.addNewExperience) {
         this.editMode = false;
+        this.profileService.loadExperiences();
       } else {
         this.leaveNewExperienceMode.emit(true);
       }
