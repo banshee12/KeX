@@ -22,7 +22,6 @@ import {
   EditExperienceActions,
   UpdateVisibilityExperienceActions,
   EditSkillActions,
-  DeleteSkillActions
 } from "../../../../store/actions/kex-profile.actions";
 
 import {
