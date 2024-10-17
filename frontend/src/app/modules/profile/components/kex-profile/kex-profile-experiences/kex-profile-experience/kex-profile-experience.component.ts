@@ -21,7 +21,7 @@ import {
   DeleteExperienceActions,
   EditExperienceActions,
   UpdateVisibilityExperienceActions,
-  EditSkillActions,
+  EditSkillActions
 } from "../../../../store/actions/kex-profile.actions";
 
 import {
@@ -83,6 +83,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         this.visible = this.experience.visible;
         this.description = this.experience.description;
         this.linkedSkills= this.experience.skill || [];
+        this.allProfileExperiences = this.profileService.$experiences;
       } else {
         this.addNewExperience = true;
         this.editMode = true;
@@ -232,6 +233,8 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             () => this.store.dispatch(EditSkillActions.reset())
             )
           ));
+        this.linkedSkills = this.experience?.skill || [];
+        this.allProfileSkills = this.profileService.$skills;
       }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
