@@ -20,7 +20,9 @@ import {
   AddExperienceActions,
   DeleteExperienceActions,
   EditExperienceActions,
-  UpdateVisibilityExperienceActions
+  UpdateVisibilityExperienceActions,
+  EditSkillActions,
+  DeleteSkillActions
 } from "../../../../store/actions/kex-profile.actions";
 
 import {
@@ -90,6 +92,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.observeDeleteExperience();
       this.observeAddExperience();
       this.observeUpdateVisibilityExperience();
+      this.observeEditSkill();
     }
  ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -218,6 +221,19 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             )
           ));
     }
+
+    observeEditSkill() {
+        this.subscriptions.push(
+          this.profileService.$editSkillLoadState.pipe(
+          ).subscribe(state => this.coreService.handleRequestState(state,
+              'Fähigkeit erfolgreich gespeichert',
+              'Es ist ein Fehler aufgetreten. Änderungen wurden nicht gespeichert',
+              () => this.leaveEditMode(),
+            () => {},
+            () => this.store.dispatch(EditSkillActions.reset())
+            )
+          ));
+      }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
       private _filterSkills(value: string): KexSkill[] {
