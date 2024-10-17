@@ -142,8 +142,8 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             console.log('Experience exists in user profile');
         }
         else{
-          console.log("Test");
           const experience: Experience = {id: experienceID, title: this.title, visible: this.visible, description: this.description,skill:this.linkedSkills};
+          this.experience = experience;
           this.profileService.saveExperience(experience);
           this.editMode = false;
         }}).catch(error=>{ console.error('Error checking experience:', error);
