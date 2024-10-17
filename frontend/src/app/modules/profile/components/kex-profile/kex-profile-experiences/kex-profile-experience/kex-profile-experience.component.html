@@ -1,9 +1,9 @@
 <div class="kex-experience-container my-4">
   <div class="kex-experience-visible p-1" (click)="setVisibility()" *ngIf="visible">
-    <mat-icon>visibility</mat-icon>
+    <mat-icon matTooltip="Erfahrung ist öffentlich">visibility</mat-icon>
   </div>
   <div class="kex-experience-visible-off p-1" (click)="setVisibility()" *ngIf="!visible">
-    <mat-icon>visibility_off</mat-icon>
+    <mat-icon matTooltip="Erfahrung ist für andere nicht sichtbar">visibility_off</mat-icon>
   </div>
   <div class="kex-experience-content p-2">
     <div class="kex-experience-content-left">
@@ -13,16 +13,16 @@
         <input matInput [(ngModel)]="title">
       </mat-form-field>
       <p *ngIf="!editMode">{{ experience?.description }}</p>
-      <mat-form-field *ngIf="editMode" class="p-1 kex-form-field">
+      <mat-form-field *ngIf="editMode" class="kex-form-field-ex-disc">
         <mat-label>Beschreibung</mat-label>
         <textarea matInput [(ngModel)]="description" maxlength="255"></textarea>
       </mat-form-field>
 
      <!-- <p style="font-weight:bold">Fähigkeiten</p> -->
       <!-- Integration des Fähigkeiten Auto Complete Chip Lets -->
-      <form>
+      <form [hidden]="!editMode">
         <mat-form-field class="kex-chip-list">
-          <mat-chip-grid #chipGrid aria-label="Skill selection">
+          <mat-chip-grid #chipGrid aria-label="Skill selection"  >
             <!-- Immer die Chips anzeigen -->
             @for (skill of linkedSkills; track skill) {
             <mat-chip-row (removed)="removeSkill(skill)">
@@ -49,6 +49,13 @@
           </mat-autocomplete>
         </mat-form-field>
       </form>
+
+      <mat-chip-set  [hidden]="editMode" class="kex-chip-list">
+        <mat-chip *ngFor="let skill of linkedSkills">
+          <span matListItemTitle>{{ skill.title }}</span>
+        </mat-chip>
+      </mat-chip-set>
+
 
       <!-- Ende der Integration des Fähigkeiten Auto Complete Chip Lets -->
     </div>

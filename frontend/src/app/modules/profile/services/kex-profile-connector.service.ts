@@ -47,7 +47,7 @@ export class KexProfileConnectorService {
   }
 
   editExperience(experience : Experience) : Observable<string> {
-    return this.http.put<string>(this.API_URL + '/user/experience', experience);
+    return this.http.put<string>(this.API_URL + '/user/experience', experience, this.httpOptions);
   }
 
   setContactOption(user : User) : Observable<string> {

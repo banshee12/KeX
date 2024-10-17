@@ -16,6 +16,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatListModule} from "@angular/material/list";
 import {MatIconModule} from '@angular/material/icon';
 import {AsyncPipe} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -52,6 +53,7 @@ import {NgxMatTimepickerComponent, NgxMatTimepickerDirective} from "ngx-mat-time
     FormsModule,
     MatFormFieldModule,
     MatChipsModule,
+    MatListModule,
     MatIconModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
