@@ -13,7 +13,7 @@
   }
 
   .kex-profile-contact-container {
-    background:  #EEEEEE;
+    background:  var(--frontend-container-background);
     border-radius: 4px;
     width: 48%;
     @include media-breakpoint-down(sm) {

@@ -1,6 +1,6 @@
 .kex-search-user-container {
   display: flex;
-  background-color: #EEEEEE;
+  background-color: var(--frontend-container-background);
   border-radius: 4px;
   justify-content: space-between;
   cursor: pointer;
@@ -10,7 +10,7 @@
   border-radius: 0 4px 4px 0;
   display: flex;
   align-items: center;
-  background: #3F51B5;
+  background: var(--frontend-primary);
   mat-icon {
     color : white;
   }
