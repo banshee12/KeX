@@ -33,6 +33,7 @@ import {KexCoreEffects} from "./core/store/effects/kex-core.effects";
 import {KEX_CORE_STORE_FEATURE_KEY} from "./core/store/reducers/kex-core.reducers";
 import { DarkModeToggleComponent } from './page-template/dark-mode-toggle/dark-mode-toggle.component';
 import {MatDivider} from "@angular/material/divider";
+import {SettingsModule} from "./modules/settings/settings.module";
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
@@ -53,7 +54,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: environment.KEYCLOAK_URL,
         realm: environment.KEYCLOAK_REALM,
-
         clientId: environment.KEYCLOAK_CLIENT_ID
       },
       initOptions: {
@@ -95,7 +95,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatMenuItem,
     MatProgressSpinner,
     MatFabButton,
-    MatDivider
+    MatDivider,
+    SettingsModule
   ],
   providers: [
     {
