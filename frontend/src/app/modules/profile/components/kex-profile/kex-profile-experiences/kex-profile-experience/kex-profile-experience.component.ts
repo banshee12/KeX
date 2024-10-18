@@ -306,7 +306,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
        // Methode zur Auswahl einer Fähigkeit aus der Autovervollständigungsliste
        selectExistingSkill(event: MatAutocompleteSelectedEvent): void {
-          //TODO
           //this.linkedSkills.push({ title: event.option.viewValue });
           console.log('Is Collection Array ' + Array.isArray(this.linkedSkills));
           this.linkedSkills = [...this.linkedSkills];
