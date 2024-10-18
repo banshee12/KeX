@@ -38,7 +38,8 @@ export class KexProfileEffects {
     ofType(KexProfileActions.DeleteSkillActions.do),
     switchMap(action =>
       this.connector.deleteSkill(action).pipe(
-        map((data) => KexProfileActions.DeleteSkillActions.success()),
+        switchMap((data) => of(KexProfileActions.DeleteSkillActions.success(),
+        KexProfileActions.EditExperienceActions.do)),
         catchError(() => of(KexProfileActions.DeleteSkillActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
@@ -47,7 +48,8 @@ export class KexProfileEffects {
     ofType(KexProfileActions.EditSkillActions.do),
     switchMap(action =>
       this.connector.editSkill(action).pipe(
-        map((data) => KexProfileActions.EditSkillActions.success()),
+        switchMap((data) => of(KexProfileActions.EditSkillActions.success(),
+       KexProfileActions.EditExperienceActions.do)),
         catchError(() => of(KexProfileActions.EditSkillActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));

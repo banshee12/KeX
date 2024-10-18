@@ -21,7 +21,8 @@ import {
   DeleteExperienceActions,
   EditExperienceActions,
   UpdateVisibilityExperienceActions,
-  EditSkillActions
+  EditSkillActions,
+  DeleteSkillActions
 } from "../../../../store/actions/kex-profile.actions";
 
 import {
@@ -84,6 +85,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         this.description = this.experience.description;
         this.linkedSkills= this.experience.skill || [];
         this.allProfileExperiences = this.profileService.$experiences;
+        this.allProfileSkills = this.profileService.$skills;
       } else {
         this.addNewExperience = true;
         this.editMode = true;
@@ -93,6 +95,8 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.observeAddExperience();
       this.observeUpdateVisibilityExperience();
       this.observeEditSkill();
+      this.observeDeleteSkill();
+      this.profileService.loadSkills();
     }
  ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -233,8 +237,19 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             () => this.store.dispatch(EditSkillActions.reset())
             )
           ));
-        this.linkedSkills = this.experience?.skill || [];
-        this.allProfileSkills = this.profileService.$skills;
+      }
+    observeDeleteSkill() {
+        this.subscriptions.push(
+          this.profileService.$deleteSkillLoadState.pipe(
+          ).subscribe(state => this.coreService.handleRequestState(state,
+            'Fähigkeit wurde gelöscht',
+            'Es ist ein Fehler aufgetreten. Fähigkeit wurde nicht gelöscht.',
+            () => this.leaveEditMode(),
+            () => {},
+            () => this.store.dispatch(DeleteSkillActions.reset())
+            )
+
+          ));
       }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
@@ -291,7 +306,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
        // Methode zur Auswahl einer Fähigkeit aus der Autovervollständigungsliste
        selectExistingSkill(event: MatAutocompleteSelectedEvent): void {
-          //TODO
           //this.linkedSkills.push({ title: event.option.viewValue });
           console.log('Is Collection Array ' + Array.isArray(this.linkedSkills));
           this.linkedSkills = [...this.linkedSkills];
