@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import ops.kex.restapi.model.*;
 import ops.kex.restapi.model.search.UserSearch;
 import ops.kex.restapi.projection.UserView;
+import ops.kex.restapi.repository.SkillsRepository;
 import ops.kex.restapi.repository.UserFavoriteRepository;
 import ops.kex.restapi.repository.UserRepository;
+import ops.kex.restapi.repository.UserSkillsRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final KeycloakService keycloakService;
     private final UserFavoriteRepository userFavoriteRepository;
+    private final UserSkillsRepository userSkillsRepository;
 
     public ResponseEntity<String> SyncUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -101,6 +104,29 @@ public class UserService {
             if(user != null){
                 List<Experience> experienceList = user.getUserExperience();
                 List<UserSkills> userSkillsList = user.getUserSkills();
+
+                //Remove not visible linked Skill
+                for(Experience experience : experienceList){
+//                    log.info("Experience: {}", experience.getTitle());
+//                    log.info("amount linked skills: {}", experience.getSkill().size());
+                    List<Skills> updatedSkillList = new ArrayList<>();
+                    for(int i = 0; i < experience.getSkill().size(); i++){
+//                        log.info("linked Skill: {}", experience.getSkill().get(i).getTitle());
+                        Optional<UserSkills> userSkill = userSkillsRepository.findUserSkillsByUserUserSubAndSkillTitleIgnoringCase(
+                                userSub,
+                                experience.getSkill().get(i).getTitle());
+                        if(userSkill.isPresent()){
+//                            log.info("found");
+                            if(!userSkill.get().getVisible()){
+//                                log.info("not showing");
+                            } else {
+//                                log.info("showing");
+                                updatedSkillList.add(experience.getSkill().get(i));
+                            }
+                        }
+                    }
+                    experience.setSkill(updatedSkillList);
+                }
                 experienceList.removeIf(experience -> !experience.getVisible());
                 userSkillsList.removeIf(UserSkills -> !UserSkills.getVisible());
                 user.setUserExperience(experienceList);
