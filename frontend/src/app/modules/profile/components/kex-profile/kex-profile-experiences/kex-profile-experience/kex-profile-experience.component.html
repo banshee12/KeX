@@ -43,9 +43,9 @@
 
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectExistingSkill($event)">
             <!-- Autocomplete-Optionen -->
-            @for (skill of allProfileSkills | async; track skill) {
-            <mat-option [value]="skill">{{skill.skill.title}}</mat-option>
-            }
+            <mat-option *ngFor="let skill of allProfileSkills | async" [value]="skill">
+              {{skill.skill.title}}
+            </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </form>

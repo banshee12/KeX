@@ -85,6 +85,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
         this.description = this.experience.description;
         this.linkedSkills= this.experience.skill || [];
         this.allProfileExperiences = this.profileService.$experiences;
+        this.allProfileSkills = this.profileService.$skills;
       } else {
         this.addNewExperience = true;
         this.editMode = true;
@@ -95,6 +96,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.observeUpdateVisibilityExperience();
       this.observeEditSkill();
       this.observeDeleteSkill();
+      this.profileService.loadSkills();
     }
  ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -235,8 +237,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             () => this.store.dispatch(EditSkillActions.reset())
             )
           ));
-        this.linkedSkills = this.experience?.skill || [];
-        this.allProfileSkills = this.profileService.$skills;
       }
     observeDeleteSkill() {
         this.subscriptions.push(
@@ -250,8 +250,6 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             )
 
           ));
-           this.linkedSkills = this.experience?.skill || [];
-           this.allProfileSkills = this.profileService.$skills;
       }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
