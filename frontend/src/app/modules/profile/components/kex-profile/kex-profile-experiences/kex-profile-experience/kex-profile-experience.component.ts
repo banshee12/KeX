@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import {Experience, KexSkill, KexUserSkill} from "../../../../models/kex-profile.model";
 import { KexCoreService } from "../../../../../../core/services/kex-core.service";
@@ -22,7 +22,8 @@ import {
   EditExperienceActions,
   UpdateVisibilityExperienceActions,
   EditSkillActions,
-  DeleteSkillActions
+  DeleteSkillActions,
+  UpdateVisibilitySkillActions
 } from "../../../../store/actions/kex-profile.actions";
 
 import {
@@ -47,6 +48,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
     allProfileSkills: Observable<KexUserSkill[]> = new Observable<KexUserSkill[]>();
     allProfileExperiences : Observable<Experience[]> = new Observable<Experience[]>();
 
+    private skillVisibility$ = new BehaviorSubject<{ [key: number]: boolean }>({});
 
   constructor(private coreService: KexCoreService,
                             private profileService: KexProfileService,
@@ -56,6 +58,14 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
   this.allProfileSkills = this.profileService.$skills;
   this.allProfileExperiences = this.profileService.$experiences;
+
+  this.allProfileSkills.subscribe(skills => {
+      const visibility: { [key: number]: boolean } = {}; // Typdefinition hinzufügen
+      skills.forEach(userSkill => {
+          visibility[userSkill.skill.id] = userSkill.visible;
+      });
+      this.skillVisibility$.next(visibility);
+      });
   }
 
   get color() {
@@ -95,6 +105,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.observeAddExperience();
       this.observeUpdateVisibilityExperience();
       this.observeEditSkill();
+      this.observeUpdateVisibilitySkill();
       this.observeDeleteSkill();
       this.profileService.loadSkills();
     }
@@ -251,6 +262,23 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
 
           ));
       }
+    observeUpdateVisibilitySkill(){
+      this.subscriptions.push(
+            this.profileService.$updateVisibilitySkillLoadState.pipe(
+            ).subscribe(state => this.coreService.handleRequestState(state,
+              '',
+              'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert',
+              () => {},
+              () => {},
+              () => this.store.dispatch(UpdateVisibilitySkillActions.reset())
+              )
+            ));
+           console.log("Sichtbarkeit skill aktualisiert");
+    }
+      isSkillVisible(skill: KexSkill): boolean {
+          const visibility = this.skillVisibility$.getValue();
+          return visibility[skill.id] ?? false;
+     }
 
       // Methode zum Filtern von Fähigkeiten für Autovervollständigung
       private _filterSkills(value: string): KexSkill[] {
