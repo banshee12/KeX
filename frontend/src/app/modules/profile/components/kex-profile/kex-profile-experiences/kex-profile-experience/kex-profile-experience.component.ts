@@ -266,7 +266,7 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
       this.subscriptions.push(
             this.profileService.$updateVisibilitySkillLoadState.pipe(
             ).subscribe(state => this.coreService.handleRequestState(state,
-              '',
+              'Sichtbarkeit wurde aktualisiert',
               'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert',
               () => this.leaveEditMode(),
               () => {},
