@@ -268,9 +268,9 @@ export class KexProfileExperienceComponent implements OnInit, OnDestroy {
             ).subscribe(state => this.coreService.handleRequestState(state,
               '',
               'Es ist ein Fehler aufgetreten. Sichtbarkeit wurde nicht aktualisiert',
+              () => this.leaveEditMode(),
               () => {},
-              () => {},
-              () => this.store.dispatch(UpdateVisibilitySkillActions.reset())
+              () => this.store.dispatch(UpdateVisibilitySkillActions.reset()),
               )
             ));
            console.log("Sichtbarkeit skill aktualisiert");
