@@ -110,6 +110,9 @@ export class KexProfileSkillComponent implements OnInit, OnDestroy {
 
   saveSkill(): void {
     let titleNew: string | null = this.controlTitle.value;
+      if(titleNew?.trim()==""){
+        return;
+      }
     if (titleNew != null && this.isValid) {
       let skillId: number = this.userSkill && this.userSkill.skill.title == titleNew ? this.userSkill.skill.id || 0 : 0;
       if (this.userSkill && !this.addNewSkill) {
