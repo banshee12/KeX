@@ -50,8 +50,9 @@
         </mat-form-field>
       </form>
 
-      <mat-chip-set  [hidden]="editMode" class="kex-chip-list">
-        <mat-chip *ngFor="let skill of linkedSkills">
+      <mat-chip-set  [hidden]="editMode">
+        <mat-chip *ngFor="let skill of linkedSkills"
+                  [ngClass]="isSkillVisible(skill) ? 'kex-chip-list-visible':'kex-chip-invisible' ">
           <span matListItemTitle>{{ skill.title }}</span>
         </mat-chip>
       </mat-chip-set>

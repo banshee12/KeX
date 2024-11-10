@@ -59,3 +59,11 @@
   display: inline-flex;
   align-items: center;
 }
+
+.kex-chip-list-visible {
+  background-color: var(--frontend-primary) !important; /* Setze die Hintergrundfarbe */
+}
+
+.kex-chip-list-visible span {
+  color: white !important; /* Setze die Textfarbe für den Text im Chip */
+}

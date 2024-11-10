@@ -58,7 +58,8 @@ export class KexProfileEffects {
     ofType(KexProfileActions.UpdateVisibilitySkillActions.do),
     switchMap(action =>
       this.connector.editSkill(action).pipe(
-        map((data) => KexProfileActions.UpdateVisibilitySkillActions.success()),
+        switchMap((data) => of(KexProfileActions.UpdateVisibilitySkillActions.success(),
+        KexProfileActions.EditExperienceActions.do)),
         catchError(() => of(KexProfileActions.UpdateVisibilitySkillActions.fail()).pipe(tap(error => console.log(error))))
       ))
   ));
