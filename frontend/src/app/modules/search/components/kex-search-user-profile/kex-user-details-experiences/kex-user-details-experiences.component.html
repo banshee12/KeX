@@ -1,4 +1,7 @@
 <h4>Erfahrungen</h4>
 <div class="kex-user-details-experience-list-container">
   <kex-user-details-experience *ngFor="let experience of experienceList" [experience]="experience"></kex-user-details-experience>
+  @if(experienceList.length === 0){
+    <p>Noch keine Erfahrungen hinterlegt</p>
+  }
 </div>
