@@ -8,7 +8,7 @@ import {
   KexSkill,
   KexUserSkill
 } from "../models/kex-profile.model";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {kexUserSkill1, kexUserSkill2, kexUserSkill3} from "../dummy-data";
 import {proj1} from "../dummy-data";

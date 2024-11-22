@@ -17,22 +17,24 @@ import {EffectsModule} from "@ngrx/effects";
 import {ProfileModule} from "./modules/profile/profile.module";
 import {HomeModule} from "./modules/home/home.module";
 import {CoreModule} from "./core/core.module";
-import {HttpClientModule} from "@angular/common/http";
+import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {SearchModule} from "./modules/search/search.module";
 import {KEX_SEARCH_STORE_FEATURE_KEY} from "./modules/search/store/reducers/kex-search.reducers";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import { KexSearchEffects } from './modules/search/store/effects/kex-search.effects';
+import {KexSearchEffects} from './modules/search/store/effects/kex-search.effects';
 import {environment} from "../environments/environment";
 import {registerLocaleData} from "@angular/common";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {KexCoreEffects} from "./core/store/effects/kex-core.effects";
 import {KEX_CORE_STORE_FEATURE_KEY} from "./core/store/reducers/kex-core.reducers";
-import { DarkModeToggleComponent } from './page-template/dark-mode-toggle/dark-mode-toggle.component';
+import {DarkModeToggleComponent} from './page-template/dark-mode-toggle/dark-mode-toggle.component';
 import {MatDivider} from "@angular/material/divider";
+import {SettingsModule} from "./modules/settings/settings.module";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
@@ -53,7 +55,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: environment.KEYCLOAK_URL,
         realm: environment.KEYCLOAK_REALM,
-
         clientId: environment.KEYCLOAK_CLIENT_ID
       },
       initOptions: {
@@ -71,21 +72,21 @@ function initializeKeycloak(keycloak: KeycloakService) {
     KexToolbarComponent,
     DarkModeToggleComponent
   ],
-  imports: [
-    BrowserModule,
+  bootstrap: [AppComponent], imports: [BrowserModule,
     AppRoutingModule,
     MatButton,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
-
+    StoreDevtoolsModule.instrument({
+      maxAge: 50,
+      logOnly: environment.production,
+    }),
     MatIcon,
     MatToolbar,
     MatIconButton,
     CoreModule,
-    HttpClientModule,
     BrowserAnimationsModule,
     KeycloakAngularModule,
-
     //Todo Lazy Load
     ProfileModule,
     HomeModule,
@@ -95,18 +96,17 @@ function initializeKeycloak(keycloak: KeycloakService) {
     MatMenuItem,
     MatProgressSpinner,
     MatFabButton,
-    MatDivider
-  ],
-  providers: [
+    MatDivider,
+    SettingsModule], providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
     },
-    { provide: LOCALE_ID, useValue: 'de-DE' }
-  ],
-  bootstrap: [AppComponent]
+    {provide: LOCALE_ID, useValue: 'de-DE'},
+    provideHttpClient(withInterceptorsFromDi())
+  ]
 })
 export class AppModule {
 }

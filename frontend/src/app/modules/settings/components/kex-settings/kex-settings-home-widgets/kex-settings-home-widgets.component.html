@@ -1,0 +1,14 @@
+
+<h3>Startseite</h3>
+<p>Hier kann festgelegt werden in welcher Reihenfolge
+  die Kacheln auf der Startseite angezeigt werden sollen
+</p>
+
+  <div class="kex-widget-setting-container" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event, items)">
+    @for (item of items; track item) {
+      <div class="kex-widget-setting-item" cdkDrag>{{item.label}}</div>
+    }
+  </div>
+
+
+

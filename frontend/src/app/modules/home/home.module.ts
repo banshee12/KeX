@@ -26,6 +26,8 @@ import {MatList, MatListItem} from "@angular/material/list";
 import { KexWidgetFeedbackComponent } from './components/widgets/kex-widget-feedback/kex-widget-feedback.component';
 import { KexWidgetFavoriteUserComponent } from './components/widgets/kex-widget-favorite-user/kex-widget-favorite-user.component';
 import { KexFavoriteUserItemComponent } from './components/widgets/kex-widget-favorite-user/kex-favorite-user-item/kex-favorite-user-item.component';
+import {KexDynamicHostDirective} from "./kex-dynamic-host.directive";
+import { KexHomeWidgetsComponent } from './components/kex-home/kex-home-widgets/kex-home-widgets.component';
 
 
 
@@ -38,7 +40,9 @@ import { KexFavoriteUserItemComponent } from './components/widgets/kex-widget-fa
         KexWidgetBaseComponent,
         KexWidgetFeedbackComponent,
         KexWidgetFavoriteUserComponent,
-        KexFavoriteUserItemComponent
+        KexFavoriteUserItemComponent,
+        KexDynamicHostDirective,
+        KexHomeWidgetsComponent
     ],
   imports: [
     CommonModule,
