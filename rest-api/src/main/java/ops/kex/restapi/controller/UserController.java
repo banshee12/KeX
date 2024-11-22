@@ -40,6 +40,17 @@ public class UserController {
         return userService.updateUserContactOptions(user);
     }
 
+    @PostMapping("/widget/sorting")
+    public ResponseEntity<List<String>> setUserWidgetSorting(
+            @RequestBody List<String> widgetSorting){
+        return userService.setUserWidgetSorting(widgetSorting);
+    }
+
+    @GetMapping("/widget/sorting")
+    public ResponseEntity<List<String>> getUserWidgetSorting(){
+        return userService.getUserWidgetSorting();
+    }
+
     @GetMapping("/sync")
     public ResponseEntity<String> syncUser(){
         return userService.SyncUser();
