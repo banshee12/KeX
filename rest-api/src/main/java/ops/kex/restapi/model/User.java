@@ -40,6 +40,10 @@ public class User {
     private Integer year;
     @OneToMany(cascade = CascadeType.ALL)
     private List<UserFavorite> favorites;
+    @ElementCollection
+    @CollectionTable(name = "widget_sorting", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "widget_name")
+    private List<String> widgetSorting;
 
 
     public void addUserSkill(UserSkills userSkills){

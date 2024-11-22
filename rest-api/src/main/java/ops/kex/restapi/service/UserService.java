@@ -309,4 +309,22 @@ public class UserService {
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Transactional
+    public ResponseEntity<List<String>> setUserWidgetSorting(List<String> widgetSorting) {
+        User loggedUser = getLoggedUser();
+        if(loggedUser != null){
+            loggedUser.setWidgetSorting(widgetSorting);
+            return ResponseEntity.ok(widgetSorting);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<List<String>> getUserWidgetSorting() {
+        User loggedUser = getLoggedUser();
+        if(loggedUser != null){
+            return ResponseEntity.ok(loggedUser.getWidgetSorting());
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
