@@ -1,0 +1,9 @@
+<h3>Erscheinungsbild</h3>
+<mat-radio-group
+  aria-labelledby="example-radio-group-label"
+  class="example-radio-group"
+  [(ngModel)]="isDarkMode"
+(change)="toggleTheme()">
+  <mat-radio-button class="example-radio-button" [value]="false">Helles Design</mat-radio-button>
+    <mat-radio-button class="example-radio-button" [value]="true">Dunkles Design</mat-radio-button>
+</mat-radio-group>

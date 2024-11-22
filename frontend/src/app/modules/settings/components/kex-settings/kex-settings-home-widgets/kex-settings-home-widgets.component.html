@@ -1,5 +1,14 @@
-<div cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event)">
-  @for (item of items; track item) {
-    <div class="example-box" cdkDrag>{{item}}</div>
-  }
-</div>
+
+<h3>Startseite</h3>
+<p>Hier kann festgelegt werden in welcher Reihenfolge
+  die Kacheln auf der Startseite angezeigt werden sollen
+</p>
+
+  <div class="example-list" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event, items)">
+    @for (item of items; track item) {
+      <div class="example-box" cdkDrag>{{item.label}}</div>
+    }
+  </div>
+
+
+

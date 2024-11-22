@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../../environments/environment";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Experience, KexUserSkill} from "../../profile/models/kex-profile.model";
 import {kexUserSkill1, kexUserSkill2} from "../../profile/dummy-data";

@@ -12,6 +12,9 @@ const getFavoriteUserList = createSelector(getKexCoreState, (state: KexCoreState
 const getFavoriteUserListLoadState = createSelector(getKexCoreState, (state: KexCoreState) => state.favoriteUserListLoadState);
 const getAddFavoriteLoadState = createSelector(getKexCoreState, (state: KexCoreState) => state.addFavoriteLoadState);
 const getRemoveFavoriteLoadState = createSelector(getKexCoreState, (state: KexCoreState) => state.removeFavoriteLoadState);
+const getWidgetSettingsLoadState = createSelector(getKexCoreState, (state: KexCoreState) => state.loadWidgetSettingsLoadState);
+const getWidgetSettings = createSelector(getKexCoreState, (state: KexCoreState) => state.savedWidgetSettings);
+const getSaveWidgetSettingsLoadState = createSelector(getKexCoreState, (state: KexCoreState) => state.saveWidgetSettingsLoadState);
 export const KexCoreSelector = {
   getCurrentUserLoadState : getCurrentUserLoadState,
   getCurrentUser : getCurrentUser,
@@ -19,6 +22,9 @@ export const KexCoreSelector = {
   getFavoriteUserList : getFavoriteUserList,
   getFavoriteUserListLoadState : getFavoriteUserListLoadState,
   getAddFavoriteLoadState : getAddFavoriteLoadState,
-  getRemoveFavoriteLoadState : getRemoveFavoriteLoadState
+  getRemoveFavoriteLoadState : getRemoveFavoriteLoadState,
+  getWidgetSettingsLoadState : getWidgetSettingsLoadState,
+  getWidgetSettings : getWidgetSettings,
+  getSaveWidgetSettingsLoadState : getSaveWidgetSettingsLoadState
 };
 
