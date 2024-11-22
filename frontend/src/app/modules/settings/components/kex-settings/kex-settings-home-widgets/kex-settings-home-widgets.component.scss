@@ -1,4 +1,4 @@
-.example-list {
+.kex-widget-setting-container {
   display: flex;
   flex-wrap: wrap;
   width: 505px;
@@ -11,8 +11,8 @@
   overflow: hidden;
 }
 
-.example-box {
-  padding: 20px 10px;
+.kex-widget-setting-item {
+  padding: 40px 20px;
   border: solid 1px #ccc;
   border-radius: 4px;
   color: rgba(0, 0, 0, 0.87);

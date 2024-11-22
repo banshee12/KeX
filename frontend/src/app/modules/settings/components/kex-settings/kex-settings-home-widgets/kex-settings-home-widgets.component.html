@@ -4,9 +4,9 @@
   die Kacheln auf der Startseite angezeigt werden sollen
 </p>
 
-  <div class="example-list" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event, items)">
+  <div class="kex-widget-setting-container" cdkDropList cdkDropListOrientation="mixed" (cdkDropListDropped)="drop($event, items)">
     @for (item of items; track item) {
-      <div class="example-box" cdkDrag>{{item.label}}</div>
+      <div class="kex-widget-setting-item" cdkDrag>{{item.label}}</div>
     }
   </div>
 
