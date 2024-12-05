@@ -1,5 +1,15 @@
-kex-contact-times{
+@import 'bootstrap/scss/bootstrap';
+
+kex-contact-times {
   margin-top: 8px;
+}
+
+:host {
+  flex: 1;
+  min-width: 100%;
+  @include media-breakpoint-up(md) {
+    min-width: 400px;
+  }
 }
 
 

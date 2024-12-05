@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {KexProfileState} from "../../../../profile/store/kex-profile.state";
 import {GetSkillsActions} from "../../../../profile/store/actions/kex-profile.actions";
-import {Observable, Subscription} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import {KexUserSkill} from "../../../../profile/models/kex-profile.model";
 import {KexProfileSelector} from "../../../../profile/store/selectors/kex-profile.selectors";
 import {KexLoadState, KexSortData} from "../../../../../core/models/kex-core.models";
@@ -29,12 +29,13 @@ export class KexWidgetSkillsComponent implements OnInit, OnDestroy{
   }
 
   get hasSkills() {
-    return this.userSkills.length > 0;
+    return this.userSkills?.length > 0;
   }
 
   get $skills() : Observable<KexUserSkill[]>
   {
-    return this.store.select(KexProfileSelector.getSkills);
+    return of([]);
+    //return this.store.select(KexProfileSelector.getSkills);
   }
 
   get $skillsLoadState() : Observable<KexLoadState>

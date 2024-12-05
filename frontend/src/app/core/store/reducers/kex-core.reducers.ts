@@ -9,7 +9,10 @@ const initialState: KexCoreState = {
   favoriteUserList : [],
   favoriteUserListLoadState : KexLoadState.NONE,
   addFavoriteLoadState : KexLoadState.NONE,
-  removeFavoriteLoadState : KexLoadState.NONE
+  removeFavoriteLoadState : KexLoadState.NONE,
+  loadWidgetSettingsLoadState : KexLoadState.NONE,
+  savedWidgetSettings : [],
+  saveWidgetSettingsLoadState : KexLoadState.NONE
 }
 
 const _kexCoreReducer = createReducer(
@@ -126,7 +129,76 @@ const _kexCoreReducer = createReducer(
     })
   ),
 
+  //load widget setting
+  on(
+    KexCoreActions.loadWidgetSettings.do,
+    (state, action) => ({
+      ...state,
+      loadWidgetSettingsLoadState : KexLoadState.LOADING,
+      savedWidgetSettings: []
+    })
+  ),
+  on(
+    KexCoreActions.loadWidgetSettings.success,
+    (state, action) => ({
+      ...state,
+      loadWidgetSettingsLoadState : KexLoadState.SUCCESS,
+      savedWidgetSettings: action.widgetSettings
+    })
+  ),
+  on(
+    KexCoreActions.loadWidgetSettings.fail,
+    (state, action) => ({
+      ...state,
+      loadWidgetSettingsLoadState : KexLoadState.FAILURE,
+    })
+  ),
+  on(
+    KexCoreActions.loadWidgetSettings.reset,
+    (state, action) => ({
+      ...state,
+      loadWidgetSettingsLoadState : KexLoadState.NONE,
+      savedWidgetSettings: []
+    })
+  ),
+
+  //save widget settings
+  on(
+    KexCoreActions.saveWidgetSettings.do,
+    (state, action) => ({
+      ...state,
+      saveWidgetSettingsLoadState : KexLoadState.LOADING,
+      loadWidgetSettingsLoadState : KexLoadState.LOADING,
+    })
+  ),
+  on(
+    KexCoreActions.saveWidgetSettings.success,
+    (state, action) => ({
+      ...state,
+      saveWidgetSettingsLoadState : KexLoadState.SUCCESS,
+      loadWidgetSettingsLoadState : KexLoadState.NONE
+    })
+  ),
+  on(
+    KexCoreActions.saveWidgetSettings.fail,
+    (state, action) => ({
+      ...state,
+      saveWidgetSettingsLoadState : KexLoadState.FAILURE,
+      loadWidgetSettingsLoadState : KexLoadState.NONE
+    })
+  ),
+  on(
+    KexCoreActions.saveWidgetSettings.reset,
+    (state, action) => ({
+      ...state,
+      saveWidgetSettingsLoadState : KexLoadState.NONE
+    })
+  ),
+
+
 );
+
+
 
 export function kexCoreReducer(state: KexCoreState, action: Action) {
   return _kexCoreReducer(state, action);

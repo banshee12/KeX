@@ -1,4 +1,12 @@
-:host{
+@import 'bootstrap/scss/bootstrap';
+
+:host {
+  flex: 1;
+  min-width: 100%;
+  @include media-breakpoint-up(md) {
+    min-width: 400px;
+  }
+
   .kex-experience-number {
     border-radius: 100%;
     background-color: #3F51B5;
@@ -18,6 +26,7 @@
     align-items: center;
     margin-bottom: 12px;
     border-bottom: #EEEEEE 1px solid;
+
     h4 {
       padding: 0;
     }
@@ -30,7 +39,7 @@
 
   .kex-widget-experience-container {
     padding: 15px;
-    margin:15px;
+    margin: 15px;
   }
 }
 

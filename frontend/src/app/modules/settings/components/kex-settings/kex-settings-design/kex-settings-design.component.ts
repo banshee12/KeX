@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import {DarkModeToggleService} from "../../modules/settings/services/dark-mode-toggle.service";
+import {Component, OnInit} from '@angular/core';
+import {DarkModeToggleService} from "../../../services/dark-mode-toggle.service";
 
 @Component({
-  selector: 'dark-mode-toggle',
-  templateUrl: './dark-mode-toggle.component.html',
-  styleUrl: './dark-mode-toggle.component.scss'
+  selector: 'kex-settings-design',
+  templateUrl: './kex-settings-design.component.html',
+  styleUrl: './kex-settings-design.component.scss'
 })
-export class DarkModeToggleComponent {
+export class KexSettingsDesignComponent implements OnInit{
   isDarkMode : boolean;
 
   constructor(private themeService: DarkModeToggleService) {
@@ -14,7 +14,6 @@ export class DarkModeToggleComponent {
   }
 
   toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('isDarkMode', this.isDarkMode.toString())
     this.themeService.setDarkMode(this.isDarkMode);
   }

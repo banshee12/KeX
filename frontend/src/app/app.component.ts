@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {KexLoadState} from "./core/models/kex-core.models";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {environment} from "../environments/environment";
 import {take} from "rxjs";
 import {Store} from "@ngrx/store";

@@ -1,4 +1,7 @@
 <h4>Fähigkeiten</h4>
 <div class="kex-user-details-skill-list-container">
   <kex-user-details-skill *ngFor="let skill of skillList" [userSkill]="skill"></kex-user-details-skill>
+  @if(skillList.length === 0) {
+    <p>Noch keine Fähigkeiten hinterlegt</p>
+  }
 </div>

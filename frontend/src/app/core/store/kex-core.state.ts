@@ -1,4 +1,5 @@
 import {KexLoadState, User} from "../models/kex-core.models";
+import {KexWidgetSetting} from "../../modules/settings/models/kex-settings.model";
 
 
 export interface KexCoreState {
@@ -7,5 +8,8 @@ export interface KexCoreState {
   favoriteUserList : User[],
   favoriteUserListLoadState : KexLoadState,
   addFavoriteLoadState : KexLoadState,
-  removeFavoriteLoadState : KexLoadState
+  removeFavoriteLoadState : KexLoadState,
+  saveWidgetSettingsLoadState : KexLoadState,
+  loadWidgetSettingsLoadState : KexLoadState,
+  savedWidgetSettings : string[]
 }

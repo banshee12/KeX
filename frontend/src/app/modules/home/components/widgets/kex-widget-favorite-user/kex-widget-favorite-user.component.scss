@@ -1,4 +1,12 @@
-:host{
+@import 'bootstrap/scss/bootstrap';
+
+:host {
+  flex: 1;
+  min-width: 100%;
+  @include media-breakpoint-up(md) {
+    min-width: 400px;
+  }
+
   ::ng-deep .mat-mdc-card {
     justify-content: flex-start !important;
   }
