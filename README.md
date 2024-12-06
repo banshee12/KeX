@@ -2,7 +2,9 @@
 Share your knowledge and experience
 
 # What is it
-KeX is Plattform where you can ...
+KeX is an innovative platform designed to act as a "phonebook" of skills and experiences. Its goal is to help users connect, share, and discover expertise efficiently. Whether you're looking to showcase your own skills or find the right person for a specific task, KeX provides an intuitive and dynamic solution.
+
+This repository includes core assets, documentation, and visual content that highlight the platform’s design and functionality. Explore the images to get a glimpse of KeX in action, and feel free to contribute or share your thoughts!
 
 # Impressions
 ### search other people
@@ -19,4 +21,4 @@ KeX is Plattform where you can ...
 
 # How to build and run
 
-hier beschreibung und so 
+ToDo: small description how to build and deploy
